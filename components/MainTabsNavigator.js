@@ -1,20 +1,34 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { useContext } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { useContext, useEffect } from "react";
 import Calendar from "./Calendar";
 import TasksList from "./TasksList";
 import Panel from "./Panel";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeContext } from "../ThemeContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Text, StatusBar} from 'react-native';
+import {Text} from 'react-native';
+//import { StatusBar } from "react-native";
 
 const Tabs = createBottomTabNavigator();
 
 const MainTabsNavigator = () => {
-    const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
+    const {isThemeLight,setIsThemeLight, getTheme} = useContext(ThemeContext);
+
+    //pobieranie ustawien motywu z AsyncStorage, tylko raz gdy MainTabsNavigator zostaje podmontowany
+    useEffect(() => {
+        getTheme();
+      }, []);
+
 
     return (
         <NavigationContainer>
+            <StatusBar style={isThemeLight ? "auto" : "inverted"}/>
+            {/* statusbar z react-native */}
+            {/* <StatusBar
+                backgroundColor={isThemeLight ? 'white' : '#232931'}
+                barStyle={isThemeLight ? 'dark-content' : 'light-content'}
+            /> */}
             <Tabs.Navigator
                 initialRouteName='TasksList'
                 screenOptions={{

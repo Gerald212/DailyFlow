@@ -18,9 +18,11 @@ export default function App() {
   // const changeProgress = ({id}) => {
   // }
 
+  //console.log("jakies cos");
+
   return (
     <ThemeContextProvider>
-      <StatusBar style="auto" />
+      {/* <StatusBar style="auto" /> */}
       <MainTabsNavigator/>
     </ThemeContextProvider>
   );

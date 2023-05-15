@@ -3,12 +3,12 @@ import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 
 const Panel = () => {
-  const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
+  const {isThemeLight,setIsThemeLight,changeTheme} = useContext(ThemeContext);
 
     return(
         <View style={isThemeLight ? styles.containerLight : styles.containerDark}>
             <Text style={isThemeLight ? styles.text : styles.textDark}>Pozostałe</Text>
-            <Button title='Zmiana Motywu' onPress={() => setIsThemeLight(!isThemeLight)}/>
+            <Button title='Zmiana Motywu' onPress={changeTheme}/>
         </View>
     );
 }

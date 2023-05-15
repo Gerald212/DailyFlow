@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
     containerLight: {
       flex: 1,
       backgroundColor: '#fff',
-      paddingTop: StatusBar.currentHeight * 2,
+      paddingTop: StatusBar.currentHeight,
       //marginHorizontal: 16,
     },
     containerDark: {
       flex: 1,
       backgroundColor: '#232931',
-      paddingTop: StatusBar.currentHeight * 2,
+      paddingTop: StatusBar.currentHeight,
       //marginHorizontal: 16,
     },
     header: {

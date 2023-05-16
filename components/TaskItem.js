@@ -38,71 +38,93 @@ const TaskItem = ({item}) => {
     //console.log('1. item:\t' + progressDescription + '\t' + progressValue);
 
     return(
-        <View style={isThemeLight ? styles.itemLight : styles.itemDark}>
-            <View>
-                <Text style={isThemeLight ? styles.taskName : styles.taskNameDark}>
-                  {item.name}
-                </Text>
-                <Text style={isThemeLight ? styles.taskProgress : styles.taskProgressDark}>
-                  Postęp: {progressDescription}
-                </Text>
-                {progressValue ? <ProgressBar
-                                    width={null}
-                                    progress={progressValue}
-                                    color={isThemeLight ? '#4aabff' : '#2f7d74'}
-                                    //style={{alignSelf: 'baseLine'}}
-                                  /> : <></>
-                }
-            </View>
-            <TouchableOpacity
-              style={{justifyContent: 'center', alignItems: 'center'}}
-              onPress={() => alert(item.name)}
-            >
-              <Ionicons
-                  name="checkmark-circle-outline"
-                  color={isThemeLight ? '#4aabff' : '#2f7d74'}
-                  size={48}
-              />
-            </TouchableOpacity>
+      //zewnetrzny kontener
+      <View style={isThemeLight ? styles.itemContainer : styles.itemContainerDark}> 
+        {/* kontener na dane i przycisk */}
+        <View style={isThemeLight ? styles.dataContainer : styles.dataContainerDark}>
+          {/* kontener na dane */}
+          <View>
+            <Text style={isThemeLight ? styles.taskName : styles.taskNameDark}>
+              {item.name}
+            </Text>
+            <Text style={isThemeLight ? styles.taskProgress : styles.taskProgressDark}>
+              Postęp: {progressDescription}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={{justifyContent: 'center', alignItems: 'center'}}
+            onPress={() => alert(item.name)}
+          >
+            <Ionicons
+                name="checkmark-circle-outline"
+                color={isThemeLight ? '#4aabff' : '#2f7d74'}
+                size={48}
+            />
+          </TouchableOpacity>
         </View>
+        {progressValue ? <ProgressBar
+                            width={null}
+                            progress={progressValue}
+                            color={isThemeLight ? '#4aabff' : '#2f7d74'}
+                            height={4}
+                            borderRadius={0}
+                            borderWidth={0}
+                            
+                          /> : <></>
+        }
+      </View>
     );
 }
 
 const styles = StyleSheet.create({
-    itemLight: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: 'aliceblue',
-        padding: 20,
-        marginVertical: 4,
-        borderBottomWidth: 2,
-        borderBottomColor: 'lightgray',
-      },
-      itemDark: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: '#393E46',
-        padding: 20,
-        marginVertical: 4,
-        borderBottomWidth: 2,
-        borderBottomColor: '#1d2024',
-      },   
-      taskName: {
-        fontSize: 24,
-      },
-      taskNameDark: {
-        fontSize: 24,
-        color: '#3b9c92',
-      },
-      taskProgress: {
-        fontSize: 16,
-      },
-      taskProgressDark: {
-        fontSize: 16,
-        color: '#3b9c92',
-      },
+
+
+    itemContainer: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      backgroundColor: 'aliceblue',
+      marginVertical: 5,
+      borderBottomWidth: 2,
+      borderBottomColor: 'lightgray',
+    },
+    itemContainerDark: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      backgroundColor: '#393E46',
+      marginVertical: 5,
+      borderBottomWidth: 2,
+      borderBottomColor: '#1d2024',
+    },   
+    dataContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      margin: 15,
+    },
+    dataContainerDark: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      margin: 15,
+    },
+    taskName: {
+      fontSize: 24,
+    },
+    taskNameDark: {
+      fontSize: 24,
+      //color: '#3b9c92',
+      color: '#ccc',
+    },
+    taskProgress: {
+      fontSize: 16,
+    },
+    taskProgressDark: {
+      fontSize: 16,
+      //color: '#3b9c92',
+      color: '#ccc',
+    },
   });
 
 export default TaskItem;

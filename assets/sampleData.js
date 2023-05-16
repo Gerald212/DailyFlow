@@ -95,6 +95,8 @@ const sampleData = [
                 id: 1,          //id
                 hours: 1,       
                 days: ['2023/01/03','2023/01/04','2023/01/07'],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 0,
                 daysGoal: 10,
                 completed: false,
@@ -105,6 +107,8 @@ const sampleData = [
                 id: 2,          //id
                 hours: 100,       
                 days: [],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 200,
                 daysGoal: 0,
                 completed: false,
@@ -115,6 +119,8 @@ const sampleData = [
                 id: 3,          //id
                 hours: 156,       
                 days: [],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 0,
                 daysGoal: 0,
                 completed: false,
@@ -125,6 +131,8 @@ const sampleData = [
                 id: 5,          //id
                 hours: 1,       
                 days: ['2023/01/03','2023/01/04','2023/01/07'],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 0,
                 daysGoal: 10,
                 completed: false,
@@ -135,6 +143,8 @@ const sampleData = [
                 id: 6,          //id
                 hours: 10,       
                 days: [],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 20,
                 daysGoal: 0,
                 completed: false,
@@ -145,6 +155,8 @@ const sampleData = [
                 id: 7,          //id
                 hours: 156,       
                 days: [],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 170,
                 daysGoal: 0,
                 completed: false,
@@ -160,6 +172,8 @@ const sampleData = [
                 id: 4,          //id
                 hours: 18,       
                 days: [],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 0,
                 daysGoal: 0,
                 completed: false,
@@ -170,6 +184,8 @@ const sampleData = [
                 id: 4,          //id
                 hours: 18,       
                 days: ['2023/01/03','2023/01/04','2023/01/07', '2023/01/13','2023/01/24','2023/01/27'],       //tablica z datami?
+                times: 0,
+                timesGoal: 0,
                 hoursGoal: 0,
                 daysGoal: 10,
                 completed: false,

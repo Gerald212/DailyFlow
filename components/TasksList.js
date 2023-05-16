@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     headerDark: {
       fontSize: 32,
       alignSelf: 'center',
-      color: '#3b9c92',
+      color: '#ccc',
       marginTop: 8,
     },
 });

@@ -1,5 +1,5 @@
-import {Text, View, StyleSheet, SafeAreaView, SectionList, StatusBar} from 'react-native';
-import sampleData, { sampleData2 } from '../assets/sampleData';
+import {Text, View, StyleSheet, SafeAreaView, SectionList, StatusBar, FlatList} from 'react-native';
+import {sampleData, sampleData2, sampleData3, sampleData4} from '../assets/sampleData';
 import TaskItem from './TaskItem';
 import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
@@ -24,11 +24,22 @@ const TasksList = () => {
 
   return (
       <SafeAreaView style={isThemeLight ? styles.containerLight : styles.containerDark}>
-          <SectionList
+          {/* <SectionList
               sections={tasks}
               keyExtractor={(item, index) => item + index}
               renderItem={({item}) => <TaskItem item={item}/>}
               renderSectionHeader={({section: {title}}) => <Text style={isThemeLight ? styles.header : styles.headerDark}>{title}</Text>}
+          /> */}
+          <FlatList
+            data={sampleData4}
+            horizontal={true}
+            keyExtractor={item => item.id}
+            renderItem={({item}) => <Text>{item.name}   </Text>}
+          />
+          <FlatList
+            data={sampleData3}
+            renderItem={({item}) => <TaskItem item={item}/>}
+            keyExtractor={item => item.id}
           />
       </SafeAreaView>
   );

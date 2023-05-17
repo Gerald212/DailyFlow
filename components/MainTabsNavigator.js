@@ -9,6 +9,7 @@ import { ThemeContext } from "../ThemeContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Text, View} from 'react-native';
 import PanelHeader from "./PanelHeader";
+import * as NavigationBar from 'expo-navigation-bar';
 //import { StatusBar } from "react-native";
 
 const Tabs = createBottomTabNavigator();

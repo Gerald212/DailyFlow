@@ -1,10 +1,13 @@
 import {createContext,useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as NavigationBar from 'expo-navigation-bar';
 
 const ThemeContext = createContext();
 
 const ThemeContextProvider = ({children}) => {
     const [isThemeLight, setIsThemeLight] = useState(false);
+
+    NavigationBar.setBackgroundColorAsync(isThemeLight ? 'white' : '#161a1f');
 
     const saveTheme = async (isThemeLight) => {
         try {

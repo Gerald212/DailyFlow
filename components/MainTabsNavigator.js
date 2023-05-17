@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { ThemeContext } from "../ThemeContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Text} from 'react-native';
+import PanelHeader from "./PanelHeader";
 //import { StatusBar } from "react-native";
 
 const Tabs = createBottomTabNavigator();
@@ -32,11 +33,11 @@ const MainTabsNavigator = () => {
             <Tabs.Navigator
                 initialRouteName='TasksList'
                 screenOptions={{
-                    headerShown: false,
+                    //headerShown: false,
                     tabBarStyle: {
                         backgroundColor: isThemeLight ? 'white' : '#161a1f',
                         borderTopColor: isThemeLight ? 'lightgray' : '#1d2024',
-                    },
+                  },
                 }}
             >
                 <Tabs.Screen
@@ -45,6 +46,7 @@ const MainTabsNavigator = () => {
                     options={{
                         tabBarInactiveTintColor: isThemeLight ? 'gray' : '#3b9c92',
                         tabBarActiveTintColor: isThemeLight ? 'skyblue' : '#4cd4c5',
+                        headerShown: false,
                         tabBarLabel: ({color}) => (
                             <Text style={{color: color, fontSize: 14}}>Kalendarz</Text>
                         ),
@@ -63,6 +65,7 @@ const MainTabsNavigator = () => {
                     options={{
                         tabBarInactiveTintColor: isThemeLight ? 'gray' : '#3b9c92',
                         tabBarActiveTintColor: isThemeLight ? 'skyblue' : '#4cd4c5',
+                        headerShown: false,
                         tabBarLabel: ({color}) => (
                             <Text style={{color: color, fontSize: 14}}>Lista</Text>
                         ),
@@ -81,6 +84,12 @@ const MainTabsNavigator = () => {
                     options={{
                         tabBarInactiveTintColor: isThemeLight ? 'gray' : '#3b9c92',
                         tabBarActiveTintColor: isThemeLight ? 'skyblue' : '#4cd4c5',
+                        headerStyle: {
+                            backgroundColor: isThemeLight ? 'white' : '#161a1f',
+                            borderBottomColor: isThemeLight ? 'lightgray' : '#1d2024',
+                            borderBottomWidth: 1,
+                        },
+                        headerTitle: () => <PanelHeader/>,
                         tabBarLabel: ({color}) => (
                             <Text style={{color: color, fontSize: 14}}>Panel</Text>
                         ),

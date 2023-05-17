@@ -7,7 +7,7 @@ import Panel from "./Panel";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeContext } from "../ThemeContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import PanelHeader from "./PanelHeader";
 //import { StatusBar } from "react-native";
 
@@ -89,8 +89,10 @@ const MainTabsNavigator = () => {
                             borderBottomColor: isThemeLight ? 'lightgray' : '#1d2024',
                             borderBottomWidth: 1,
                         },
-                        headerTitle: () => <PanelHeader/>,
-                        
+                        //headerTitle: () => <PanelHeader/>,
+                        headerRight: () => <PanelHeader/>,
+                        headerTitle: () => <></>,
+
                         tabBarLabel: ({color}) => (
                             <Text style={{color: color, fontSize: 14}}>Panel</Text>
                         ),

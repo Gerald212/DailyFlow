@@ -77,8 +77,6 @@ const TaskItem = ({item}) => {
 }
 
 const styles = StyleSheet.create({
-
-
     itemContainer: {
       flex: 1,
       flexDirection: 'column',

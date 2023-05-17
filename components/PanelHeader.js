@@ -7,15 +7,9 @@ const PanelHeader = () => {
     const {isThemeLight,setIsThemeLight,changeTheme} = useContext(ThemeContext);
 
     return(
-        <View style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                paddingVertical: 10,
-        }}>
+        <View style={styles.container}>
             <TouchableOpacity
-                style={{justifyContent: 'center', alignItems: 'center'}}
+                //style={{justifyContent: 'center', alignItems: 'center'}}
                 onPress={changeTheme}
             >
             {isThemeLight ? 
@@ -35,5 +29,19 @@ const PanelHeader = () => {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    // container: {
+    //     flex: 1,
+    //     flexDirection: 'row',
+    //     justifyContent: 'flex-end',
+    //     alignItems: 'center',
+    //     paddingVertical: 10,
+    // },
+    container: {
+        paddingRight: 20,
+        paddingVertical: 10,
+    }
+});
 
 export default PanelHeader;

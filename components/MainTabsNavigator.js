@@ -19,7 +19,7 @@ const MainTabsNavigator = () => {
     //pobieranie ustawien motywu z AsyncStorage, tylko raz gdy MainTabsNavigator zostaje podmontowany
     useEffect(() => {
         getTheme();
-      }, []);
+    }, []);
 
 
     return (
@@ -90,6 +90,7 @@ const MainTabsNavigator = () => {
                             borderBottomWidth: 1,
                         },
                         headerTitle: () => <PanelHeader/>,
+                        
                         tabBarLabel: ({color}) => (
                             <Text style={{color: color, fontSize: 14}}>Panel</Text>
                         ),

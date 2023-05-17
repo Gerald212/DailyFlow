@@ -12,6 +12,7 @@ const PanelHeader = () => {
                 flexDirection: 'row',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
+                paddingVertical: 10,
         }}>
             <TouchableOpacity
                 style={{justifyContent: 'center', alignItems: 'center'}}

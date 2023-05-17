@@ -40,12 +40,12 @@ const PanelStatItem = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+        flex: 1,
         flexDirection: 'row',
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         alignItems: 'center',
-        //marginHorizontal: 16,
+        paddingHorizontal: '10%',
     },
     containerDark: {
         flex: 1,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#232931',
         justifyContent: 'space-between',
         alignItems: 'center',
-        //marginHorizontal: 16,
+        paddingHorizontal: '10%',
     },
     title: {
         fontSize: 20,

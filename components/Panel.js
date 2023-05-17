@@ -18,7 +18,12 @@ const Panel = () => {
           >
             <Ionicons
                 name="pie-chart-outline"
-                color={isThemeLight ? 'gray' : '#ccc'}
+                color={
+                  isThemeLight ? 
+                    showStats ? 'black' : 'gray'
+                  : 
+                    showStats ? 'white' : '#ccc'
+                }
                 size={36}
             />
           </TouchableOpacity>
@@ -28,7 +33,12 @@ const Panel = () => {
           >
             <Ionicons
                 name="information-circle-outline"
-                color={isThemeLight ? 'gray' : '#ccc'}
+                color={
+                  isThemeLight ? 
+                    showStats ? 'gray' : 'black'
+                  : 
+                    showStats ? '#ccc' : 'white'
+                }
                 size={36}
             />
           </TouchableOpacity>
@@ -40,12 +50,12 @@ const Panel = () => {
               <View style={{flex:1}}>          
                 <PanelStatItem value={1} content={5} title={"najdluższe coś"} leftSide={false}/>
                 <PanelStatItem value={1} content={7} title={"liczba taskow?"} leftSide={true}/>
-                <PanelStatItem value={1} content={16} title={"liczba habitow?"} leftSide={true}/>
-                <PanelStatItem value={0.8} content={"80%"} title={"średnie cośtam"} leftSide={false}/>
+                <PanelStatItem value={1} content={16} title={"liczba habitow?"} leftSide={false}/>
+                <PanelStatItem value={0.8} content={"80%"} title={"średnie cośtam"} leftSide={true}/>
               </View>
           </View>
           :
-          <View style={isThemeLight ? styles.container : styles.containerDark}>
+          <View style={isThemeLight ? styles.containerInfo : styles.containerInfoDark}>
             <Text>Info</Text>
           </View>
         }
@@ -59,18 +69,24 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      //paddingTop: StatusBar.currentHeight,
       justifyContent: 'center',
-      alignItems: 'center',
-      //marginHorizontal: 16,
     },
     containerDark: {
       flex: 1,
       backgroundColor: '#232931',
-      //paddingTop: StatusBar.currentHeight * 2,
+      justifyContent: 'center',
+    },
+    containerInfo: {
+      flex: 1,
+      backgroundColor: '#fff',
       justifyContent: 'center',
       alignItems: 'center',
-      //marginHorizontal: 16,
+    },
+    containerInfoDark: {
+      flex: 1,
+      backgroundColor: '#232931',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     panelsBar: {
       flexDirection: 'row',

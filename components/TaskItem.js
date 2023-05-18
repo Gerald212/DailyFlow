@@ -1,4 +1,4 @@
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
 import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import ProgressBar from 'react-native-progress/Bar';
@@ -18,7 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 //   completed: false,
 // }
 
-const TaskItem = ({item}) => {
+const TaskItem = ({item, showDetails, updateTask}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     let progressDescription = '';
@@ -38,40 +38,44 @@ const TaskItem = ({item}) => {
     //console.log('1. item:\t' + progressDescription + '\t' + progressValue);
 
     return(
-      //zewnetrzny kontener
+      //zewnetrzny kontener v
       <View style={isThemeLight ? styles.itemContainer : styles.itemContainerDark}> 
-        {/* kontener na dane i przycisk */}
+        {/* kontener na dane i przycisk v*/}
         <View style={isThemeLight ? styles.dataContainer : styles.dataContainerDark}>
-          {/* kontener na dane */}
-          <View>
-            <Text style={isThemeLight ? styles.taskName : styles.taskNameDark}>
-              {item.name}
-            </Text>
-            <Text style={isThemeLight ? styles.taskProgress : styles.taskProgressDark}>
-              Postęp: {progressDescription}
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={{justifyContent: 'center', alignItems: 'center'}}
-            onPress={() => alert(item.name)}
-          >
-            <Ionicons
-                name="checkmark-circle-outline"
-                color={isThemeLight ? '#4aabff' : '#2f7d74'}
-                size={48}
-            />
-          </TouchableOpacity>
+            {/* kontener na dane */}
+            <TouchableOpacity style={{flex:1, alignItems: 'stretch'}} onPress={() => showDetails(item.id)}>
+                <Text style={isThemeLight ? styles.taskName : styles.taskNameDark}>
+                    {item.name}
+                </Text>
+                <Text style={isThemeLight ? styles.taskProgress : styles.taskProgressDark}>
+                    Postęp: {progressDescription}
+                </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={{justifyContent: 'center', alignItems: 'center'}}
+                onPress={() => updateTask(item.id)}
+            >
+                <Ionicons
+                    name="checkmark-circle-outline"
+                    color={isThemeLight ? '#4aabff' : '#2f7d74'}
+                    size={48}
+                />
+            </TouchableOpacity>
         </View>
-        {progressValue ? <ProgressBar
-                            width={null}
-                            progress={progressValue}
-                            color={isThemeLight ? '#4aabff' : '#2f7d74'}
-                            height={4}
-                            borderRadius={0}
-                            borderWidth={0}
-                            
-                          /> : <></>
-        }
+          {progressValue ? 
+            <ProgressBar
+              width={null}
+              progress={progressValue}
+              color={isThemeLight ? '#4aabff' : '#2f7d74'}
+              height={4}
+              borderRadius={0}
+              borderWidth={0}
+              
+            />
+            : 
+            <></>
+          }
       </View>
     );
 }

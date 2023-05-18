@@ -20,7 +20,7 @@ const Panel = () => {
                 name="pie-chart-outline"
                 color={
                   isThemeLight ? 
-                    showStats ? 'black' : 'gray'
+                    showStats ? 'black' : 'lightgrey'
                   : 
                     showStats ? 'white' : '#ccc'
                 }
@@ -35,7 +35,7 @@ const Panel = () => {
                 name="information-circle-outline"
                 color={
                   isThemeLight ? 
-                    showStats ? 'gray' : 'black'
+                    showStats ? 'lightgrey' : 'black'
                   : 
                     showStats ? '#ccc' : 'white'
                 }
@@ -52,6 +52,7 @@ const Panel = () => {
                 <PanelStatItem value={1} content={7} title={"liczba taskow?"} leftSide={true}/>
                 <PanelStatItem value={1} content={16} title={"liczba habitow?"} leftSide={false}/>
                 <PanelStatItem value={0.8} content={"80%"} title={"średnie cośtam"} leftSide={true}/>
+                <PanelStatItem value={0.54} content={"54%"} title={"jescze cos cośtam"} leftSide={false}/>
               </View>
           </View>
           :

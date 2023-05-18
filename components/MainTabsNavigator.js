@@ -24,7 +24,7 @@ const MainTabsNavigator = () => {
 
 
     return (
-        <NavigationContainer>
+        <>
             <StatusBar style={isThemeLight ? "auto" : "inverted"}/>
             {/* statusbar z react-native */}
             {/* <StatusBar
@@ -107,7 +107,7 @@ const MainTabsNavigator = () => {
                     }}
                 />
             </Tabs.Navigator>
-        </NavigationContainer>
+        </>
       );
 }
 

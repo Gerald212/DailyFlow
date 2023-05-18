@@ -295,6 +295,10 @@ export const sampleData3 = [
 
 export const sampleData4 = [
     {
+        id: 0,
+        name: 'Wszystkie'
+    },
+    {
         id: 1,
         name: 'Rysowanie'
     },

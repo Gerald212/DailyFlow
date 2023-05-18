@@ -1,26 +1,14 @@
 import {Text, View, StyleSheet, SafeAreaView, SectionList, StatusBar, FlatList} from 'react-native';
 import {sampleData, sampleData2, sampleData3, sampleData4} from '../assets/sampleData';
 import TaskItem from './TaskItem';
-import { useContext } from 'react';
+import CategoryItem from './CategoryItem';
+import { useContext, useState } from 'react';
 import { ThemeContext } from '../ThemeContext';
-
-// const renderItem = ({item}) => {
-//     return(
-//         <TaskItem item={item}/>
-//     );
-// }
-
-// const renderSectionHeader = ({title}) => {
-//     return(
-//         <>
-//             <Text style={isThemeLight ? styles.header : styles.headerDark}>{title}</Text>
-//         </>
-//     );
-// }
 
 const TasksList = () => {
   const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
-  const tasks = sampleData2;
+  const [displayedCategory, setDisplayedCategory] = useState(0);
+  const [displayedData, setDisplayedData] = useState(sampleData3);
 
   return (
       <SafeAreaView style={isThemeLight ? styles.containerLight : styles.containerDark}>
@@ -30,14 +18,16 @@ const TasksList = () => {
               renderItem={({item}) => <TaskItem item={item}/>}
               renderSectionHeader={({section: {title}}) => <Text style={isThemeLight ? styles.header : styles.headerDark}>{title}</Text>}
           /> */}
+          <View style={{paddingHorizontal: 5}}>
           <FlatList
             data={sampleData4}
             horizontal={true}
             keyExtractor={item => item.id}
-            renderItem={({item}) => <Text>{item.name}   </Text>}
+            renderItem={({item}) => <CategoryItem item={item} setCategory={setDisplayedCategory} category={displayedCategory}/>}
           />
+          </View>
           <FlatList
-            data={sampleData3}
+            data={displayedData}
             renderItem={({item}) => <TaskItem item={item}/>}
             keyExtractor={item => item.id}
           />

@@ -19,7 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // }
 
 const TaskItem = ({item}) => {
-  const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
+    const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     let progressDescription = '';
     let progressValue = 0.0;
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
       backgroundColor: 'aliceblue',
       marginVertical: 5,
+      //marginHorizontal: 10,
       borderBottomWidth: 2,
       borderBottomColor: 'lightgray',
     },

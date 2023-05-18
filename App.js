@@ -22,7 +22,8 @@ export default function App() {
 
   return (
     <ThemeContextProvider>
-      {/* <StatusBar style="auto" /> */}
+      {/* tu dodac stack navigator gdzie jednym stackscreenem bedzie maintabs, drugim taskDetailsModal? a trzecim addTaskModal? ???
+      https://reactnavigation.org/docs/nesting-navigators#navigating-to-a-screen-in-a-nested-navigator */}
       <MainTabsNavigator/>
     </ThemeContextProvider>
   );

@@ -14,7 +14,7 @@ const CategoryItem = ({item, category, setCategory}) => {
             style={[
                 styles.itemContainer,
                 {
-                    opacity: category === item.id ? 1 : 0.8,
+                    opacity: category === item.id ? 1.0 : 0.8,
                 }
             ]} 
         >

@@ -1,5 +1,28 @@
-tasks
 
-habits
+habits:
+    id: number
+    name: text
+    description: text
+    category: categories.id
+    hours: number
+    times: number
+    timesGoal: number
+    hoursGoal: number
+    daysGoal: number
+    completed: boolean
 
-sections
+dates:
+    habitId: habits.id
+    taskId: tasks.id
+    day: date
+
+tasks:
+    id: number
+    name: text
+    description: text
+    category: categories.id
+    completed: boolean
+
+categories:
+    id: number
+    name: text

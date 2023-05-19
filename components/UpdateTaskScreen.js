@@ -36,7 +36,7 @@ const stylesLight = StyleSheet.create({
       backgroundColor: '#fff',
       justifyContent: 'center',
       alignItems: 'center',
-      opacity: 0.8,
+      opacity: 0.9,
       //marginHorizontal: 16,
     },
     taskName: {
@@ -51,7 +51,7 @@ const stylesDark = StyleSheet.create({
     backgroundColor: '#232931',
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: 0.8,
+    opacity: 0.9,
     //marginHorizontal: 16,
   },
   taskName: {

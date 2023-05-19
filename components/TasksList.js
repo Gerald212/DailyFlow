@@ -18,16 +18,15 @@ const TasksList = ({navigation}) => {
   const goToUpdate = (id) => {
     //console.log(id);
     navigation.navigate('Update', {taskId: id});
-}
+  }
 
   return (
       <SafeAreaView style={isThemeLight ? styles.containerLight : styles.containerDark}>
-          {/* <SectionList
-              sections={tasks}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({item}) => <TaskItem item={item}/>}
-              renderSectionHeader={({section: {title}}) => <Text style={isThemeLight ? styles.header : styles.headerDark}>{title}</Text>}
-          /> */}
+          {/* <TouchableOpacity onPress={() => navigation.navigate("Add")}>
+            <Text style={{fontSize: 42}}>
+              DODAJ
+            </Text>
+          </TouchableOpacity> */}
           <View style={{paddingHorizontal: 5}}>
             <FlatList
               data={sampleData4}

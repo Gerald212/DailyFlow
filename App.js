@@ -12,6 +12,7 @@ import MainTabsNavigator from './components/MainTabsNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TaskDetails from './components/TaskDetailsScreen';
 import UpdateTaskScreen from './components/UpdateTaskScreen';
+import AddTaskScreen from './components/AddTaskScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,15 @@ export default function App() {
               name="Update"
               component={UpdateTaskScreen}
               options={{headerTitle: "Aktualizuj"}}
+            />
+            <Stack.Screen
+              name="Add"
+              component={AddTaskScreen}
+              options={{
+                headerTitle: "Dodaj",
+                presentation: 'modal',
+                animation: 'default',
+              }}
             />
           </Stack.Group>
         </Stack.Navigator>

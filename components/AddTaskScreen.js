@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 
-const TaskDetails = ({route, navigation}) => {
+const AddTaskScreen = ({route, navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     const styles = isThemeLight ? stylesLight : stylesDark;
@@ -18,11 +18,19 @@ const TaskDetails = ({route, navigation}) => {
       });
     }, [isThemeLight]);
 
+    navigation.setOptions({
+      headerStyle: {
+        backgroundColor: isThemeLight ? 'white' : '#161a1f',
+        borderBottomColor: isThemeLight ? 'lightgray' : '#1d2024',
+        borderBottomWidth: 1,
+      },
+      headerTintColor: isThemeLight ? 'black' : '#ccc',
+    });
+
     return(
         <View style={styles.container}>
-            <Text style={styles.taskName}>Szczegoly zadania o id:</Text>
-            <Text style={[styles.taskName, {fontSize: 24}]}>{route.params.taskId}</Text>
-            <Text style={styles.taskName}>Szczegóły Lorem ipsum</Text>
+            <Text style={styles.taskName}>Dodaj zadanie</Text>
+            <Text style={styles.taskName}>formularz Lorem ipsum</Text>
         </View>
     );
 }
@@ -57,4 +65,4 @@ const stylesDark = StyleSheet.create({
   },
 });
 
-export default TaskDetails;
+export default AddTaskScreen;

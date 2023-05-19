@@ -1,11 +1,23 @@
-import {StyleSheet, Text, View, StatusBar} from 'react-native';
-import { useContext } from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 
 const UpdateTaskScreen = ({route, navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
-    let styles = isThemeLight ? stylesLight : stylesDark;
+    const styles = isThemeLight ? stylesLight : stylesDark;
+
+    useEffect(() => {
+      navigation.setOptions({
+        headerStyle: {
+          backgroundColor: isThemeLight ? 'white' : '#161a1f',
+          borderBottomColor: isThemeLight ? 'lightgray' : '#1d2024',
+          borderBottomWidth: 1,
+        },
+        headerTintColor: isThemeLight ? 'black' : '#ccc',
+      });
+    }, [isThemeLight]);
 
     return(
         <View style={styles.container}>

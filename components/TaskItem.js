@@ -13,8 +13,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 //   id: 1,          //id
 //   hours: 1,       
 //   days: [],       //tablica z datami?
-//   hoursGoal: 0,
-//   daysGoal: 0,
+//   hours_goal: 0,
+//   days_goal: 0,
 //   completed: false,
 // }
 
@@ -23,13 +23,16 @@ const TaskItem = ({item, showDetails, updateTask}) => {
 
     let progressDescription = '';
     let progressValue = 0.0;
+    let days = 10;
 
-    if(item.hoursGoal){
-      progressDescription = item.hours + '/' + item.hoursGoal + ' godzin';
-      progressValue = item.hours / item.hoursGoal;
-    }else if(item.daysGoal){
-      progressDescription = item.days.length + '/' + item.daysGoal + ' dni';
-      progressValue = item.days.length / item.daysGoal;
+    if(item.hours_goal){
+      progressDescription = item.hours + '/' + item.hours_goal + ' godzin';
+      progressValue = item.hours / item.hours_goal;
+    }else if(item.days_goal){
+      // progressDescription = item.days.length + '/' + item.days_goal + ' dni';
+      // progressValue = item.days.length / item.days_goal;
+      progressDescription = days + '/' + item.days_goal + ' dni';
+      progressValue = days / item.days_goal;
     }else{
       progressDescription = item.hours + ' godzin';
       progressValue = 0.0;
@@ -43,7 +46,7 @@ const TaskItem = ({item, showDetails, updateTask}) => {
         {/* kontener na dane i przycisk v*/}
         <View style={isThemeLight ? styles.dataContainer : styles.dataContainerDark}>
             {/* kontener na dane */}
-            <TouchableOpacity style={{flex:1, alignItems: 'stretch'}} onPress={() => showDetails(item.id)}>
+            <TouchableOpacity style={{flex:1, alignItems: 'stretch'}} onPress={() => showDetails(item.habit_id)}>
                 <Text style={isThemeLight ? styles.taskName : styles.taskNameDark}>
                     {item.name}
                 </Text>
@@ -54,7 +57,7 @@ const TaskItem = ({item, showDetails, updateTask}) => {
 
             <TouchableOpacity
                 style={{justifyContent: 'center', alignItems: 'center'}}
-                onPress={() => updateTask(item.id)}
+                onPress={() => updateTask(item.habit_id)}
             >
                 <Ionicons
                     name="checkmark-circle-outline"
@@ -71,7 +74,6 @@ const TaskItem = ({item, showDetails, updateTask}) => {
               height={4}
               borderRadius={0}
               borderWidth={0}
-              
             />
             : 
             <></>

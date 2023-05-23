@@ -2,23 +2,52 @@ import {Text, View, StyleSheet, SafeAreaView, SectionList, StatusBar, FlatList, 
 import {sampleData, sampleData2, sampleData3, sampleData4} from '../assets/sampleData';
 import TaskItem from './TaskItem';
 import CategoryItem from './CategoryItem';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
+import { database } from '../database/database';
+import EmptyTasksListComponent from './EmptyTasksListComponent';
+
+const allCategory = {
+    name: 'Wszystkie',
+    category_id: 0
+}
 
 const TasksList = ({navigation}) => {
   const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
-  const [displayedCategory, setDisplayedCategory] = useState(0);
-  const [displayedData, setDisplayedData] = useState(sampleData3);
+
+  //kategorie i wybrana kategoria
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(0);
+
+  //habity i taski
+  const [listData, setListData] = useState([]);
+
+  useEffect(() => {
+      database.getAllCategories(setCategories)
+  }, []);
+
+  useEffect(() => {
+      console.log("Wyswietlona kategoria o id: " + selectedCategory);
+      //tu wczytywac habity
+      //database.getAllHabits(setListData);
+      database.getHabitsByCategory(selectedCategory, setListData);
+  }, [selectedCategory]);
+
 
   const goToDetails = (id) => {
       //console.log(id);
-      navigation.navigate('Details', {taskId: id});
+      navigation.navigate('Details', {id: id});
   }
 
   const goToUpdate = (id) => {
-    //console.log(id);
-    navigation.navigate('Update', {taskId: id});
+      //console.log(id);
+      navigation.navigate('Update', {id: id});
   }
+
+  const goToAddTask = () => {
+      navigation.navigate('Add');
+  }
+
 
   return (
       <SafeAreaView style={isThemeLight ? styles.containerLight : styles.containerDark}>
@@ -29,16 +58,20 @@ const TasksList = ({navigation}) => {
           </TouchableOpacity> */}
           <View style={{paddingHorizontal: 5}}>
             <FlatList
-              data={sampleData4}
+              //data={sampleData4}
+              data={categories}
               horizontal={true}
-              keyExtractor={item => item.id}
-              renderItem={({item}) => <CategoryItem item={item} setCategory={setDisplayedCategory} category={displayedCategory}/>}
+              keyExtractor={item => item.category_id}
+              renderItem={({item}) => <CategoryItem item={item} setCategory={setSelectedCategory} selectedCategory={selectedCategory}/>}
+              ListHeaderComponent={<CategoryItem item={allCategory} setCategory={setSelectedCategory} selectedCategory={selectedCategory}/>}
+              ListHeaderComponentStyle={{flexDirection: 'row'}}
             />
           </View>
           <FlatList
-            data={displayedData}
+            data={listData}
             renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.habit_id}
+            ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>}
           />
       </SafeAreaView>
   );

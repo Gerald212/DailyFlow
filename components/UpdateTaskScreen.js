@@ -22,7 +22,7 @@ const UpdateTaskScreen = ({route, navigation}) => {
     return(
         <View style={styles.container}>
             <Text style={styles.taskName}>Zaktualizuj zadanie o id:</Text>
-            <Text style={[styles.taskName, {fontSize: 24}]}>{route.params.taskId}</Text>
+            <Text style={[styles.taskName, {fontSize: 24}]}>{route.params.id}</Text>
             <Text style={styles.taskName}>Data</Text>
             <Text style={styles.taskName}>Godziny</Text>
             <Text style={styles.taskName}>itd.</Text>

@@ -1,19 +1,19 @@
 
 habits:
-    id: number
+    habit_id: number
     name: text
     description: text
-    category: categories.id
+    category_id: categories.id
     hours: number
     times: number
-    timesGoal: number
-    hoursGoal: number
-    daysGoal: number
+    times_goal: number
+    hours_goal: number
+    days_goal: number
     completed: boolean
 
 dates:
-    habitId: habits.id
-    taskId: tasks.id
+    habit_id: habits.id
+    task_id: tasks.id
     day: date
 
 tasks:
@@ -24,5 +24,8 @@ tasks:
     completed: boolean
 
 categories:
-    id: number
+    category_id: number
     name: text
+
+    'SELECT * AS "category_name" FROM habits h WHERE habit_id = ? INNER JOIN categories c USING(category_id)'
+    'SELECT * FROM habits INNER JOIN categories USING(category_id) WHERE habit_id = ?'

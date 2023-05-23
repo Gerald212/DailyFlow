@@ -3,23 +3,23 @@ import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CategoryItem = ({item, category, setCategory}) => {
+const CategoryItem = ({item, selectedCategory, setCategory}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     let styles = isThemeLight ? stylesLight : stylesDark;
 
     return(
         <TouchableOpacity 
-            onPress={() => setCategory(item.id)}
+            onPress={() => setCategory(item.category_id)}
             style={[
                 styles.itemContainer,
                 {
-                    opacity: category === item.id ? 1.0 : 0.8,
+                    opacity: selectedCategory === item.category_id ? 1.0 : 0.8,
                 }
             ]} 
         >
-            {/* <TouchableOpacity onPress={() => setCategory(item.id)}> */}
-                <Text style={category === item.id ? styles.categoryNameActive : styles.categoryNameInactive}>
+            {/* <TouchableOpacity onPress={() => setCategory(item.category_id)}> */}
+                <Text style={selectedCategory === item.category_id ? styles.categoryNameActive : styles.categoryNameInactive}>
                     {item.name}
                 </Text>
                 {/* <Text style={{borderWidth: 1, textAlign: 'center', borderRadius: 100, fontSize: 16, width: 24, height: 24}}>

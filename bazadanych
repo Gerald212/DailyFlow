@@ -14,7 +14,7 @@ habits:
 dates:
     habit_id: habits.id
     task_id: tasks.id
-    day: date
+    day: text
 
 tasks:
     id: number

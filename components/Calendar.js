@@ -1,23 +1,35 @@
 import {StyleSheet, Text, View, StatusBar, SafeAreaView, FlatList} from 'react-native';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { sampleData3 } from '../assets/sampleData';
 import TaskItem from './TaskItem';
+import { database } from '../database/database';
+import LoadingScreen from '../screens/LoadingScreen';
 
 const Calendar = ({navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
-    const [dayData, setDayData] = useState(sampleData3);
+    const [listDataDay, setListDataDay] = useState([]);
+    const [selectedDay, setSelectedDay] = useState('2023-04-03'); //potem domyslna wartosc zmienic na new Date()
+    const [isLoading, setIsLoading] = useState(true);
 
     const styles = isThemeLight ? stylesLight : stylesDark;
 
+    useEffect(() => {
+        const loadHabits = async () => {  
+          // await database.getHabitsByDay('2023-04-03', (result) => console.log(result))
+          await database.getHabitsByDay(selectedDay, setListDataDay)
+          .then(setIsLoading(false))
+        }
+
+        loadHabits();
+    }, [selectedDay]);
+
     const goToDetails = (id) => {
-      //console.log(id);
-      navigation.navigate('Details', {taskId: id});
+      navigation.navigate('Details', {id: id});
     }
 
-    const goToUpdate = (id) => {
-      //console.log(id);
-      navigation.navigate('Update', {taskId: id});
+  const goToUpdate = (id) => {
+      navigation.navigate('Update', {id: id});
     }
 
     return(
@@ -29,18 +41,23 @@ const Calendar = ({navigation}) => {
         </View>
         <SafeAreaView style={styles.daySectionContainer}>
           <Text style={styles.name}>
-            Dzisiaj
+            {selectedDay}
           </Text>
-          <FlatList
-            data={dayData}
-            renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
-            keyExtractor={item => item.id}
-          />
+          {isLoading ?
+            <LoadingScreen/>
+          :
+            <FlatList
+              data={listDataDay}
+              renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
+              keyExtractor={item => item.date_id}
+              ListEmptyComponent={<Text style={[[styles.name], {alignSelf: 'center', marginTop: 20}]}>Brak wydarzeń tego dnia</Text>}
+            />
+          }
         </SafeAreaView>
       </View>
     );
 }
-
+//
 const stylesLight = StyleSheet.create({
     container: {
       flex: 1,

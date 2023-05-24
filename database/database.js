@@ -1,11 +1,12 @@
 import * as SQLite from "expo-sqlite"
+import { sampleRecordsCategories, sampleRecordsHabits, sampleRecordsDates } from "../assets/sampleData";
 
 const db = SQLite.openDatabase('DayPlannerDB');
 //db.closeAsync();
 
 const setupDatabaseAsync = async () => {
     var createCategories = "CREATE TABLE IF NOT EXISTS categories (" +
-                            "category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                            "category_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                             "name TEXT NOT NULL" +
                             ");";
     var createHabits = "CREATE TABLE IF NOT EXISTS habits (" +
@@ -21,7 +22,12 @@ const setupDatabaseAsync = async () => {
                         "completed INTEGER DEFAULT 0," +
                         "FOREIGN KEY (category_id) REFERENCES categories (category_id)" +
                         ");";
-    var createDates = "";
+    var createDates = "CREATE TABLE IF NOT EXISTS dates (" +
+                        "date_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        "habit_id INTEGER NOT NULL," +
+                        "date TEXT NOT NULL," +
+                        "FOREIGN KEY (habit_id) REFERENCES habits (habit_id)" +
+                        ");";
 
     db.transaction(tx => {
         tx.executeSql(
@@ -33,8 +39,14 @@ const setupDatabaseAsync = async () => {
         tx.executeSql(
             createHabits,       //query
             [],                 //params
-            (txObj, result) => {console.log("Stworzono tabele habits ", result)},  //success callback
-            (txObj, error) => {console.log("Błąd - tworzenie tabeli habits", error)}                         //errorr callback
+            (txObj, result) => {console.log("Stworzono tabele habits ", result)},       //success callback
+            (txObj, error) => {console.log("Błąd - tworzenie tabeli habits", error)}    //errorr callback
+        ),
+        tx.executeSql(
+            createDates,       //query
+            [],                 //params
+            (txObj, result) => {console.log("Stworzono tabele dates ", result)},        //success callback
+            (txObj, error) => {console.log("Błąd - tworzenie tabeli dates", error)}     //errorr callback
         )
     },
     )
@@ -54,21 +66,54 @@ const dropTableAsync = async (tableName) => {
 
 const initializeDatabaseAsync = async () => {
     var insertSampleCategory = "INSERT INTO categories (name) values (?)";
-    var insertSampleHabit = "INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal) values (?, ?, ?, ?, ?, ?)";
+    var insertSampleHabit = "INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal, hours, times) values (?, ?, ?, ?, ?, ?, ?, ?)";
+    var insertSampleDate = "INSERT INTO dates (habit_id, date) values (?, ?)"
 
     db.transaction(tx => {
-        tx.executeSql(
-            insertSampleCategory,
-            ["Rysowanie"],
-            (txObj, result) => {console.log("Dodano przykladowa kategorie", result)},          //success callback
-            (txObj, error) => {console.log("Błąd - dodawanie przykladowej kategorii", error)}  //errorr callback
-        ),
-        tx.executeSql(
-            insertSampleHabit,
-            ["Rysuj", "Rysuj costam iles tam opis", 1, 0, 30, 0],
-            (txObj, result) => {console.log("Dodano przykladowy habit", result)},          //success callback
-            (txObj, error) => {console.log("Błąd - dodawanie przykladowego habitu", error)}  //errorr callback
-        )
+        // tx.executeSql(
+        //     insertSampleCategory,
+        //     ["Rysowanie"],
+        //     (txObj, result) => {console.log("Dodano przykladowa kategorie", result)},          //success callback
+        //     (txObj, error) => {console.log("Błąd - dodawanie przykladowej kategorii", error)}  //errorr callback
+        // ),
+        // tx.executeSql(
+        //     insertSampleHabit,
+        //     ["Rysuj", "Rysuj costam iles tam opis", 1, 0, 30, 0],
+        //     (txObj, result) => {console.log("Dodano przykladowy habit", result)},          //success callback
+        //     (txObj, error) => {console.log("Błąd - dodawanie przykladowego habitu", error)}  //errorr callback
+        // ),
+        // tx.executeSql(
+        //     insertSampleDate,
+        //     [1, "2023-08-03"],
+        //     (txObj, result) => {console.log("Dodano przykladowa date", result)},          //success callback
+        //     (txObj, error) => {console.log("Błąd - dodawanie przykladowej daty", error)}  //errorr callback
+        // )
+        sampleRecordsCategories.forEach(element => {
+            tx.executeSql(
+                insertSampleCategory,
+                element,
+                (txObj, result) => {console.log("Dodano przykladowe kategorie", result)},          //success callback
+                (txObj, error) => {console.log("Błąd - dodawanie przykladowych kategorii", error)}  //errorr callback
+            )
+        });
+
+        sampleRecordsHabits.forEach(element => {
+            tx.executeSql(
+                insertSampleHabit,
+                element,
+                (txObj, result) => {console.log("Dodano przykladowy habit", result)},          //success callback
+                (txObj, error) => {console.log("Błąd - dodawanie przykladowego habitu", error)}  //errorr callback
+            )
+        });
+        
+        sampleRecordsDates.forEach(element => {
+            tx.executeSql(
+                insertSampleDate,
+                element,
+                (txObj, result) => {console.log("Dodano przykladowa date", result)},          //success callback
+                (txObj, error) => {console.log("Błąd - dodawanie przykladowej daty", error)}  //errorr callback
+            )
+        });
     },
     )
 }
@@ -103,6 +148,22 @@ const getAllHabits = async (callbackFunction) => {
     )
 }
 
+const getAllDates = async (callbackFunction) => {
+    var selectAllDates = "SELECT * FROM dates ";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            selectAllDates,
+            [],
+            //(txObj, result) => {selectResult = result.rows._array},          //nieaktulane, nie dziala zbytnio
+            //(txObj, result) => console.log(result.rows._array),          //nieaktulane ale dziala
+            (txObj, result) => {callbackFunction(result.rows._array)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie wszystkich danych z tabeli dates", error)}  //errorr callback
+        )
+    },
+    )
+}
+
 const getHabitsByCategory = async (category, callbackFunction) => {
     var selectHabits = "SELECT * FROM habits";
     var parameter = [];
@@ -119,6 +180,20 @@ const getHabitsByCategory = async (category, callbackFunction) => {
             parameter,
             //(txObj, result) => {selectResult = result.rows._array},
             //(txObj, result) => console.log(result.rows._array),
+            (txObj, result) => {callbackFunction(result.rows._array)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie danych z tabeli habits z kategorii: " + category, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const getHabitsByDay = async (day, callbackFunction) => {
+    var selectHabits = "SELECT * FROM dates INNER JOIN habits USING(habit_id) WHERE date = ?";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            selectHabits,
+            [day],
             (txObj, result) => {callbackFunction(result.rows._array)},          //success callback
             (txObj, error) => {console.log("Błąd - pobieranie danych z tabeli habits z kategorii: " + category, error)}  //errorr callback
         )
@@ -156,5 +231,7 @@ export const database = {
     getAllCategories,
     getAllHabits,
     getHabitsByCategory,
-    getHabitById
+    getHabitById,
+    getAllDates,
+    getHabitsByDay
 }

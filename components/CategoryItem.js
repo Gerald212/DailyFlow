@@ -18,14 +18,21 @@ const CategoryItem = ({item, selectedCategory, setCategory}) => {
                 }
             ]} 
         >
-            {/* <TouchableOpacity onPress={() => setCategory(item.category_id)}> */}
                 <Text style={selectedCategory === item.category_id ? styles.categoryNameActive : styles.categoryNameInactive}>
                     {item.name}
                 </Text>
-                {/* <Text style={{borderWidth: 1, textAlign: 'center', borderRadius: 100, fontSize: 16, width: 24, height: 24}}>
-                    52
-                </Text> */}
-            {/* </TouchableOpacity> */}
+                {selectedCategory === item.category_id && selectedCategory != 0 ?
+                    <TouchableOpacity onPress={() => alert("Czy chcesz usunac?")} style={{marginLeft: 4, marginRight: -6}}>
+                        <Ionicons
+                            name="trash-outline"
+                            //color={isThemeLight ? '#4aabff' : '#2f7d74'}
+                            color={'red'}
+                            size={22}
+                        />
+                    </TouchableOpacity>
+                :
+                    <></>
+                }
         </TouchableOpacity>
     );
 }
@@ -33,11 +40,13 @@ const CategoryItem = ({item, selectedCategory, setCategory}) => {
 const stylesLight = StyleSheet.create({
     itemContainer: {
         flex: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         // textAlign: 'center',
         backgroundColor: 'aliceblue',
         padding: 20,
+        //paddingVertical: 1,
         marginTop: 10,
         marginBottom: 5,
         marginHorizontal: 2,
@@ -63,6 +72,7 @@ const stylesDark = StyleSheet.create({
         // textAlign: 'center',
         backgroundColor: '#393E46',
         padding: 20,
+        paddingVertical: 1,
         marginTop: 10,
         marginBottom: 5,
         marginHorizontal: 2,

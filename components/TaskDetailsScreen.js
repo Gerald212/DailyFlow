@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { useState } from 'react/cjs/react.development';
 import { database } from '../database/database';
-
+import LoadingScreen from '../screens/LoadingScreen';
 
 
 const TaskDetails = ({route, navigation}) => {
@@ -38,10 +38,7 @@ const TaskDetails = ({route, navigation}) => {
 
     return(
       isLoading ? 
-        <View style={styles.container}>
-          <ActivityIndicator size={100} color={"#2f7d74"}/>
-          <Text>Ładowanie</Text>
-        </View>
+        <LoadingScreen/>
       :
         <View style={styles.container}>
             <Text style={styles.taskName}>Szczegoly zadania o id: {task.habit_id}</Text>

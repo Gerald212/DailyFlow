@@ -312,6 +312,30 @@ export const sampleData4 = [
     },
 ];
 
+export const sampleRecordsCategories = [
+    ["Ćwiczenia"],
+    ["Rysowanie"],
+    ["Informatyka"]
+];
+
+export const sampleRecordsHabits = [
+    //name                  description                       c_id|t_g|h_g|d_g|hours|times
+    ["Ćwiczyć rysowanie", "Przykladowy opis test1 test2 test3", 2, 0, 30, 0, 23, 8],
+    ["Pisać pracę lic", "Napisać pracę licencjacką i zrobić aplikacje", 3, 0, 0, 0, 98, 41],
+    ["Narysować coś", "Inny opis cośtam cośtam test test test", 2, 3, 0, 0, 0, 2],
+    ["Biegać", "Opis coś o bieganiu i jeszcze coś innego 123", 1, 0, 0, 30, 9, 4],
+    ["Napisać 2 aplikacje", "Opis o aplikacjach które chcę zrobić", 3, 2, 0, 0, 0, 0]
+];
+
+export const sampleRecordsDates = [
+    //h_id | date
+    [4, "2023-02-03"],
+    [4, "2023-02-04"],
+    [4, "2023-02-06"],
+    [4, "2023-04-03"],
+    [2, "2023-04-03"],
+    [2, "2023-04-05"]
+];
 
 
-  export default sampleData;
+export default sampleData;

@@ -23,12 +23,16 @@ export default function App() {
       const createDatabase = async () => {
         // await database.dropTableAsync("habits");       //drop table habits
         // await database.dropTableAsync("categories");   //drop table categories
+        // await database.dropTableAsync("dates");
+
         await database.setupDatabaseAsync();              //stworzenie tabel (jesli ich nie ma)
-        //await database.initializeDatabaseAsync();       //inserty przyklaowdych danych
+
+        // await database.initializeDatabaseAsync();       //inserty przyklaowdych danych
         console.log("Zakończono tworzenie bazy danych");
 
-        //await database.getAllCategories((result)=>{console.log("kategorie: ", result)}) //wypisanie wszytkich kategorii
-        //await database.getAllHabits((result)=>{console.log("zwyczaje: ", result)})      //wypisanie wszytkich habitsow
+        await database.getAllCategories((result)=>{console.log("kategorie: ", result)}) //wypisanie wszytkich kategorii
+        await database.getAllHabits((result)=>{console.log("zwyczaje: ", result)})      //wypisanie wszytkich habitsow
+        await database.getAllDates((result)=>{console.log("daty: ", result)})             //wypisanie wszytkich dat
       }
     
       createDatabase();

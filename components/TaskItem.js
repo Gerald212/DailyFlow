@@ -33,6 +33,9 @@ const TaskItem = ({item, showDetails, updateTask}) => {
       // progressValue = item.days.length / item.days_goal;
       progressDescription = days + '/' + item.days_goal + ' dni';
       progressValue = days / item.days_goal;
+    }else if(item.times_goal){
+      progressDescription = item.times + '/' + item.times_goal + ' razy';
+      progressValue = item.times / item.times_goal;
     }else{
       progressDescription = item.hours + ' godzin';
       progressValue = 0.0;

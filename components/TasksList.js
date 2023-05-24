@@ -6,6 +6,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
 import EmptyTasksListComponent from './EmptyTasksListComponent';
+import LoadingScreen from '../screens/LoadingScreen';
 
 const allCategory = {
     name: 'Wszystkie',
@@ -22,15 +23,27 @@ const TasksList = ({navigation}) => {
   //habity i taski
   const [listData, setListData] = useState([]);
 
+  //stan kontrolujący czy dane są wczytywane
+  const [isLoading, setIsLoading] = useState(true);
+
+  //wczytywanie kategorii
   useEffect(() => {
-      database.getAllCategories(setCategories)
+      const setTemp = (temp) => {
+        const tempCategories = temp;
+        setCategories(tempCategories);
+      }
+      database.getAllCategories(setTemp)
   }, []);
 
+  //wczytywanie zadań z wybranej kategorii
   useEffect(() => {
-      console.log("Wyswietlona kategoria o id: " + selectedCategory);
-      //tu wczytywac habity
-      //database.getAllHabits(setListData);
-      database.getHabitsByCategory(selectedCategory, setListData);
+      const loadHabits = async () => {  
+        await database.getHabitsByCategory(selectedCategory, setListData)
+        .then(setIsLoading(false))
+        .finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
+      }
+
+      loadHabits();
   }, [selectedCategory]);
 
 
@@ -67,12 +80,16 @@ const TasksList = ({navigation}) => {
               ListHeaderComponentStyle={{flexDirection: 'row'}}
             />
           </View>
-          <FlatList
-            data={listData}
-            renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
-            keyExtractor={item => item.habit_id}
-            ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>}
-          />
+          {isLoading ? 
+            <LoadingScreen/>
+          :
+            <FlatList
+              data={listData}
+              renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
+              keyExtractor={item => item.habit_id}
+              ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>}
+            />
+          }
       </SafeAreaView>
   );
 }

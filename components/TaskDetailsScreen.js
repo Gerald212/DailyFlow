@@ -117,15 +117,17 @@ const TaskDetails = ({route, navigation}) => {
                     size={150}
                     color={isThemeLight ? '#4aabff' : '#2f7d74'}
                     thickness={8}
-                    borderWidth={0}
+                    borderWidth={progressValue ? 0 : 1}
                     progress={progressValue}
                     textStyle={{alignSelf:'center', fontSize: 36, fontWeight: 'bold'}} 
                     showsText={true}
+                    //ewentualnie pozbyć się tego formatText
+                    formatText={item.times_goal || item.hours_goal || item.days_goal ? (progress) => Math.round(progress * 100)+"%" : () => item.hours}
                 />
                 <Text style={[styles.text, {marginTop: 10}]}>Postęp: {progressDescription}</Text>
                 <Text style={styles.text}>Status: {item.completed ? "Zakończone" : "W trakcie"}</Text>
               </View>
-              <View style={styles.containerBorder}>
+              <View style={[styles.containerBorder, {paddingVertical: 20}]}>
                 <Text style={styles.text}>{item.description}</Text>
               </View>
               <View style={[styles.containerBorder, {flex: 1, marginTop: 0}]}>
@@ -157,13 +159,7 @@ const stylesLight = StyleSheet.create({
       borderBottomWidth: 1, 
       borderRightWidth: 1, 
       borderBottomRightRadius: 20,
-      justifyContent: 'center',
-      shadowColor: 'gray',
-      elevation: 2,
-      
-
-      
-      
+      justifyContent: 'center'
     },
     taskName: {
       fontSize: 36,

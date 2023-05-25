@@ -38,7 +38,14 @@ const TasksList = ({navigation}) => {
   //wczytywanie zadań z wybranej kategorii
   useEffect(() => {
       const loadHabits = async () => {  
-        await database.getHabitsByCategory(selectedCategory, setListData)
+        
+        const setTemp = (temp) => {
+          const tempHabits = temp;
+          setListData(tempHabits);
+        }
+
+        await database.getHabitsByCategory(selectedCategory, (result) => console.log("pobrane: ",result))
+        await database.getHabitsByCategory(selectedCategory, setTemp)
         .then(setIsLoading(false))
         .finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
       }

@@ -22,7 +22,6 @@ const TaskItem = ({item, showDetails, updateTask}) => {
 
     let progressDescription = '';
     let progressValue = 0.0;
-    let days = 10;
 
     if(item.hours_goal){
       progressDescription = item.hours + '/' + item.hours_goal + ' godzin';
@@ -30,8 +29,8 @@ const TaskItem = ({item, showDetails, updateTask}) => {
     }else if(item.days_goal){
       // progressDescription = item.days.length + '/' + item.days_goal + ' dni';
       // progressValue = item.days.length / item.days_goal;
-      progressDescription = days + '/' + item.days_goal + ' dni';
-      progressValue = days / item.days_goal;
+      progressDescription = item.days + '/' + item.days_goal + ' dni';
+      progressValue = item.days / item.days_goal;
     }else if(item.times_goal){
       progressDescription = item.times + '/' + item.times_goal + ' razy';
       progressValue = item.times / item.times_goal;

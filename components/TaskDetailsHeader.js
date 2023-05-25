@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../ThemeContext';
 import { useContext } from 'react';
 
-const TaskDetailsHeader = ({update}) => {
+const TaskDetailsHeader = ({update, remove}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     return(
@@ -27,7 +27,7 @@ const TaskDetailsHeader = ({update}) => {
           </TouchableOpacity>
           <TouchableOpacity
                 //style={{justifyContent: 'center', alignItems: 'center'}}
-                onPress={() => alert("Czy na pewno chcesz usunąć?")}
+                onPress={() => remove()}
             >
                 <Ionicons
                     name="trash-outline"

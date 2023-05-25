@@ -28,17 +28,17 @@ const TaskDetails = ({route, navigation}) => {
           borderBottomWidth: 1,
         },
         headerTintColor: isThemeLight ? 'black' : '#ccc',
-        headerRight: () => <TaskDetailsHeader update={goToUpdate}/>,
+        headerRight: () => <TaskDetailsHeader update={goToUpdate} remove={goToDelete}/>,
         
       });
     }, [isThemeLight]);
-
+//
     useEffect(() => {
       const loadData = async () => {
         console.log("Pobieram dane taska o id: " + route.params.id);
         await database.getHabitById(route.params.id, (result)=> console.log(result))    //wypisywanie w konsoli wyniku zapytania
         await database.getHabitById(route.params.id, setItem)
-        await database.getDatesByHabit(route.params.id, (result)=> console.log(result))
+        await database.getDatesByHabit(route.params.id, (result)=> console.log("daty: ",result))
         await database.getDatesByHabit(route.params.id, setDays)
         .then(() => setIsLoading(false))
         .finally(() => console.log("Zakończono pobieranie taska"))
@@ -53,7 +53,7 @@ const TaskDetails = ({route, navigation}) => {
       const calculateProgress = () => {
         setIsLoading(true);
         var tempValue, tempDescription;
-
+        
         if(item.hours_goal){
           tempDescription = item.hours + '/' + item.hours_goal + ' godzin';
           tempValue = item.hours / item.hours_goal;
@@ -80,6 +80,12 @@ const TaskDetails = ({route, navigation}) => {
     const goToUpdate = () => {
       //console.log(item.habit_id);
       navigation.navigate('Update', {id: item.habit_id});
+    }
+
+    const goToDelete = () => {
+      console.log(item.habit_id + ' ' + item.name);
+      console.log(item);
+      navigation.navigate('Delete', {type: 'habit', id: item.habit_id, name: item.name});
     }
 
     return(
@@ -137,7 +143,7 @@ const stylesLight = StyleSheet.create({
       //justifyContent: 'center',
       //alignItems: 'center',
       padding: 20,
-      opacity: 0.9,
+      opacity: 0.95,
       //marginHorizontal: 16,
     },
     containerBorder: {
@@ -165,7 +171,7 @@ const stylesDark = StyleSheet.create({
     backgroundColor: '#232931',
     // justifyContent: 'center',
     // alignItems: 'center',
-    opacity: 0.9,
+    opacity: 0.95,
     padding: 20
   },
   containerBorder: {

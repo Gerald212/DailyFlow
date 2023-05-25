@@ -14,6 +14,7 @@ import TaskDetails from './components/TaskDetailsScreen';
 import UpdateTaskScreen from './components/UpdateTaskScreen';
 import AddTaskScreen from './components/AddTaskScreen';
 import { database } from './database/database';
+import DeletionConfirmModal from './screens/DeletionConfirmModal';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,18 +22,18 @@ export default function App() {
   
   useEffect(() => {
       const createDatabase = async () => {
-        // await database.dropTableAsync("habits");       //drop table habits
-        // await database.dropTableAsync("categories");   //drop table categories
-        // await database.dropTableAsync("dates");
+        await database.dropTableAsync("habits");       //drop table habits
+        await database.dropTableAsync("categories");   //drop table categories
+        await database.dropTableAsync("dates");
 
         await database.setupDatabaseAsync();              //stworzenie tabel (jesli ich nie ma)
 
-        // await database.initializeDatabaseAsync();       //inserty przyklaowdych danych
+        await database.initializeDatabaseAsync();       //inserty przyklaowdych danych
         console.log("Zakończono tworzenie bazy danych");
 
-        await database.getAllCategories((result)=>{console.log("kategorie: ", result)}) //wypisanie wszytkich kategorii
-        await database.getAllHabits((result)=>{console.log("zwyczaje: ", result)})      //wypisanie wszytkich habitsow
-        await database.getAllDates((result)=>{console.log("daty: ", result)})             //wypisanie wszytkich dat
+        //await database.getAllCategories((result)=>{console.log("kategorie: ", result)}) //wypisanie wszytkich kategorii
+        //await database.getAllHabits((result)=>{console.log("zwyczaje: ", result)})      //wypisanie wszytkich habitsow
+        //await database.getAllDates((result)=>{console.log("daty: ", result)})             //wypisanie wszytkich dat
       }
     
       createDatabase();
@@ -65,6 +66,11 @@ export default function App() {
                 name="Add"
                 component={AddTaskScreen}
                 options={{headerTitle: "Dodaj"}}
+              />
+              <Stack.Screen
+                name="Delete"
+                component={DeletionConfirmModal}
+                options={{headerShown: false, animation: 'fade'}}
               />
             </Stack.Group>
           </Stack.Navigator>

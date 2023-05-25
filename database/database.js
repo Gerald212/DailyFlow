@@ -201,9 +201,23 @@ const getHabitsByDay = async (day, callbackFunction) => {
     )
 }
 
+const getDatesByHabit = async (id, callbackFunction) => {
+    var selectDates = "SELECT * FROM dates WHERE habit_id = ?";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            selectDates,
+            [id],
+            (txObj, result) => {callbackFunction(result.rows._array)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie danych z tabeli dates o id: " + id, error)}  //errorr callback
+        )
+    },
+    )
+}
+
 const getHabitById = async (id, callbackFunction) => {
     //var selectById = "SELECT * FROM habits WHERE habit_id = ?";
-    var selectById =   'SELECT *, c.name AS "category_name" FROM habits INNER JOIN categories c USING(category_id) WHERE habit_id = ?';
+    var selectById =   'SELECT h.*, c.name AS "category_name" FROM habits h INNER JOIN categories c USING(category_id) WHERE habit_id = ?';
 
     db.transaction(tx => {
         tx.executeSql(
@@ -233,5 +247,6 @@ export const database = {
     getHabitsByCategory,
     getHabitById,
     getAllDates,
-    getHabitsByDay
+    getHabitsByDay,
+    getDatesByHabit
 }

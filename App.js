@@ -64,11 +64,7 @@ export default function App() {
               <Stack.Screen
                 name="Add"
                 component={AddTaskScreen}
-                options={{
-                  headerTitle: "Dodaj",
-                  presentation: 'modal',
-                  animation: 'slide_from_bottom',
-                }}
+                options={{headerTitle: "Dodaj"}}
               />
             </Stack.Group>
           </Stack.Navigator>

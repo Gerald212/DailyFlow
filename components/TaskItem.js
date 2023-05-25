@@ -2,7 +2,7 @@ import {Text, View, StyleSheet, TouchableOpacity, TouchableHighlight} from 'reac
 import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import ProgressBar from 'react-native-progress/Bar';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 //Wykorzystana biblioteka react-native-progress: https://github.com/oblador/react-native-progress
 
@@ -12,7 +12,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 //   type: 0,        //0 - habit, 1 - task
 //   id: 1,          //id
 //   hours: 1,       
-//   days: [],       //tablica z datami?
 //   hours_goal: 0,
 //   days_goal: 0,
 //   completed: false,
@@ -62,8 +61,8 @@ const TaskItem = ({item, showDetails, updateTask}) => {
                 style={{justifyContent: 'center', alignItems: 'center'}}
                 onPress={() => updateTask(item.habit_id)}
             >
-                <Ionicons
-                    name="checkmark-circle-outline"
+                <MaterialIcons
+                    name="update"
                     color={isThemeLight ? '#4aabff' : '#2f7d74'}
                     size={48}
                 />

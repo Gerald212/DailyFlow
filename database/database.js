@@ -165,12 +165,14 @@ const getAllDates = async (callbackFunction) => {
 }
 
 const getHabitsByCategory = async (category, callbackFunction) => {
-    var selectHabits = "SELECT h.*, COUNT(d.date) AS 'days' FROM habits h INNER JOIN dates d USING(habit_id)";
+    // var selectHabits = "SELECT h.*, COUNT(d.dates) AS 'days' FROM habits h INNER JOIN dates d USING(habit_id)";
+    var selectHabits = "SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id";
     var parameter = [];
 
     if(category){
         //selectHabits = "SELECT * FROM habits WHERE category_id = ?";
-        selectHabits = "SELECT h.*, COUNT(d.date) AS 'days' FROM habits h INNER JOIN dates d USING(habit_id) WHERE category_id = ?";
+        //selectHabits = "SELECT h.*, COUNT(d.date) AS 'days' FROM habits h INNER JOIN dates d USING(habit_id) WHERE category_id = ?";
+        selectHabits = "SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id HAVING category_id = ?";
         //parameter.push(category);
         parameter[0] = category;
     }

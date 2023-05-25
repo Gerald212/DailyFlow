@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, StatusBar, ActivityIndicator, SafeAreaView, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, StatusBar, ActivityIndicator, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { useState } from 'react/cjs/react.development';
@@ -28,11 +28,15 @@ const TaskDetails = ({route, navigation}) => {
           borderBottomWidth: 1,
         },
         headerTintColor: isThemeLight ? 'black' : '#ccc',
-        headerRight: () => <TaskDetailsHeader update={goToUpdate} remove={goToDelete}/>,
-        
       });
     }, [isThemeLight]);
-//
+
+    useEffect(() => {
+      navigation.setOptions({
+        headerRight: () => <TaskDetailsHeader update={goToUpdate} remove={goToDelete}/>,
+      });
+    }, [item])
+
     useEffect(() => {
       const loadData = async () => {
         console.log("Pobieram dane taska o id: " + route.params.id);
@@ -84,7 +88,7 @@ const TaskDetails = ({route, navigation}) => {
 
     const goToDelete = () => {
       console.log(item.habit_id + ' ' + item.name);
-      console.log(item);
+      //console.log(item);
       navigation.navigate('Delete', {type: 'habit', id: item.habit_id, name: item.name});
     }
 
@@ -154,6 +158,12 @@ const stylesLight = StyleSheet.create({
       borderRightWidth: 1, 
       borderBottomRightRadius: 20,
       justifyContent: 'center',
+      shadowColor: 'gray',
+      elevation: 2,
+      
+
+      
+      
     },
     taskName: {
       fontSize: 36,

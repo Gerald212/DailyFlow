@@ -3,10 +3,10 @@ import { useContext, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { useState } from 'react/cjs/react.development';
 import { database } from '../database/database';
-import LoadingScreen from '../screens/LoadingScreen';
+import LoadingScreen from './LoadingScreen';
 import * as Progress from 'react-native-progress';
-import PanelStatItem from './PanelStatItem';
-import TaskDetailsHeader from './TaskDetailsHeader';
+import PanelStatItem from '../components/PanelStatItem';
+import TaskDetailsHeader from '../components/TaskDetailsHeader';
 
 
 const TaskDetails = ({route, navigation}) => {

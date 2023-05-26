@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from 'expo-status-bar';
 import { useContext, useEffect } from "react";
-import Calendar from "./Calendar";
-import TasksList from "./TasksList";
-import Panel from "./Panel";
+import Calendar from "../screens/Calendar";
+import TasksList from "../screens/TasksList";
+import Panel from "../screens/Panel";
 import { NavigationContainer } from "@react-navigation/native";
 import { ThemeContext } from "../ThemeContext";
 import Ionicons from 'react-native-vector-icons/Ionicons';

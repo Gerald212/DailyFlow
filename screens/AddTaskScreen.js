@@ -4,7 +4,6 @@ import { ThemeContext } from '../ThemeContext';
 
 const AddTaskScreen = ({route, navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
-
     const styles = isThemeLight ? stylesLight : stylesDark;
 
     useEffect(() => {

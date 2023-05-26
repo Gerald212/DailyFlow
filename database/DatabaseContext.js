@@ -1,30 +1,32 @@
-import { createContext, useEffect } from "react";
-import * as SQLite from "expo-sqlite"
+//NIEKATLANE
 
-const DatabaseContext = createContext();
+// import { createContext, useEffect } from "react";
+// import * as SQLite from "expo-sqlite"
 
-const DatabaseContextProvider = ({children}) => {
+// const DatabaseContext = createContext();
 
-    //moze lepiej cos takiego, nie wiem
-    // console.log("Tu coś w DatabaseContext");
-    const db = SQLite.openDatabase('DayPlannerDB');
+// const DatabaseContextProvider = ({children}) => {
 
-    //a moze cos takiego nie mam pojecia
-    // var db = undefined;
-    // useEffect(() => {
-    //     console.log("Coś w DatabaseContext");
-    //     db = SQLite.openDatabase('DayPlannerDB');
+//     //moze lepiej cos takiego, nie wiem
+//     // console.log("Tu coś w DatabaseContext");
+//     const db = SQLite.openDatabase('DayPlannerDB');
+
+//     //a moze cos takiego nie mam pojecia
+//     // var db = undefined;
+//     // useEffect(() => {
+//     //     console.log("Coś w DatabaseContext");
+//     //     db = SQLite.openDatabase('DayPlannerDB');
         
-    //     return () => db.closeAsync();
-    // }, []);
+//     //     return () => db.closeAsync();
+//     // }, []);
 
     
 
-    return (
-        <DatabaseContext.Provider value={{db}}>
-            {children}
-        </DatabaseContext.Provider>
-    )
-}
+//     return (
+//         <DatabaseContext.Provider value={{db}}>
+//             {children}
+//         </DatabaseContext.Provider>
+//     )
+// }
 
-export {DatabaseContext, DatabaseContextProvider};
+// export {DatabaseContext, DatabaseContextProvider};

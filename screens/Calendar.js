@@ -2,9 +2,9 @@ import {StyleSheet, Text, View, StatusBar, SafeAreaView, FlatList} from 'react-n
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { sampleData3 } from '../assets/sampleData';
-import TaskItem from './TaskItem';
+import TaskItem from '../components/TaskItem';
 import { database } from '../database/database';
-import LoadingScreen from '../screens/LoadingScreen';
+import LoadingScreen from './LoadingScreen';
 
 const Calendar = ({navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);

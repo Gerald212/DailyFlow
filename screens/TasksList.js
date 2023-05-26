@@ -1,13 +1,13 @@
 import {Text, View, StyleSheet, SafeAreaView, SectionList, StatusBar, FlatList, TouchableOpacity} from 'react-native';
 import {sampleData, sampleData2, sampleData3, sampleData4} from '../assets/sampleData';
-import TaskItem from './TaskItem';
-import CategoryItem from './CategoryItem';
+import TaskItem from '../components/TaskItem';
+import CategoryItem from '../components/CategoryItem';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
-import EmptyTasksListComponent from './EmptyTasksListComponent';
-import LoadingScreen from '../screens/LoadingScreen';
-import TasksListFooter from './TasksListFooter';
+import EmptyTasksListComponent from '../components/EmptyTasksListComponent';
+import LoadingScreen from './LoadingScreen';
+import TasksListFooter from '../components/TasksListFooter';
 
 const allCategory = {
     name: 'Wszystkie',
@@ -81,7 +81,6 @@ const TasksList = ({navigation, route}) => {
           </TouchableOpacity> */}
           <View style={{paddingHorizontal: 5}}>
             <FlatList
-              //data={sampleData4}
               data={categories}
               horizontal={true}
               keyExtractor={item => item.category_id}
@@ -97,7 +96,7 @@ const TasksList = ({navigation, route}) => {
               data={listData}
               renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
               keyExtractor={item => item.habit_id}
-              //ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>}
+              //ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>} //nieaktualne
               refreshing={isLoading}
               onRefresh={() => loadHabits()}
               ListFooterComponent={<TasksListFooter addTask={goToAddTask} tasksExist={listData.length}/>}

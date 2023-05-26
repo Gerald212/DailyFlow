@@ -1,7 +1,7 @@
 import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import { useContext, useState } from 'react';
 import { ThemeContext } from '../ThemeContext';
-import PanelStatItem from './PanelStatItem';
+import PanelStatItem from '../components/PanelStatItem';
 import * as Progress from 'react-native-progress';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 

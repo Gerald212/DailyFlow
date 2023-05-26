@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import sampleData from './assets/sampleData';
+import sampleData from './database/sampleData';
 import TasksList from './screens/TasksList';
 import { ThemeContextProvider } from './ThemeContext';
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,6 +20,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   
+  //operacje na bazie danych wykonywane po włączeniu aplikacji
   useEffect(() => {
       const createDatabase = async () => {
         // await database.dropTableAsync("habits");       //drop table habits
@@ -78,12 +79,3 @@ export default function App() {
     </ThemeContextProvider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite"
-import { sampleRecordsCategories, sampleRecordsHabits, sampleRecordsDates } from "../assets/sampleData";
+import { sampleRecordsCategories, sampleRecordsHabits, sampleRecordsDates } from "./sampleData";
 
 const db = SQLite.openDatabase('DayPlannerDB');
 //db.closeAsync();

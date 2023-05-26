@@ -235,6 +235,34 @@ const getHabitById = async (id, callbackFunction) => {
     )
 }
 
+const deleteCategoryById = async (id) => {
+    var deleteById =   'DELETE FROM categories WHERE category_id = ?';
+
+    db.transaction(tx => {
+        tx.executeSql(
+            deleteById,
+            [id],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - usuwanie kategorii o id: " + id, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const deleteHabitById = async (id) => {
+    var deleteById =   'DELETE FROM habits WHERE habit_id = ?';
+
+    db.transaction(tx => {
+        tx.executeSql(
+            deleteById,
+            [id],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - usuwanie nawyku o id: " + id, error)}  //errorr callback
+        )
+    },
+    )
+}
+
 const closeDatabase = async () => {
     db.closeAsync();
 }
@@ -251,5 +279,7 @@ export const database = {
     getHabitById,
     getAllDates,
     getHabitsByDay,
-    getDatesByHabit
+    getDatesByHabit,
+    deleteCategoryById,
+    deleteHabitById
 }

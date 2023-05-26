@@ -7,13 +7,14 @@ import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
 import EmptyTasksListComponent from './EmptyTasksListComponent';
 import LoadingScreen from '../screens/LoadingScreen';
+import TasksListFooter from './TasksListFooter';
 
 const allCategory = {
     name: 'Wszystkie',
     category_id: 0
 }
 
-const TasksList = ({navigation}) => {
+const TasksList = ({navigation, route}) => {
   const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
   //kategorie i wybrana kategoria
@@ -37,22 +38,20 @@ const TasksList = ({navigation}) => {
 
   //wczytywanie zadań z wybranej kategorii
   useEffect(() => {
-      const loadHabits = async () => {  
-        
-        const setTemp = (temp) => {
-          const tempHabits = temp;
-          setListData(tempHabits);
-        }
-
-        await database.getHabitsByCategory(selectedCategory, (result) => console.log("pobrane: ",result))
-        await database.getHabitsByCategory(selectedCategory, setTemp)
-        .then(setIsLoading(false))
-        .finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
-      }
-
       loadHabits();
   }, [selectedCategory]);
 
+  const loadHabits = async () => {  
+    const setTemp = (temp) => {
+      const tempHabits = temp;
+      setListData(tempHabits);
+    }
+    setIsLoading(true);
+    await database.getHabitsByCategory(selectedCategory, (result) => console.log("pobrane: ",result))
+    await database.getHabitsByCategory(selectedCategory, setTemp)
+    .then(setIsLoading(false))
+    .finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
+  }
 
   const goToDetails = (id) => {
       //console.log(id);
@@ -64,14 +63,18 @@ const TasksList = ({navigation}) => {
       navigation.navigate('Update', {id: id});
   }
 
-  const goToAddTask = () => {
-      navigation.navigate('Add');
+  const goToDelete = (category_id, category_name) => {
+    console.log(category_id);
+    navigation.navigate('Delete', {type: 'category', id: category_id, name: category_name});
   }
 
+  const goToAddTask = () => {
+      navigation.navigate('Add', {selectedCategory: selectedCategory});
+  }
 
   return (
       <SafeAreaView style={isThemeLight ? styles.containerLight : styles.containerDark}>
-          {/* <TouchableOpacity onPress={() => navigation.navigate("Add")}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate("Add", {id: 1})}>  //do testów
             <Text style={{fontSize: 42}}>
               DODAJ
             </Text>
@@ -82,7 +85,7 @@ const TasksList = ({navigation}) => {
               data={categories}
               horizontal={true}
               keyExtractor={item => item.category_id}
-              renderItem={({item}) => <CategoryItem item={item} setCategory={setSelectedCategory} selectedCategory={selectedCategory}/>}
+              renderItem={({item}) => <CategoryItem item={item} setCategory={setSelectedCategory} selectedCategory={selectedCategory} goToDelete={goToDelete}/>}
               ListHeaderComponent={<CategoryItem item={allCategory} setCategory={setSelectedCategory} selectedCategory={selectedCategory}/>}
               ListHeaderComponentStyle={{flexDirection: 'row'}}
             />
@@ -94,7 +97,10 @@ const TasksList = ({navigation}) => {
               data={listData}
               renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
               keyExtractor={item => item.habit_id}
-              ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>}
+              //ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>}
+              refreshing={isLoading}
+              onRefresh={() => loadHabits()}
+              ListFooterComponent={<TasksListFooter addTask={goToAddTask} tasksExist={listData.length}/>}
             />
           }
       </SafeAreaView>

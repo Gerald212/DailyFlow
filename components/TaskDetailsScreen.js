@@ -33,7 +33,7 @@ const TaskDetails = ({route, navigation}) => {
 
     useEffect(() => {
       navigation.setOptions({
-        headerRight: () => <TaskDetailsHeader update={goToUpdate} remove={goToDelete}/>,
+        headerRight: () => <TaskDetailsHeader goToUpdate={goToUpdate} goToDelete={goToDelete}/>,
       });
     }, [item])
 

@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ThemeContext } from '../ThemeContext';
 import { useContext } from 'react';
 
-const TaskDetailsHeader = ({update, remove}) => {
+const TaskDetailsHeader = ({goToUpdate, goToDelete}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     return(
@@ -17,7 +17,7 @@ const TaskDetailsHeader = ({update, remove}) => {
         >
             <TouchableOpacity
                 style={{marginRight: 20}}
-                onPress={() => update()}
+                onPress={() => goToUpdate()}
             >
                 <MaterialIcons
                     name="update"
@@ -27,7 +27,7 @@ const TaskDetailsHeader = ({update, remove}) => {
           </TouchableOpacity>
           <TouchableOpacity
                 //style={{justifyContent: 'center', alignItems: 'center'}}
-                onPress={() => remove()}
+                onPress={() => goToDelete()}
             >
                 <Ionicons
                     name="trash-outline"

@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CategoryItem = ({item, selectedCategory, setCategory}) => {
+const CategoryItem = ({item, selectedCategory, setCategory, goToDelete}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
 
     let styles = isThemeLight ? stylesLight : stylesDark;
@@ -22,7 +22,7 @@ const CategoryItem = ({item, selectedCategory, setCategory}) => {
                     {item.name}
                 </Text>
                 {selectedCategory === item.category_id && selectedCategory != 0 ?
-                    <TouchableOpacity onPress={() => alert("Czy chcesz usunac?")} style={{marginLeft: 4, marginRight: -6}}>
+                    <TouchableOpacity onPress={() => goToDelete(item.category_id, item.name)} style={{marginLeft: 4, marginRight: -6}}>
                         <Ionicons
                             name="trash-outline"
                             //color={isThemeLight ? '#4aabff' : '#2f7d74'}

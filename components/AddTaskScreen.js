@@ -18,18 +18,9 @@ const AddTaskScreen = ({route, navigation}) => {
       });
     }, [isThemeLight]);
 
-    navigation.setOptions({
-      headerStyle: {
-        backgroundColor: isThemeLight ? 'white' : '#161a1f',
-        borderBottomColor: isThemeLight ? 'lightgray' : '#1d2024',
-        borderBottomWidth: 1,
-      },
-      headerTintColor: isThemeLight ? 'black' : '#ccc',
-    });
-
     return(
         <View style={styles.container}>
-            <Text style={styles.taskName}>Dodaj zadanie</Text>
+            <Text style={styles.taskName}>Dodaj zadanie do kategorii {route.params.selectedCategory}</Text>
             <Text style={styles.taskName}>formularz Lorem ipsum</Text>
         </View>
     );

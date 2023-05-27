@@ -37,6 +37,7 @@ const TaskDetails = ({route, navigation}) => {
       });
     }, [item])
 
+    //pobieranie danych o zadaniu
     useEffect(() => {
       const loadData = async () => {
         console.log("Pobieram dane taska o id: " + route.params.id);
@@ -83,7 +84,7 @@ const TaskDetails = ({route, navigation}) => {
 
     const goToUpdate = () => {
       //console.log(item.habit_id);
-      navigation.navigate('Update', {id: item.habit_id});
+      navigation.navigate('Update', {id: item.habit_id, name: item.name});
     }
 
     const goToDelete = () => {
@@ -98,16 +99,6 @@ const TaskDetails = ({route, navigation}) => {
       :
         <SafeAreaView style={styles.container}>
           <ScrollView>
-              {/* <Text style={styles.taskName}>Szczegoly zadania o id: {task.habit_id}</Text>
-              <Text style={styles.taskName}>Tytuł: {task.name}</Text>
-              <Text style={styles.taskName}>Opis: {task.description}</Text>
-              <Text style={styles.taskName}>Kategoria: {task.category_name} ({task.category_id})</Text>
-              <Text style={styles.taskName}>Godziny: {task.hours}</Text>
-              <Text style={styles.taskName}>Razy: {task.times}</Text>
-              <Text style={styles.taskName}>Cel godzinowy: {task.hours_goal}</Text>
-              <Text style={styles.taskName}>Cel jednostkowy: {task.times_goal}</Text>
-              <Text style={styles.taskName}>Cel dniowy: {task.days_goal}</Text>
-              <Text style={styles.taskName}>Status: {task.completed ? "Zakończone" : "W trakcie"}</Text> */}
               <View style={[styles.containerBorder, {alignItems: 'center', marginTop: 0}]}>
                 <Text style={styles.taskName}>{item.name}</Text>
                 <Text style={styles.text}>{item.category_name}</Text>

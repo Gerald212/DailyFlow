@@ -63,9 +63,9 @@ const TasksList = ({navigation, route}) => {
       navigation.navigate('Details', {id: id});
   }
 
-  const goToUpdate = (id) => {
+  const goToUpdate = (id, name) => {
       //console.log(id);
-      navigation.navigate('Update', {id: id});
+      navigation.navigate('Update', {id: id, name: name});
   }
 
   const goToDelete = (category_id, category_name) => {

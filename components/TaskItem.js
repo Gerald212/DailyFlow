@@ -58,7 +58,7 @@ const TaskItem = ({item, showDetails, updateTask}) => {
 
             <TouchableOpacity
                 style={{justifyContent: 'center', alignItems: 'center'}}
-                onPress={() => updateTask(item.habit_id)}
+                onPress={() => updateTask(item.habit_id, item.name)}
             >
                 <MaterialIcons
                     name="update"

@@ -1,29 +1,20 @@
-import {StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity} from 'react-native';
-import { useContext, useEffect, useState } from 'react';
+import {StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, Alert} from 'react-native';
+import { Fragment, useContext, useEffect, useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { ThemeContext } from '../ThemeContext';
+import { database } from '../database/database';
 
 const AddTaskScreen = ({route, navigation}) => {
-    const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
+    const {isThemeLight, setIsThemeLight} = useContext(ThemeContext);
     const styles = isThemeLight ? stylesLight : stylesDark;
 
     const [goalId, setGoalId] = useState(0);
-    const [selectedCategory, setSelectedCategory] = useState("");
-
+    const [categories, setCategories] = useState([]);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState(0);
     const [goalValue, setGoalValue] = useState(0);
-
-    const sample = [
-      {key:'1', value:'Mobiles'},
-      {key:'2', value:'Appliances'},
-      {key:'3', value:'Cameras'},
-      {key:'4', value:'Computers'},
-      {key:'5', value:'Vegetables'},
-      {key:'6', value:'Diary Products'},
-      {key:'7', value:'Drinks'},
-  ]
 
     useEffect(() => {
       navigation.setOptions({
@@ -36,7 +27,25 @@ const AddTaskScreen = ({route, navigation}) => {
       });
     }, [isThemeLight]);
 
-    const handleSubmit = () => {
+    //wczytywanie kategorii
+    useEffect(() => {
+        loadCategories();
+    }, []);
+
+    const loadCategories = async () => {
+        const parseCategories = (temp) => {
+          var tempCategories = [{key:'0', value:'Brak kategorii'}];
+          temp.forEach(element => {
+            tempCategories.push({key: element.category_id, value: element.name})
+          });
+          setCategories(tempCategories);
+          console.log(tempCategories);
+        }
+
+        await database.getAllCategories((result) => parseCategories(result));
+    }
+
+    const handleSubmit = async () => {
         var days_goal = 0, hours_goal = 0, times_goal = 0;
         switch(goalId){
           case 0:
@@ -61,22 +70,28 @@ const AddTaskScreen = ({route, navigation}) => {
             break;
         }
 
-        console.log(name, description, selectedCategory, days_goal, times_goal, hours_goal);
-        //database.addHabit( z tym ^)
+        if(!name){
+            Alert.alert("", "Wypełnij wymagane pola!");
+            return;
+        }
+
+        console.log("name: ", name, "desc: ", description, "cat: ", category, "daysgoal: ", days_goal, "timesgoal: ", times_goal, "hoursgoal: ", hours_goal);
+        await database.addHabit(name, description, category, days_goal, times_goal, hours_goal)
+        .then(Alert.alert("", "Dodano zadanie " + '"'+ name + '"'))
+        .then(navigation.navigate("Home"));
     }
 
     return(
         <View style={styles.container}>
-            {/* <Text style={styles.taskName}>Dodaj zadanie do kategorii {route.params.selectedCategory}</Text>
-            <Text style={styles.taskName}>formularz Lorem ipsum</Text> */}
             <View style={styles.section}>
-                <Text style={styles.label}>Tytuł</Text>
+                <Text style={styles.label}>Nazwa</Text>
                 <TextInput
                     style={styles.inputField}
-                    placeholder="Tytuł zadania"
+                    placeholder="Nazwa zadania"
                     onChangeText={text => setName(text)}
                 />
-                <Text style={styles.label}>Opis</Text>
+                {name ? <View style={{marginTop: 20}}></View> : <Text style={styles.errorLabel}>Nazwa jest wymagana!</Text>}
+                <Text style={[styles.label, {marginTop: 10}]}>Opis</Text>
                 <TextInput
                     style={styles.inputField}
                     placeholder="Opis zadania"
@@ -85,16 +100,18 @@ const AddTaskScreen = ({route, navigation}) => {
                     onChangeText={text => setDescription(text)}
                 />
                 <Text style={styles.label}>Kategoria</Text>
-                <View style={{marginBottom: 20}}>
+                <View>
                     <SelectList
-                        data={sample}
+                        data={categories}
                         placeholder='Wybierz kategorię'
                         search={false}
-                        setSelected={(val) => setSelectedCategory(val)}
-                        onSelect={() => alert(selectedCategory)}
-                        boxStyles={{borderRadius: 20, backgroundColor: 'aliceblue'}}
+                        setSelected={(val) => setCategory(val)}
+                        onSelect={() => console.log("wybrana kategoria: ", category)}
+                        boxStyles={styles.dropListContainer}
                         dropdownStyles={{borderRadius: 20}}
+                        defaultOption={{key:'0', value:'Brak kategorii'}}
                         maxHeight={150}
+                        arrowicon={<Ionicons name="chevron-down-circle-outline" size={18} color={'black'} />} 
                     />
                 </View>
                 <Text style={styles.label}>Cel</Text>
@@ -141,13 +158,88 @@ const stylesLight = StyleSheet.create({
       justifyContent: 'center',
       width: '90%',
       paddingVertical: 20,
-      padding: 10,
-      //backgroundColor: 'red'
+      padding: 10
     },
     goalsContainer: {
       flexDirection: 'row',
       justifyContent: 'space-around',
       //marginVertical: 10,
+      marginBottom: 10
+    },
+    dropListContainer: {
+      borderRadius: 20, 
+      backgroundColor: 'aliceblue',
+      borderColor: 'skyblue'
+    }, 
+    goalButtonInactive: {
+      padding: 5,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderColor: 'skyblue',
+      borderRadius: 20
+    },
+    goalButtonActive: {
+      padding: 5,
+      paddingHorizontal: 10,
+      borderWidth: 1,
+      borderRadius: 20,
+      borderColor: 'skyblue',
+      backgroundColor: 'aliceblue'
+    },
+    submitButton: {
+      alignSelf: 'center',
+      padding: 20,
+      borderWidth: 1,
+      borderRadius: 20,
+      borderColor: 'skyblue',
+      marginTop: 20
+    },
+    inputField: {
+      backgroundColor: 'aliceblue',
+      padding: 10,
+      borderWidth: 1,
+      borderColor: 'skyblue',
+      borderRadius: 20,
+      //marginBottom: 20
+    },
+    label: {
+      marginLeft: 10,
+      marginBottom: 2,
+      marginTop: 20
+    },
+    errorLabel: {
+      marginLeft: 10,
+      marginBottom: 2,
+      color: 'red'
+    },
+    text: {
+      fontSize: 16,
+      color: 'black'
+    },
+    submitText: {
+      fontSize: 20,
+      color: 'black'
+    }
+});
+
+const stylesDark = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#232931',
+      justifyContent: 'center',
+      alignItems: 'center',
+      opacity: 0.95,
+    },
+    section: {
+      flex: 1,
+      justifyContent: 'center',
+      width: '90%',
+      paddingVertical: 20,
+      padding: 10,
+    },
+    goalsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
       marginBottom: 10
     },
     goalButtonInactive: {
@@ -173,7 +265,7 @@ const stylesLight = StyleSheet.create({
       borderColor: 'skyblue',
     },
     inputField: {
-      backgroundColor: 'aliceblue',
+      backgroundColor: '#393E46',
       padding: 10,
       borderWidth: 1,
       borderColor: 'skyblue',
@@ -186,27 +278,12 @@ const stylesLight = StyleSheet.create({
     },
     text: {
       fontSize: 16,
-      color: 'black'
+      color: '#ccc'
     },
     submitText: {
       fontSize: 20,
-      color: 'black'
+      color: '#ccc'
     }
-});
-
-const stylesDark = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#232931',
-    justifyContent: 'center',
-    alignItems: 'center',
-    //opacity: 0.9,
-    //marginHorizontal: 16,
-  },
-  text: {
-    fontSize: 16,
-    color: '#ccc'
-  },
 });
 
 export default AddTaskScreen;

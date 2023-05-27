@@ -256,8 +256,36 @@ const deleteHabitById = async (id) => {
         tx.executeSql(
             deleteById,
             [id],
-            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, result) => {() => console.log("usunieto zdanie: " + id, result)},          //success callback
             (txObj, error) => {console.log("Błąd - usuwanie nawyku o id: " + id, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const addHabit = async (name, description, category, days_goal, times_goal, hours_goal) => {
+    var insert =   'INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal) values (?, ?, ?, ?, ?, ?)';
+
+    db.transaction(tx => {
+        tx.executeSql(
+            insert,
+            [name, description, category, times_goal, hours_goal, days_goal],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - dodawanie nawyku o nazwie: " + name, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const addCategory = async (name) => {
+    var insert =   'INSERT INTO categories (name) values (?)';
+
+    db.transaction(tx => {
+        tx.executeSql(
+            insert,
+            [name],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - dodawanie kategorii o nazwie: " + name, error)}  //errorr callback
         )
     },
     )
@@ -281,5 +309,7 @@ export const database = {
     getHabitsByDay,
     getDatesByHabit,
     deleteCategoryById,
-    deleteHabitById
+    deleteHabitById,
+    addHabit,
+    addCategory
 }

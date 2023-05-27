@@ -157,8 +157,8 @@ const stylesLight = StyleSheet.create({
       marginVertical: 20,
       borderColor: 'lightgray', 
       borderBottomWidth: 1, 
-      borderRightWidth: 1, 
-      borderBottomRightRadius: 20,
+      //borderRightWidth: 1, 
+      //borderBottomRightRadius: 20,
       justifyContent: 'center'
     },
     taskName: {
@@ -185,8 +185,8 @@ const stylesDark = StyleSheet.create({
     marginVertical: 20,
     borderColor: 'black', 
     borderBottomWidth: 1, 
-    borderRightWidth: 1, 
-    borderBottomRightRadius: 20,
+    //borderRightWidth: 1, 
+    // borderBottomRightRadius: 20,
     justifyContent: 'center',
   },
   taskName: {

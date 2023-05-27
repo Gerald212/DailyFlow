@@ -15,6 +15,7 @@ import UpdateTaskScreen from './screens/UpdateTaskScreen';
 import AddTaskScreen from './screens/AddTaskScreen';
 import { database } from './database/database';
 import DeletionConfirmModal from './screens/DeletionConfirmModal';
+import AddCategoryModal from './screens/AddCategoryModal';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,11 @@ export default function App() {
               <Stack.Screen
                 name="Delete"
                 component={DeletionConfirmModal}
+                options={{headerShown: false, animation: 'fade'}}
+              />
+              <Stack.Screen
+                name="AddCategory"
+                component={AddCategoryModal}
                 options={{headerShown: false, animation: 'fade'}}
               />
             </Stack.Group>

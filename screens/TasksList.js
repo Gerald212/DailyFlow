@@ -8,6 +8,7 @@ import { database } from '../database/database';
 import EmptyTasksListComponent from '../components/EmptyTasksListComponent';
 import LoadingScreen from './LoadingScreen';
 import TasksListFooter from '../components/TasksListFooter';
+import CategoriesListFooter from '../components/CategoriesListFooter';
 
 const allCategory = {
     name: 'Wszystkie',
@@ -29,12 +30,16 @@ const TasksList = ({navigation, route}) => {
 
   //wczytywanie kategorii
   useEffect(() => {
+      loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
       const setTemp = (temp) => {
-        const tempCategories = temp;
-        setCategories(tempCategories);
+          const tempCategories = temp;
+          setCategories(tempCategories);
       }
       database.getAllCategories(setTemp)
-  }, []);
+  }
 
   //wczytywanie zadań z wybranej kategorii
   useEffect(() => {
@@ -72,6 +77,10 @@ const TasksList = ({navigation, route}) => {
       navigation.navigate('Add', {selectedCategory: selectedCategory});
   }
 
+  const goToAddCategory = () => {
+    navigation.navigate('AddCategory');
+}
+
   return (
       <SafeAreaView style={isThemeLight ? styles.containerLight : styles.containerDark}>
           {/* <TouchableOpacity onPress={() => navigation.navigate("Add", {id: 1})}>  //do testów
@@ -87,6 +96,7 @@ const TasksList = ({navigation, route}) => {
               renderItem={({item}) => <CategoryItem item={item} setCategory={setSelectedCategory} selectedCategory={selectedCategory} goToDelete={goToDelete}/>}
               ListHeaderComponent={<CategoryItem item={allCategory} setCategory={setSelectedCategory} selectedCategory={selectedCategory}/>}
               ListHeaderComponentStyle={{flexDirection: 'row'}}
+              ListFooterComponent={<CategoriesListFooter addCategory={goToAddCategory}/>}
             />
           </View>
           {isLoading ? 

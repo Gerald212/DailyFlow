@@ -12,12 +12,12 @@ const DeletionConfirmModal = ({route, navigation}) => {
     const deleteItem = async () => {
         if(route.params.type === "habit"){
             console.log("Usuwam nawyk o id: " + route.params.id);
-            // await database.deleteHabitById(route.params.id).then(navigation.navigate("Home"));
-            navigation.navigate("Home");
+            await database.deleteHabitById(route.params.id).then(navigation.navigate("Home"));
+            //navigation.navigate("Home");
         }else if(route.params.type === "category"){
             console.log("Usuwam kategorie o id: " + route.params.id);
-            // await database.deleteCategoryById(route.params.id).then(navigation.navigate("Home"));
-            navigation.navigate("Home");
+            await database.deleteCategoryById(route.params.id).then(navigation.navigate("Home"));
+            //navigation.navigate("Home");
         }
     }
 
@@ -30,18 +30,20 @@ const DeletionConfirmModal = ({route, navigation}) => {
 
     return(
         <View style={styles.outerContainer}>
-            <View style={styles.modalContainer}>
-                <View>
-                    <Text style={styles.text}>Czy na pewno chcesz usunąć {type} o nazwie</Text>
-                    <Text style={styles.text}>"{route.params.name}"?</Text>
-                </View>
-                <View style={{flexDirection: 'row', justifyContent: "space-around", alignItems: "center", marginTop: 20}}>
-                    <TouchableOpacity style={styles.button} onPress={() => deleteItem()}>
-                        <Text style={[styles.buttonText, {color: 'darkred'}]}>Usuń</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-                        <Text style={styles.buttonText}>Anuluj</Text>
-                    </TouchableOpacity>
+            <View style={styles.container}>
+                <View style={styles.modalContainer}>
+                    <View>
+                        <Text style={styles.text}>Czy na pewno chcesz usunąć {type} o nazwie</Text>
+                        <Text style={styles.text}>"{route.params.name}"?</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: "space-around", alignItems: "center", marginTop: 20}}>
+                        <TouchableOpacity style={styles.button} onPress={() => deleteItem()}>
+                            <Text style={[styles.buttonText, {color: 'darkred'}]}>Usuń</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+                            <Text style={styles.buttonText}>Anuluj</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </View>
@@ -64,6 +66,9 @@ const stylesLight = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'skyblue',
         opacity: 1.0
+    },
+    container: {
+        backgroundColor: 'white',
     },
     text: {
         fontSize: 16,
@@ -100,6 +105,9 @@ const stylesDark = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#2f7d74',
         opacity: 1.0
+    },
+    container: {
+        backgroundColor: '#232931'
     },
     text: {
         fontSize: 16,

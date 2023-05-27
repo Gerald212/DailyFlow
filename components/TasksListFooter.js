@@ -5,7 +5,7 @@ import { ThemeContext } from "../ThemeContext";
 
 const TasksListFooter = ({addTask, tasksExist}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
-    let styles = isThemeLight ? stylesLight : stylesDark;
+    const styles = isThemeLight ? stylesLight : stylesDark;
 
     return(
         <View style={styles.container}>

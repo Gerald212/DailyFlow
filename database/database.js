@@ -64,6 +64,26 @@ const dropTableAsync = async (tableName) => {
     )
 }
 
+const checkDatabase = async () => {
+    var selectQuery = "SELECT COUNT(*) AS 'dbState' FROM habits";
+    db.transaction(tx => {
+        tx.executeSql(
+            selectQuery,
+            [],
+            (txObj, result) => {
+                console.log("Wynik bazy ", result.rows._array[0].dbState)
+                if(!result.rows._array[0].dbState){
+                    console.log("Inicjalizacja za pomocą przykladowych danych");
+                    initializeDatabaseAsync();
+                }
+            },  //success callback
+            (txObj, error) => {console.log("Błąd - sprawdzanie bazy danych", error)}         //errorr callback
+            )
+    },
+    )
+}
+
+
 const initializeDatabaseAsync = async () => {
     var insertSampleCategory = "INSERT INTO categories (name) values (?)";
     var insertSampleHabit = "INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal, hours, times) values (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -347,5 +367,6 @@ export const database = {
     addHabit,
     addCategory,
     updateHabitById,
-    getDates
+    getDates,
+    checkDatabase
 }

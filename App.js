@@ -29,7 +29,7 @@ export default function App() {
         // await database.dropTableAsync("dates");
 
         await database.setupDatabaseAsync();              //stworzenie tabel (jesli ich nie ma)
-
+        await database.checkDatabase();
         // await database.initializeDatabaseAsync();       //inserty przyklaowdych danych
         console.log("Zakończono tworzenie bazy danych");
 

@@ -5,8 +5,32 @@ import { sampleData3 } from '../database/sampleData';
 import TaskItem from '../components/TaskItem';
 import { database } from '../database/database';
 import LoadingScreen from './LoadingScreen';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 
-const Calendar = ({navigation}) => {
+LocaleConfig.locales['pl'] = {
+  monthNames: [
+    'Styczeń',
+    'Luty',
+    'Marzec',
+    'Kwiecień',
+    'Maj',
+    'Czerwiec',
+    'Lipiec',
+    'Sierpień',
+    'Wrzesień',
+    'Październik',
+    'Listopad',
+    'Grudzień'
+  ],
+  monthNamesShort: ['St.', 'Lt.', 'Mrc', 'Kw.', 'Mj', 'Cz.', 'Lpc.', 'Srp.', 'Wrz.', 'Pźd.', 'Lis.', 'Grd.'],
+  dayNames: ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'],
+  dayNamesShort: ['Pn.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sb.', 'Ndz.'],
+  today: "Dzisiaj"
+};
+
+LocaleConfig.defaultLocale = 'pl';
+
+const CalendarScreen = ({navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
     const [listDataDay, setListDataDay] = useState([]);
     const [selectedDay, setSelectedDay] = useState('2023-04-03'); //potem domyslna wartosc zmienic na new Date()
@@ -35,9 +59,7 @@ const Calendar = ({navigation}) => {
     return(
       <View style={styles.container}>
         <View style={styles.calendarContainer}>
-          <Text>
-            Kalendarz
-          </Text>
+          <Calendar/>
         </View>
         <SafeAreaView style={styles.daySectionContainer}>
           <Text style={styles.name}>
@@ -103,4 +125,4 @@ const stylesDark = StyleSheet.create({
     },
 });
 
-export default Calendar;
+export default CalendarScreen;

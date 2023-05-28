@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from 'expo-status-bar';
 import { useContext, useEffect } from "react";
-import Calendar from "../screens/Calendar";
+import CalendarScreen from "../screens/CalendarScreen";
 import TasksList from "../screens/TasksList";
 import Panel from "../screens/Panel";
 import { NavigationContainer } from "@react-navigation/native";
@@ -43,7 +43,7 @@ const MainTabsNavigator = () => {
             >
                 <Tabs.Screen
                     name="Calendar"
-                    component={Calendar}
+                    component={CalendarScreen}
                     options={{
                         tabBarInactiveTintColor: isThemeLight ? 'gray' : '#3b9c92',
                         tabBarActiveTintColor: isThemeLight ? 'skyblue' : '#4cd4c5',

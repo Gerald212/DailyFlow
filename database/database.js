@@ -291,6 +291,27 @@ const addCategory = async (name) => {
     )
 }
 
+const updateHabitById = async (id, hours, date) => {
+    var updateHabit = "UPDATE habits SET hours = hours + ?, times = times + 1 WHERE habit_id = ?";
+    var insertDate = "INSERT INTO dates (habit_id, date) values (?, ?)";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            updateHabit,
+            [hours, id],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - aktualizowanie habitu o id: " + id, error)}  //errorr callback
+        ),
+        tx.executeSql(
+            insertDate,
+            [id, date],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - dodawanie daty do habitu o id: " + id, error)}  //errorr callback
+        )
+    },
+    )
+}
+
 const closeDatabase = async () => {
     db.closeAsync();
 }
@@ -311,5 +332,6 @@ export const database = {
     deleteCategoryById,
     deleteHabitById,
     addHabit,
-    addCategory
+    addCategory,
+    updateHabitById
 }

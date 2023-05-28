@@ -1,31 +1,32 @@
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useContext, useEffect, useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import { ThemeContext } from '../ThemeContext';
+import { database } from '../database/database';
 
-LocaleConfig.locales['fr'] = {
-    monthNames: [
-      'Janvier',
-      'Février',
-      'Mars',
-      'Avril',
-      'Mai',
-      'Juin',
-      'Juillet',
-      'Août',
-      'Septembre',
-      'Octobre',
-      'Novembre',
-      'Décembre'
-    ],
-    monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-    dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-    today: "Aujourd'hui"
+LocaleConfig.locales['pl'] = {
+  monthNames: [
+    'Styczeń',
+    'Luty',
+    'Marzec',
+    'Kwiecień',
+    'Maj',
+    'Czerwiec',
+    'Lipiec',
+    'Sierpień',
+    'Wrzesień',
+    'Październik',
+    'Listopad',
+    'Grudzień'
+  ],
+  monthNamesShort: ['St.', 'Lt.', 'Mrc', 'Kw.', 'Mj', 'Cz.', 'Lpc.', 'Srp.', 'Wrz.', 'Pźd.', 'Lis.', 'Grd.'],
+  dayNames: ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'],
+  dayNamesShort: ['Pn.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sb.', 'Ndz.'],
+  today: "Dzisiaj"
 };
 
-LocaleConfig.defaultLocale = 'fr';
+LocaleConfig.defaultLocale = 'pl';
 
 const UpdateTaskScreen = ({route, navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
@@ -46,9 +47,26 @@ const UpdateTaskScreen = ({route, navigation}) => {
         });
     }, [isThemeLight]);
 
-    const handleSubmit = async () => {
-        let times = 1;
-        console.log("godziny: ", hours, "data: ", date, "razy: ", times);
+    const handleSubmit = () => {
+        const updateTask = async () => {
+          await database.updateHabitById(route.params.id, hours, date)
+          .then(() => console.log("godziny: ", hours, "data: ", date))
+          //.then(navigation.navigate("Home", {refresh: true}));
+          .then(navigation.navigate("Home", {screen: 'TasksList', params: {refresh: 'true'}}));
+        }
+
+        if(!hours){
+          Alert.alert("", "Czy na pewno chcesz zaktualizować zadanie wyłącznie o datę?", [
+              {
+                  text: 'Anuluj',
+                  onPress: () => {return},
+                  style: 'cancel',
+              },
+              {text: 'Tak', onPress: () => updateTask()},
+          ])
+        }else{
+          updateTask();
+        }
     }
 
     return(
@@ -63,13 +81,13 @@ const UpdateTaskScreen = ({route, navigation}) => {
                       onChangeText={text => setHours(text)}
                       keyboardType="numeric"
                       inputMode='numeric'
-                      
+                      textAlign={'right'}
                     />
                 </View>
                 <View style={styles.section}>
                     <Text style={styles.label}>Data:</Text>
                     <View style={styles.inputField}>
-                        <Text>{date}</Text>
+                        <Text style={{textAlign: 'right'}}>{date}</Text>
                     </View>
                 </View>
                 <TouchableOpacity style={{alignSelf: 'flex-end', marginRight: 10}} onPress={() => setCalendarShown(!calendarShown)}>
@@ -83,13 +101,11 @@ const UpdateTaskScreen = ({route, navigation}) => {
                           setCalendarShown(false);
                           //console.log(day.dateString);
                         }}
-                        
                       />
                     </View>
                 :
                     <></>
                 }
-                
                 <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
                     <Text style={styles.submitText}>Dodaj</Text>
                 </TouchableOpacity>

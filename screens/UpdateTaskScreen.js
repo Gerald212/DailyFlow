@@ -101,6 +101,9 @@ const UpdateTaskScreen = ({route, navigation}) => {
                           setCalendarShown(false);
                           //console.log(day.dateString);
                         }}
+                        key={343331}
+                        style={styles.calendarStyle}
+                        theme={styles.calendarTheme}
                       />
                     </View>
                 :
@@ -141,26 +144,6 @@ const stylesLight = StyleSheet.create({
     justifyContent: 'space-around',
     marginBottom: 10
   },
-  dropListContainer: {
-    borderRadius: 20, 
-    backgroundColor: 'aliceblue',
-    borderColor: 'skyblue'
-  }, 
-  goalButtonInactive: {
-    padding: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'skyblue',
-    borderRadius: 20
-  },
-  goalButtonActive: {
-    padding: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: 'skyblue',
-    backgroundColor: 'aliceblue'
-  },
   submitButton: {
     alignSelf: 'center',
     padding: 20,
@@ -176,7 +159,6 @@ const stylesLight = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'skyblue',
     borderRadius: 20,
-    //marginBottom: 20
   },
   label: {
     flex: 2
@@ -195,78 +177,94 @@ const stylesLight = StyleSheet.create({
   submitText: {
     fontSize: 20,
     color: 'black'
-  }
+  },
+  calendarStyle: {
+    backgroundColor: 'aliceblue',
+    marginTop: 5,
+    borderRadius: 15,
+    paddingBottom: 15
+  },
 });
 
 const stylesDark = StyleSheet.create({
-  container: {
+  outerContainer: {
     flex: 1,
     backgroundColor: '#232931',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     opacity: 0.95,
   },
-  section: {
+  container: {
     flex: 1,
     justifyContent: 'center',
-    width: '90%',
+    width: '80%',
     paddingVertical: 20,
-    padding: 10,
+    padding: 10
+  },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
   goalsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 10
   },
-  goalButtonInactive: {
-    padding: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'skyblue',
-    borderRadius: 20
-  },
-  goalButtonActive: {
-    padding: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: 'skyblue',
-    backgroundColor: 'aliceblue'
-  },
   submitButton: {
     alignSelf: 'center',
     padding: 20,
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: 'skyblue',
+    borderColor: '#2f7d74',
+    marginTop: 20
   },
   inputField: {
+    flex: 2,
     backgroundColor: '#393E46',
     padding: 10,
     borderWidth: 1,
-    borderColor: 'skyblue',
+    borderColor: '#2f7d74',
     borderRadius: 20,
-    marginBottom: 20
   },
   label: {
-    marginLeft: 10,
-    marginBottom: 2
-  },
-  textActive: {
+    flex: 2,
     color: '#ccc'
   },
+  textActive: {
+    color: 'white'
+  },
   textInactive: {
-    color: 'black'
+    color: 'gray'
   },
   title: {
-    fontSize: 16,
+    fontSize: 32,
     color: '#ccc',
     marginTop: 20
   },
   submitText: {
     fontSize: 20,
     color: '#ccc'
+  },
+  calendarStyle: {
+    backgroundColor: '#161a1f',
+    marginTop: 5,
+    borderRadius: 15,
+    paddingBottom: 15
+  },
+  calendarTheme: {
+    backgroundColor: '#161a1f',
+    calendarBackground: '#393E46',
+    textSectionTitleColor: '#777',
+    selectedDayBackgroundColor: '#2f7d74',
+    selectedDayTextColor: 'white',
+    todayTextColor: '#2f7d74',
+    dayTextColor: '#ccc',
+    textDisabledColor: '#222',
+    monthTextColor: '#eee',
+    arrowColor: '#2f7d74'
   }
-});
+});//#232931
 
 export default UpdateTaskScreen;

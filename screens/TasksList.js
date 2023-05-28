@@ -28,15 +28,18 @@ const TasksList = ({navigation, route}) => {
   //stan kontrolujący czy dane są wczytywane
   const [isLoading, setIsLoading] = useState(true);
 
+  //to raczej tak byc nie moze i tzreba bedzie zmienic
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
           //alert('Refreshed');
-          console.log("params: ", route.params);
+          //console.log("params: ", route.params);
           // console.log("route: ", route);
           // if(route.params?.refresh){
           //   console.log("LOLOLOLOLO");
           //   navigation.setParams({refresh: false})
           // }
+          loadHabits();
+          console.log("Odświeżono");
       });
       return focusHandler;
   }, [navigation]);

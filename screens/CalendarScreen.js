@@ -33,33 +33,71 @@ LocaleConfig.defaultLocale = 'pl';
 const CalendarScreen = ({navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
     const [listDataDay, setListDataDay] = useState([]);
-    const [selectedDay, setSelectedDay] = useState('2023-04-03'); //potem domyslna wartosc zmienic na new Date()
+    const [selectedDay, setSelectedDay] = useState((temp = new Date()) => {return temp.toISOString().split('T')[0]}); //useState('2023-04-03');
+    const [markedDays, setMarkedDays] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
     const styles = isThemeLight ? stylesLight : stylesDark;
 
-    useEffect(() => {
-        const loadHabits = async () => {  
-          // await database.getHabitsByDay('2023-04-03', (result) => console.log(result))
-          await database.getHabitsByDay(selectedDay, setListDataDay)
-          .then(setIsLoading(false))
+    const loadHabits = async () => {  
+        setIsLoading(true);
+        //await database.getHabitsByDay(selectedDay, (result) => console.log(result))
+        await database.getHabitsByDay(selectedDay, setListDataDay)
+        .then(setIsLoading(false))
+    }
+
+    const loadMarkedDates = async () => {
+
+        const setTemp = (temp) => {
+          var tempDates = {};
+          temp.forEach(element => {
+            tempDates[element.date] = { marked: true }
+          });
+          setMarkedDays(tempDates);
         }
 
+        console.log("loadMarkedDates");
+        await database.getDates(setTemp);
+        //await database.getDates((result) => console.log("DATES: ", result));
+    }
+
+    useEffect(() => {
+      const focusHandler = navigation.addListener('focus', () => {
+          loadMarkedDates();
+          console.log("markeddyas: ", markedDays);
+        });
+        return focusHandler;
+    }, [navigation]);
+
+    useEffect(() => {
         loadHabits();
     }, [selectedDay]);
 
     const goToDetails = (id) => {
-      navigation.navigate('Details', {id: id});
+        navigation.navigate('Details', {id: id});
     }
 
-  const goToUpdate = (id) => {
-      navigation.navigate('Update', {id: id});
+    const goToUpdate = (id, name) => {
+        navigation.navigate('Update', {id: id, name: name});
     }
 
     return(
       <View style={styles.container}>
         <View style={styles.calendarContainer}>
-          <Calendar/>
+          <Calendar
+            onDayPress={day => {
+              setSelectedDay(day.dateString);
+              console.log(day.dateString);
+            }}
+            style={styles.calendarStyle}
+            theme={styles.calendarTheme}
+            key={isThemeLight}
+            enableSwipeMonths={true}
+            markedDates={{
+              ...markedDays,
+              [selectedDay]: {selected: true, disableTouchEvent: true},
+            }}
+          />
         </View>
         <SafeAreaView style={styles.daySectionContainer}>
           <Text style={styles.name}>
@@ -73,6 +111,8 @@ const CalendarScreen = ({navigation}) => {
               renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
               keyExtractor={item => item.date_id}
               ListEmptyComponent={<Text style={[[styles.name], {alignSelf: 'center', marginTop: 20}]}>Brak wydarzeń tego dnia</Text>}
+              refreshing={isLoading}
+              onRefresh={() => loadHabits()}
             />
           }
         </SafeAreaView>
@@ -85,21 +125,37 @@ const stylesLight = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       justifyContent: 'space-evenly',
-      //alignItems: 'center',
       paddingTop: StatusBar.currentHeight * 2,
     },
     calendarContainer: {
       flex: 1,
-      //backgroundColor: 'red',
     },
     daySectionContainer: {
       flex: 1,
-      //backgroundColor: 'blue',
     },
     name: {
       fontSize: 16,
-      color: 'black'
+      color: 'black',
+      marginLeft: 15,
+      marginTop: 20
     },
+    calendarStyle: {
+      borderBottomWidth: 1,
+      //paddingBottom: 10,
+      borderColor: 'lightgray',
+    },
+    calendarTheme: {
+      backgroundColor: '#ffffff',
+      calendarBackground: '#ffffff',
+      textSectionTitleColor: '#b6c1cd',
+      selectedDayBackgroundColor: '#4aabff',
+      selectedDayTextColor: 'white',
+      todayTextColor: '#4aabff',
+      dayTextColor: 'black',
+      monthTextColor: 'black',
+      arrowColor: '#4aabff',
+      dotColor: 'skyblue'
+    }
 });
 
 const stylesDark = StyleSheet.create({
@@ -107,22 +163,39 @@ const stylesDark = StyleSheet.create({
       flex: 1,
       backgroundColor: '#232931',
       justifyContent: 'space-evenly',
-      //alignItems: 'center',
       paddingTop: StatusBar.currentHeight * 2,
-      //marginHorizontal: 16,
     },
     calendarContainer: {
       flex: 1,
-      //backgroundColor: 'red',
     },
     daySectionContainer: {
       flex: 1,
-      //backgroundColor: 'blue',
     },
     name: {
       fontSize: 16,
-      color: '#ccc'
+      color: '#ccc',
+      marginLeft: 15,
+      marginTop: 20
     },
+    calendarStyle: {
+      borderBottomWidth: 1,
+      //paddingBottom: 10,
+      borderColor: 'gray',
+      backgroundColor: '#232931',
+    },
+    calendarTheme: {
+      backgroundColor: '#232931',
+      calendarBackground: '#393E46',
+      textSectionTitleColor: '#777',
+      selectedDayBackgroundColor: '#2f7d74',
+      selectedDayTextColor: 'white',
+      todayTextColor: '#2f7d74',
+      dayTextColor: '#ccc',
+      textDisabledColor: '#222',
+      monthTextColor: '#eee',
+      arrowColor: '#2f7d74',
+      dotColor: '#4cd4c5'
+    }
 });
 
 export default CalendarScreen;

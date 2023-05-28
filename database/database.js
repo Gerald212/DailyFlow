@@ -191,14 +191,27 @@ const getHabitsByCategory = async (category, callbackFunction) => {
 }
 
 const getHabitsByDay = async (day, callbackFunction) => {
-    var selectHabits = "SELECT * FROM dates INNER JOIN habits USING(habit_id) WHERE date = ?";
-
+    //var selectHabits = "SELECT * FROM dates INNER JOIN habits USING(habit_id) WHERE date = ?";
+    var selectHabits = "SELECT * FROM dates INNER JOIN (SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id) USING(habit_id) WHERE date = ?";
     db.transaction(tx => {
         tx.executeSql(
             selectHabits,
             [day],
             (txObj, result) => {callbackFunction(result.rows._array)},          //success callback
-            (txObj, error) => {console.log("Błąd - pobieranie danych z tabeli habits z kategorii: " + category, error)}  //errorr callback
+            (txObj, error) => {console.log("Błąd - pobieranie danych z tabeli habits z dnia: " + day, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const getDates = async (callbackFunction) => {
+    var selectDates = "SELECT DISTINCT date FROM dates";
+    db.transaction(tx => {
+        tx.executeSql(
+            selectDates,
+            [],
+            (txObj, result) => {callbackFunction(result.rows._array)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie danych z tabeli dates", error)}  //errorr callback
         )
     },
     )
@@ -333,5 +346,6 @@ export const database = {
     deleteHabitById,
     addHabit,
     addCategory,
-    updateHabitById
+    updateHabitById,
+    getDates
 }

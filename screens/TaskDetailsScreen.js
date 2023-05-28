@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View, StatusBar, ActivityIndicator, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../ThemeContext';
-import { useState } from 'react/cjs/react.development';
 import { database } from '../database/database';
 import LoadingScreen from './LoadingScreen';
 import * as Progress from 'react-native-progress';

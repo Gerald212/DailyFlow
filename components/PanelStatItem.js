@@ -17,7 +17,7 @@ const PanelStatItem = (props) => {
             }
             <View>
                 <Progress.Circle
-                    size={props.size ? props.size : 100}
+                    size={props.size ? props.size : 80}
                     color={isThemeLight ? '#4aabff' : '#2f7d74'}
                     thickness={4}
                     borderWidth={0}
@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
         paddingVertical: 2
     },
     title: {
-        fontSize: 20,
-
+        fontSize: 18,
+        flexWrap: 'wrap',
     },
     titleDark: {
-        fontSize: 20,
+        fontSize: 18,
         color: '#ccc',
     },
 });

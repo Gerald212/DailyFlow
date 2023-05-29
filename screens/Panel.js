@@ -1,13 +1,39 @@
 import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity} from 'react-native';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import PanelStatItem from '../components/PanelStatItem';
 import * as Progress from 'react-native-progress';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { database } from '../database/database';
 
 const Panel = () => {
   const {isThemeLight,setIsThemeLight,changeTheme} = useContext(ThemeContext);
   const [showStats, setShowStats] = useState(true);
+  const [habitsCount, setHabitsCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [averageCompletion, setAverageCompletion] = useState(0);
+
+    useEffect(() => {
+        const getHabitsCount = async () => {
+            await database.getHabitsCount(setHabitsCount);
+        }
+        const getCompletedCount = async () => {
+            await database.getCompletedCount(setCompletedCount);
+        }
+        const getAverage = async () => {
+            await database.getAverageCompletion((result) => {
+              console.log("srednia", result);
+              //let average = Math.round(result * 100);
+              //console.log(average);
+              setAverageCompletion(result);
+            });
+        }
+
+        getHabitsCount();
+        getCompletedCount();
+        getAverage();
+    }, []);
+////////
 
     return(
       <>
@@ -48,11 +74,11 @@ const Panel = () => {
           <View style={isThemeLight ? styles.container : styles.containerDark}>
               {/* <Text style={isThemeLight ? styles.text : styles.textDark}>Pozostałe</Text> */}
               <View style={{flex:1}}>          
-                <PanelStatItem value={1} content={5} title={"najdluższe coś"} leftSide={false}/>
-                <PanelStatItem value={1} content={7} title={"liczba taskow?"} leftSide={true}/>
-                <PanelStatItem value={1} content={16} title={"liczba habitow?"} leftSide={false}/>
-                <PanelStatItem value={0.8} content={"80%"} title={"średnie cośtam"} leftSide={true}/>
-                <PanelStatItem value={0.54} content={"54%"} title={"jescze cos cośtam"} leftSide={false}/>
+                <PanelStatItem value={1} content={habitsCount} title={"Liczba aktywnych nawyków"} leftSide={false}/>
+                <PanelStatItem value={1} content={completedCount} title={"Liczba zakończonych\nnawyków"} leftSide={true}/>
+                <PanelStatItem value={averageCompletion} content={Math.round(averageCompletion * 100)+'%'} title={"Średnie ukończenie zadań"} leftSide={false}/>
+                <PanelStatItem value={1} content={0} title={"liczba tasków?"} leftSide={true}/>
+                <PanelStatItem value={0.54} content={"54%"} title={"jescze coś innego"} leftSide={false}/>
               </View>
           </View>
           :

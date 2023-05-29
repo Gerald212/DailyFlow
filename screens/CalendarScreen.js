@@ -6,6 +6,7 @@ import TaskItem from '../components/TaskItem';
 import { database } from '../database/database';
 import LoadingScreen from './LoadingScreen';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import TasksListFooter from '../components/TasksListFooter';
 
 LocaleConfig.locales['pl'] = {
   monthNames: [
@@ -41,7 +42,7 @@ const CalendarScreen = ({navigation}) => {
 
     const loadHabits = async () => {  
         setIsLoading(true);
-        //await database.getHabitsByDay(selectedDay, (result) => console.log(result))
+        await database.getHabitsByDay(selectedDay, (result) => console.log(result))
         await database.getHabitsByDay(selectedDay, setListDataDay)
         .then(setIsLoading(false))
     }
@@ -81,6 +82,10 @@ const CalendarScreen = ({navigation}) => {
         navigation.navigate('Update', {id: id, name: name});
     }
 
+    const goToAddTask = () => {
+      navigation.navigate('Add');
+  }
+
     return(
       <View style={styles.container}>
         <View style={styles.calendarContainer}>
@@ -110,9 +115,10 @@ const CalendarScreen = ({navigation}) => {
               data={listDataDay}
               renderItem={({item}) => <TaskItem item={item} showDetails={goToDetails} updateTask={goToUpdate}/>}
               keyExtractor={item => item.date_id}
-              ListEmptyComponent={<Text style={[[styles.name], {alignSelf: 'center', marginTop: 20}]}>Brak wydarzeń tego dnia</Text>}
+              //ListEmptyComponent={<Text style={[[styles.name], {alignSelf: 'center', marginTop: 20}]}>Brak wydarzeń tego dnia</Text>}
               refreshing={isLoading}
               onRefresh={() => loadHabits()}
+              ListFooterComponent={<TasksListFooter addTask={goToAddTask} tasksExist={true}/>}
             />
           }
         </SafeAreaView>

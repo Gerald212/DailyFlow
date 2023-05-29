@@ -186,13 +186,13 @@ const getAllDates = async (callbackFunction) => {
 
 const getHabitsByCategory = async (category, callbackFunction) => {
     // var selectHabits = "SELECT h.*, COUNT(d.dates) AS 'days' FROM habits h INNER JOIN dates d USING(habit_id)";
-    var selectHabits = "SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id";
+    var selectHabits = "SELECT *, (SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id";
     var parameter = [];
 
     if(category){
         //selectHabits = "SELECT * FROM habits WHERE category_id = ?";
         //selectHabits = "SELECT h.*, COUNT(d.date) AS 'days' FROM habits h INNER JOIN dates d USING(habit_id) WHERE category_id = ?";
-        selectHabits = "SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id HAVING category_id = ?";
+        selectHabits = "SELECT *, (SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id HAVING category_id = ?";
         //parameter.push(category);
         parameter[0] = category;
     }
@@ -212,7 +212,8 @@ const getHabitsByCategory = async (category, callbackFunction) => {
 
 const getHabitsByDay = async (day, callbackFunction) => {
     //var selectHabits = "SELECT * FROM dates INNER JOIN habits USING(habit_id) WHERE date = ?";
-    var selectHabits = "SELECT * FROM dates INNER JOIN (SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id) USING(habit_id) WHERE date = ?";
+    //var selectHabits = "SELECT * FROM dates INNER JOIN (SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id) USING(habit_id) WHERE date = ?";
+    var selectHabits = "SELECT *, (SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM dates INNER JOIN habits h USING(habit_id) WHERE date = ? GROUP BY habit_id";
     db.transaction(tx => {
         tx.executeSql(
             selectHabits,
@@ -345,6 +346,51 @@ const updateHabitById = async (id, hours, date) => {
     )
 }
 
+const getHabitsCount = async (callbackFunction) => {
+    db.transaction(tx => {
+        tx.executeSql(
+            "SELECT COUNT(habit_id) AS 'count' FROM habits WHERE completed = 0",
+            [],
+            //(txObj, result) => {selectResult = result.rows._array},
+            //(txObj, result) => console.log(result.rows._array),
+            (txObj, result) => {callbackFunction(result.rows._array[0].count)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie liczby habitow", error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const getCompletedCount = async (callbackFunction) => {
+    db.transaction(tx => {
+        tx.executeSql(
+            "SELECT COUNT(habit_id) AS 'count' FROM habits WHERE completed = 1",
+            [],
+            //(txObj, result) => {selectResult = result.rows._array},
+            //(txObj, result) => console.log(result.rows._array),
+            (txObj, result) => {callbackFunction(result.rows._array[0].count)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie liczby zakonczonyc habitow", error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const getAverageCompletion = async (callbackFunction) => {
+    // var avgQuery = "SELECT h.name, (h.hours / h.hours_goal) AS 'h_p', (h.times*1.0 / h.times_goal) AS 't_p', ((SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id))/(h.days_goal * 1.0) AS 'd_p' FROM habits h";
+    var avgQuery = "SELECT AVG(avg) AS 'average' FROM (SELECT IFNULL((h.hours / h.hours_goal), 0) + IFNULL((h.times*1.0 / h.times_goal), 0) + IFNULL(((SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id))/(h.days_goal * 1.0), 0) AS 'avg' FROM habits h WHERE (h.times_goal != 0 | h.days_goal != 0 | h.hours_goal != 0))";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            avgQuery,
+            [],
+            //(txObj, result) => {selectResult = result.rows._array},
+            //(txObj, result) => console.log(result.rows._array),
+            (txObj, result) => {callbackFunction(result.rows._array[0].average)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie średniej ukończenia", error)}  //errorr callback
+        )
+    },
+    )
+}
+
 const closeDatabase = async () => {
     db.closeAsync();
 }
@@ -368,5 +414,8 @@ export const database = {
     addCategory,
     updateHabitById,
     getDates,
-    checkDatabase
+    checkDatabase,
+    getHabitsCount,
+    getCompletedCount,
+    getAverageCompletion
 }

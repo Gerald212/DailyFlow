@@ -101,11 +101,9 @@ const stylesDark = StyleSheet.create({
     modalContainer: {
         justifyContent: 'center',
         backgroundColor: '#232931',
-        paddingVertical: 30,
-        paddingHorizontal: 10,
+        padding: 50,
         borderWidth: 2,
         borderColor: '#2f7d74',
-        opacity: 1.0
     },
     container: {
         backgroundColor: '#232931',
@@ -114,12 +112,32 @@ const stylesDark = StyleSheet.create({
         backgroundColor: '#393E46',
         padding: 10,
         borderWidth: 1,
-        borderColor: 'skyblue',
+        borderColor: '#2f7d74',
         borderRadius: 20,
-        marginBottom: 20
+        color: 'white',
+        
+    },
+    submitButton: {
+        alignSelf: 'center',
+        padding: 20,
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: '#2f7d74',
+        marginTop: 20,
+        backgroundColor: '#393E46'
+    },
+    label: {
+        marginLeft: 10,
+        marginBottom: 2,
+        color: '#ccc'
     },
     title: {
         fontSize: 24,
+        marginBottom: 20,
+        color: '#ccc'
+    },
+    submitText: {
+        fontSize: 20,
         color: '#ccc'
     }
 });

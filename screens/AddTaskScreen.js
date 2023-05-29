@@ -109,6 +109,8 @@ const AddTaskScreen = ({route, navigation}) => {
                         onSelect={() => console.log("wybrana kategoria: ", category)}
                         boxStyles={styles.dropListContainer}
                         dropdownStyles={{borderRadius: 20}}
+                        dropdownTextStyles={{color: isThemeLight ? 'black' : 'white'}}
+                        inputStyles={{color: isThemeLight ? 'gray' : '#ccc'}}
                         defaultOption={{key:'0', value:'Brak kategorii'}}
                         maxHeight={150}
                         arrowicon={<Ionicons name="chevron-down-circle-outline" size={18} color={'black'} />} 
@@ -223,67 +225,82 @@ const stylesLight = StyleSheet.create({
 });
 
 const stylesDark = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#232931',
-      justifyContent: 'center',
-      alignItems: 'center',
-      opacity: 0.95,
-    },
-    section: {
-      flex: 1,
-      justifyContent: 'center',
-      width: '90%',
-      paddingVertical: 20,
-      padding: 10,
-    },
-    goalsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginBottom: 10
-    },
-    goalButtonInactive: {
-      padding: 5,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderColor: 'skyblue',
-      borderRadius: 20
-    },
-    goalButtonActive: {
-      padding: 5,
-      paddingHorizontal: 10,
-      borderWidth: 1,
-      borderRadius: 20,
-      borderColor: 'skyblue',
-      backgroundColor: 'aliceblue'
-    },
-    submitButton: {
-      alignSelf: 'center',
-      padding: 20,
-      borderWidth: 1,
-      borderRadius: 20,
-      borderColor: 'skyblue',
-    },
-    inputField: {
-      backgroundColor: '#393E46',
-      padding: 10,
-      borderWidth: 1,
-      borderColor: 'skyblue',
-      borderRadius: 20,
-      marginBottom: 20
-    },
-    label: {
-      marginLeft: 10,
-      marginBottom: 2
-    },
-    text: {
-      fontSize: 16,
-      color: '#ccc'
-    },
-    submitText: {
-      fontSize: 20,
-      color: '#ccc'
-    }
+  container: {
+    flex: 1,
+    backgroundColor: '#232931',
+    justifyContent: 'center',
+    alignItems: 'center',
+    opacity: 0.95,
+  },
+  section: {
+    flex: 1,
+    justifyContent: 'center',
+    width: '90%',
+    paddingVertical: 20,
+    padding: 10
+  },
+  goalsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    //marginVertical: 10,
+    marginBottom: 10,
+  },
+  dropListContainer: {
+    borderRadius: 20, 
+    backgroundColor: '#393E46',
+    borderColor: '#2f7d74',
+    color: '#ccc'
+  }, 
+  goalButtonInactive: {
+    padding: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#3b9c92',
+    borderRadius: 20
+  },
+  goalButtonActive: {
+    padding: 5,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: '#4cd4c5',
+    backgroundColor: '#393E46'
+  },
+  submitButton: {
+    alignSelf: 'center',
+    padding: 20,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: '#2f7d74',
+    marginTop: 20
+  },
+  inputField: {
+    backgroundColor: '#393E46',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#2f7d74',
+    borderRadius: 20,
+    //marginBottom: 20
+  },
+  label: {
+    marginLeft: 10,
+    marginBottom: 2,
+    marginTop: 20,
+    color: 'white'
+  },
+  errorLabel: {
+    marginLeft: 10,
+    marginBottom: 2,
+    color: 'red'
+  },
+  text: {
+    fontSize: 16,
+    color: 'white'
+  },
+  submitText: {
+    fontSize: 20,
+    color: 'white'
+  }
 });
 
 export default AddTaskScreen;

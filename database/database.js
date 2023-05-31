@@ -28,6 +28,15 @@ const setupDatabaseAsync = async () => {
                         "date TEXT NOT NULL," +
                         "FOREIGN KEY (habit_id) REFERENCES habits (habit_id)" +
                         ");";
+    var createTrigger = "CREATE TRIGGER IF NOT EXISTS habit_completion_trigger " +
+                        "AFTER UPDATE OF hours, times ON habits " +
+                        "WHEN new.hours >= hours_goal OR new.times >= times_goal " +
+                            "BEGIN " +
+                            "UPDATE habits " +
+                            "SET completed = 1 " +
+                            "WHERE id = new.id" +
+                            "END; ";
+                            //i chyba osobny trigger do sprawdzania dni
 
     db.transaction(tx => {
         tx.executeSql(

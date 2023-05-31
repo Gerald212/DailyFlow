@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "DayPlanner",
-    "slug": "DayPlanner",
-    "version": "1.0.0",
+    "name": "DailyFlow",
+    "slug": "dailyflow",
+    "version": "0.5.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/dailyflowiconPNG.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -19,18 +19,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/dailyflowiconPNG.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gerald212.DayPlanner"
+      "package": "com.gerald212.DailyFlow"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "43545206-f614-41c5-8f6f-f1bc14189087"
+        "projectId": "a0ab8550-0ef3-4f73-89e1-45d5397896f9"
       }
-    }
+    },
+    "owner": "gerald212"
   }
 }

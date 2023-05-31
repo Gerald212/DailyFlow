@@ -124,7 +124,7 @@ const TasksList = ({navigation, route}) => {
               keyExtractor={item => item.habit_id}
               //ListEmptyComponent={<EmptyTasksListComponent addTask={goToAddTask}/>} //nieaktualne
               refreshing={isLoading}
-              onRefresh={() => loadHabits()}
+              onRefresh={() => {loadHabits(); loadCategories();}}
               ListFooterComponent={<TasksListFooter addTask={goToAddTask} tasksExist={listData.length}/>}
             />
           }

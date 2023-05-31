@@ -1,4 +1,4 @@
-import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity} from 'react-native';
+import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity, Image} from 'react-native';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import PanelStatItem from '../components/PanelStatItem';
@@ -8,6 +8,7 @@ import { database } from '../database/database';
 
 const Panel = () => {
   const {isThemeLight,setIsThemeLight,changeTheme} = useContext(ThemeContext);
+  const styles = isThemeLight ? stylesLight : stylesDark;
   const [showStats, setShowStats] = useState(true);
   const [habitsCount, setHabitsCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
@@ -24,7 +25,7 @@ const Panel = () => {
             await database.getAverageCompletion((result) => {
               console.log("srednia", result);
               //let average = Math.round(result * 100);
-              //console.log(average);
+              console.log(result);
               setAverageCompletion(result);
             });
         }
@@ -33,13 +34,13 @@ const Panel = () => {
         getCompletedCount();
         getAverage();
     }, []);
-////////
+////////////
 
     return(
       <>
-        <View style={isThemeLight ? styles.panelsBar : styles.panelsBarDark}>
+        <View style={styles.panelsBar}>
           <TouchableOpacity 
-            style={isThemeLight ? styles.panelsBarButton : styles.panelsBarButtonDark}
+            style={styles.panelsBarButton}
             onPress={()=>setShowStats(true)}
           >
             <Ionicons
@@ -54,7 +55,7 @@ const Panel = () => {
             />
           </TouchableOpacity>
           <TouchableOpacity 
-            style={isThemeLight ? styles.panelsBarButton : styles.panelsBarButtonDark}
+            style={styles.panelsBarButton}
             onPress={()=>setShowStats(false)}
           >
             <Ionicons
@@ -71,7 +72,7 @@ const Panel = () => {
 
         </View>
         {showStats ?
-          <View style={isThemeLight ? styles.container : styles.containerDark}>
+          <View style={styles.container}>
               {/* <Text style={isThemeLight ? styles.text : styles.textDark}>Pozostałe</Text> */}
               <View style={{flex:1}}>          
                 <PanelStatItem value={1} content={habitsCount} title={"Liczba aktywnych nawyków"} leftSide={false}/>
@@ -82,8 +83,13 @@ const Panel = () => {
               </View>
           </View>
           :
-          <View style={isThemeLight ? styles.containerInfo : styles.containerInfoDark}>
-            <Text>Info</Text>
+          <View style={styles.containerInfo}>
+              <Image source={require('../assets/dailyflowiconPNG.png')} style={styles.icon}/>
+              <Text style={styles.title}>DailyFlow</Text>
+              <View style={styles.infoTextContainer}>
+                  <Text>Informacje o aplikacji</Text>
+              </View>
+              
           </View>
         }
       </>
@@ -92,26 +98,20 @@ const Panel = () => {
     );
 }
 
-const styles = StyleSheet.create({
+const stylesLight = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
       justifyContent: 'center',
     },
-    containerDark: {
-      flex: 1,
-      backgroundColor: '#232931',
-      justifyContent: 'center',
-    },
     containerInfo: {
       flex: 1,
       backgroundColor: '#fff',
-      justifyContent: 'center',
+      //justifyContent: 'center',
       alignItems: 'center',
     },
-    containerInfoDark: {
+    infoTextContainer: {
       flex: 1,
-      backgroundColor: '#232931',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -120,12 +120,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems:'center',
       backgroundColor: '#fff',
-    },
-    panelsBarDark: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems:'center',
-      backgroundColor: '#232931',
     },
     panelsBarButton: {
       justifyContent: 'center',
@@ -136,7 +130,46 @@ const styles = StyleSheet.create({
       paddingVertical: 5,
       paddingHorizontal: '20%',
     },
-    panelsBarButtonDark: {
+    text: {
+      fontSize: 16,
+    },
+    title: {
+      fontSize: 48,
+      marginTop: -80,
+      fontFamily: 'monospace'
+    },
+    icon: {
+      height: '50%', 
+      width: '50%', 
+      marginTop: -20,
+      tintColor: 'black'
+    }
+});
+
+const stylesDark = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#232931',
+      justifyContent: 'center',
+    },
+    containerInfo: {
+      flex: 1,
+      backgroundColor: '#232931',
+      //justifyContent: 'center',
+      alignItems: 'center',
+    },
+    infoTextContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    panelsBar: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems:'center',
+      backgroundColor: '#232931',
+    },
+    panelsBarButton: {
       justifyContent: 'center',
       alignItems:'center',
       //borderBottomWidth: 1,
@@ -146,12 +179,21 @@ const styles = StyleSheet.create({
       paddingHorizontal: '20%',
     },
     text: {
-        fontSize: 16,
+      fontSize: 16,
+      color: '#3b9c92',
     },
-    textDark: {
-        fontSize: 16,
-        color: '#3b9c92',
+    title: {
+      fontSize: 48,
+      color: '#3b9c92',
+      marginTop: -80,
+      fontFamily: 'monospace'
     },
+    icon: {
+      height: '50%', 
+      width: '50%', 
+      marginTop: -20,
+      tintColor: '#3b9c92'
+    }
 });
 
 export default Panel;

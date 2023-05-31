@@ -28,15 +28,17 @@ const setupDatabaseAsync = async () => {
                         "date TEXT NOT NULL," +
                         "FOREIGN KEY (habit_id) REFERENCES habits (habit_id)" +
                         ");";
+    var dropTriggers = "DROP TRIGGER IF EXISTS habit_completion_trigger;"
     var createTrigger = "CREATE TRIGGER IF NOT EXISTS habit_completion_trigger " +
                         "AFTER UPDATE OF hours, times ON habits " +
-                        "WHEN new.hours >= hours_goal OR new.times >= times_goal " +
+                        "WHEN (new.hours_goal != 0 AND (new.hours >= new.hours_goal)) OR " + 
+                        "(new.times_goal != 0 AND (new.times >= new.times_goal)) OR " +
+                        "(new.days_goal != 0 AND ((SELECT COUNT(DISTINCT date) + 1 FROM dates d WHERE new.habit_id = d.habit_id) >= new.days_goal)) " +
                             "BEGIN " +
                             "UPDATE habits " +
                             "SET completed = 1 " +
-                            "WHERE id = new.id" +
+                            "WHERE habit_id = new.habit_id;" +
                             "END; ";
-                            //i chyba osobny trigger do sprawdzania dni
 
     db.transaction(tx => {
         tx.executeSql(
@@ -56,6 +58,18 @@ const setupDatabaseAsync = async () => {
             [],                 //params
             (txObj, result) => {console.log("Stworzono tabele dates ", result)},        //success callback
             (txObj, error) => {console.log("Błąd - tworzenie tabeli dates", error)}     //errorr callback
+        ),
+        tx.executeSql(
+            dropTriggers,       //query
+            [],                 //params
+            (txObj, result) => {console.log("Usunieto trigger ", result)},        //success callback
+            (txObj, error) => {console.log("Błąd - usuwanie triggera", error)}     //errorr callback
+        ),
+        tx.executeSql(
+            createTrigger,       //query
+            [],                 //params
+            (txObj, result) => {console.log("Stworzono trigger ", result)},        //success callback
+            (txObj, error) => {console.log("Błąd - tworzenie triggera", error)}     //errorr callback
         )
     },
     )
@@ -385,7 +399,7 @@ const getCompletedCount = async (callbackFunction) => {
 
 const getAverageCompletion = async (callbackFunction) => {
     // var avgQuery = "SELECT h.name, (h.hours / h.hours_goal) AS 'h_p', (h.times*1.0 / h.times_goal) AS 't_p', ((SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id))/(h.days_goal * 1.0) AS 'd_p' FROM habits h";
-    var avgQuery = "SELECT AVG(avg) AS 'average' FROM (SELECT IFNULL((h.hours / h.hours_goal), 0) + IFNULL((h.times*1.0 / h.times_goal), 0) + IFNULL(((SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id))/(h.days_goal * 1.0), 0) AS 'avg' FROM habits h WHERE (h.times_goal != 0 | h.days_goal != 0 | h.hours_goal != 0))";
+    var avgQuery = "SELECT AVG(avg) AS 'average' FROM (SELECT IFNULL((h.hours / h.hours_goal), 0) + IFNULL((h.times*1.0 / h.times_goal), 0) + IFNULL(((SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id))/(h.days_goal * 1.0), 0) AS 'avg' FROM habits h WHERE (h.times_goal > 0 | h.days_goal > 0 | h.hours_goal > 0))"; //AND h.completed = 0
 
     db.transaction(tx => {
         tx.executeSql(

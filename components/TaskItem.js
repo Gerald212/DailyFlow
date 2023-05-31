@@ -2,7 +2,8 @@ import {Text, View, StyleSheet, TouchableOpacity, TouchableHighlight} from 'reac
 import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import ProgressBar from 'react-native-progress/Bar';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Wykorzystana biblioteka react-native-progress: https://github.com/oblador/react-native-progress
 
@@ -51,19 +52,34 @@ const TaskItem = ({item, showDetails, updateTask}) => {
                 <Text style={isThemeLight ? styles.taskName : styles.taskNameDark}>
                     {item.name}
                 </Text>
-                <Text style={isThemeLight ? styles.taskProgress : styles.taskProgressDark}>
-                    Postęp: {progressDescription}
-                </Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={isThemeLight ? styles.taskProgress : styles.taskProgressDark}>
+                        Postęp: {progressDescription} {item.completed ? 'Zakończone' : 'W trakcie'}{' (' + item.completed + ')'}
+                    </Text>
+                    {item.completed == 1 
+                    ?
+                      <Ionicons
+                          name="medal-outline"
+                          color={'gold'}
+                          size={32}
+                          style={{marginLeft: 10}}
+                      />
+                    :
+                      <></>
+                    }
+                </View>
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={{justifyContent: 'center', alignItems: 'center'}}
                 onPress={() => updateTask(item.habit_id, item.name)}
+                disabled={item.completed == 1 ? true : false}
             >
                 <MaterialIcons
                     name="update"
                     color={isThemeLight ? '#4aabff' : '#2f7d74'}
                     size={48}
+                    style={{opacity: item.completed == 1 ? 0.2 : 1}}
                 />
             </TouchableOpacity>
         </View>

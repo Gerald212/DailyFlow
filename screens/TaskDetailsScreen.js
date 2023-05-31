@@ -6,6 +6,7 @@ import LoadingScreen from './LoadingScreen';
 import * as Progress from 'react-native-progress';
 import PanelStatItem from '../components/PanelStatItem';
 import TaskDetailsHeader from '../components/TaskDetailsHeader';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const TaskDetails = ({route, navigation}) => {
@@ -116,6 +117,16 @@ const TaskDetails = ({route, navigation}) => {
                 />
                 <Text style={[styles.text, {marginTop: 10}]}>Postęp: {progressDescription}</Text>
                 <Text style={styles.text}>Status: {item.completed ? "Zakończone" : "W trakcie"}</Text>
+                {item.completed == 1 
+                ?
+                  <Ionicons
+                      name="medal-outline"
+                      color={'gold'}
+                      size={72}
+                  />
+                :
+                  <></>
+                }
               </View>
               <View style={[styles.containerBorder, {paddingVertical: 20}]}>
                 <Text style={styles.text}>{item.description}</Text>

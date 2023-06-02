@@ -7,6 +7,7 @@ import * as Progress from 'react-native-progress';
 import PanelStatItem from '../components/PanelStatItem';
 import TaskDetailsHeader from '../components/TaskDetailsHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const TaskDetails = ({route, navigation}) => {
@@ -43,7 +44,7 @@ const TaskDetails = ({route, navigation}) => {
         console.log("Pobieram dane taska o id: " + route.params.id);
         await database.getHabitById(route.params.id, (result)=> console.log(result))    //wypisywanie w konsoli wyniku zapytania
         await database.getHabitById(route.params.id, setItem)
-        await database.getDatesByHabit(route.params.id, (result)=> console.log("daty: ",result))
+        await database.getDatesByHabit(route.params.id, (result)=> console.log("daty: ", result))
         await database.getDatesByHabit(route.params.id, setDays)
         .then(() => setIsLoading(false))
         .finally(() => console.log("Zakończono pobieranie taska"))
@@ -84,7 +85,7 @@ const TaskDetails = ({route, navigation}) => {
 
     const goToUpdate = () => {
       //console.log(item.habit_id);
-      navigation.navigate('Update', {id: item.habit_id, name: item.name});
+      navigation.navigate('Update', {id: item.habit_id, name: item.name, type: item.type});
     }
 
     const goToDelete = () => {
@@ -100,8 +101,18 @@ const TaskDetails = ({route, navigation}) => {
         <SafeAreaView style={styles.container}>
           <ScrollView>
               <View style={[styles.containerBorder, {alignItems: 'center', marginTop: 0}]}>
-                <Text style={styles.taskName}>{item.name}</Text>
-                <Text style={styles.text}>{item.category_name}</Text>
+                  <View style={{alignSelf: 'flex-start', flexDirection: 'row'}}>
+                      <Text style={styles.text}>{item.type == 0 ? 'Nawyk ' : 'Zadanie '}</Text>
+                      <MaterialCommunityIcons
+                          name={item.type == 0 ? "calendar-refresh-outline" : "calendar-check-outline"}
+                          color={isThemeLight ? 'black' : '#ccc'}
+                          size={24}
+                          //style={{marginLeft: 2}}
+                      />
+                  </View>
+                  
+                  <Text style={styles.taskName}>{item.name}</Text>
+                  <Text style={styles.text}>{item.category_name}</Text>
               </View>
               <View style={[styles.containerBorder, {justifyContent: 'center', alignItems: 'center', marginTop: 0}]}>
                 <Progress.Circle
@@ -113,9 +124,28 @@ const TaskDetails = ({route, navigation}) => {
                     textStyle={{alignSelf:'center', fontSize: 36, fontWeight: 'bold'}} 
                     showsText={true}
                     //ewentualnie pozbyć się tego formatText
-                    formatText={item.times_goal || item.hours_goal || item.days_goal ? (progress) => Math.round(progress * 100)+"%" : () => item.hours}
+                    formatText={item.times_goal || item.hours_goal || item.days_goal 
+                      ? 
+                          (progress) => Math.round(progress * 100)+"%" 
+                      : 
+                          item.type == 0 
+                          ? 
+                              () => item.hours
+                          :
+                              // () => 'W trakcie'
+                              () => <MaterialCommunityIcons 
+                                      name={item.completed == 0 ? "clock-end" : "check"}
+                                      size={72} 
+                                      color={isThemeLight ? '#4aabff' : '#2f7d74'}
+                                    />
+                    }
                 />
-                <Text style={[styles.text, {marginTop: 10}]}>Postęp: {progressDescription}</Text>
+                {item.type == 0 
+                ?
+                    <Text style={[styles.text, {marginTop: 10}]}>Postęp: {progressDescription}</Text>
+                :
+                    <View style={{marginTop: 10}}></View>
+                }
                 <Text style={styles.text}>Status: {item.completed ? "Zakończone" : "W trakcie"}</Text>
                 {item.completed == 1 
                 ?
@@ -129,15 +159,23 @@ const TaskDetails = ({route, navigation}) => {
                 }
               </View>
               <View style={[styles.containerBorder, {paddingVertical: 20}]}>
-                <Text style={styles.text}>{item.description}</Text>
+                  <Text style={styles.text}>Opis</Text>
+                  <Text style={styles.text}>{item.description}</Text>
               </View>
-              <View style={[styles.containerBorder, {flex: 1, marginTop: 0}]}>
-                <PanelStatItem value={1} content={item.hours} title={"Liczba godzin:"} leftSide={true} size={80}/>
-                <PanelStatItem value={1} content={item.times} title={"Razy:"} leftSide={true} size={80}/>
-                <PanelStatItem value={1} content={days.length} title={"Liczba dni:"} leftSide={true} size={80}/>
-              </View>
-              <Text>KALENDARZ(HEATMAP Z CHARTS.KIT)</Text>
-              <Text>I POTENCJALNIE JAKIES INNE WYKRESY</Text>
+              {item.type == 0
+              ?
+                  <View style={[styles.containerBorder, {flex: 1, marginTop: 0}]}>
+                    <PanelStatItem value={1} content={item.hours} title={"Liczba godzin:"} leftSide={true} size={80}/>
+                    <PanelStatItem value={1} content={item.times} title={"Razy:"} leftSide={true} size={80}/>
+                    <PanelStatItem value={1} content={days.length} title={"Liczba dni:"} leftSide={true} size={80}/>
+                  </View>
+              :
+                <View style={{alignItems: 'center'}}>
+                    {days[0] ? <Text style={styles.dateText}>Termin {days[0].date.split(':')[0] + ':' + days[0].date.split(':')[1]}</Text> : <></>}
+                </View>
+              }
+              {/* <Text>KALENDARZ(HEATMAP Z CHARTS.KIT)</Text>
+              <Text>I POTENCJALNIE JAKIES INNE WYKRESY</Text> */}
             </ScrollView>
         </SafeAreaView>
     );
@@ -169,6 +207,10 @@ const stylesLight = StyleSheet.create({
     text: {
       fontSize: 18,
       color: 'black'
+    },
+    dateText: {
+      fontSize: 18,
+      color: 'black'
     }
 });
 
@@ -197,6 +239,10 @@ const stylesDark = StyleSheet.create({
   text: {
     fontSize: 18,
     color: '#ccc'
+  },
+  dateText: {
+    fontSize: 18,
+    color: '#2f7d74'
   }
 });
 

@@ -68,7 +68,7 @@ const TasksList = ({navigation, route}) => {
       setListData(tempHabits);
     }
     setIsLoading(true);
-    await database.getHabitsByCategory(selectedCategory, (result) => console.log("pobrane: ",result))
+    //await database.getHabitsByCategory(selectedCategory, (result) => console.log("pobrane: ",result))
     await database.getHabitsByCategory(selectedCategory, setTemp)
     .then(setIsLoading(false))
     .finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
@@ -79,9 +79,8 @@ const TasksList = ({navigation, route}) => {
       navigation.navigate('Details', {id: id});
   }
 
-  const goToUpdate = (id, name) => {
-      //console.log(id);
-      navigation.navigate('Update', {id: id, name: name});
+  const goToUpdate = (id, name, type) => {
+    navigation.navigate('Update', {id: id, name: name, type: type});
   }
 
   const goToDelete = (category_id, category_name) => {

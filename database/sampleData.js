@@ -321,12 +321,13 @@ export const sampleRecordsCategories = [
 ];
 
 export const sampleRecordsHabits = [
-    //name                  description                       c_id|t_g|h_g|d_g|hours|times
-    ["Ćwiczyć rysowanie", "Przykladowy opis test1 test2 test3", 2, 0, 30, 0, 23, 8],
-    ["Pisać pracę lic", "Napisać pracę licencjacką i zrobić aplikacje", 3, 0, 0, 0, 98, 41],
-    ["Narysować coś", "Inny opis cośtam cośtam test test test", 2, 3, 0, 0, 0, 2],
-    ["Biegać", "Opis coś o bieganiu i jeszcze coś innego 123", 1, 0, 0, 30, 9, 4],
-    ["Napisać 2 aplikacje", "Opis o aplikacjach które chcę zrobić", 3, 2, 0, 0, 0, 0]
+    //name                  description                       c_id|t_g|h_g|d_g|hours|times|type
+    ["Ćwiczyć rysowanie", "Przykladowy opis test1 test2 test3", 2, 0, 30, 0, 23, 8, 0],
+    ["Pisać pracę lic", "Napisać pracę licencjacką i zrobić aplikacje", 3, 0, 0, 0, 98, 41, 0],
+    ["Narysować coś", "Inny opis cośtam cośtam test test test", 2, 3, 0, 0, 0, 2, 0],
+    ["Biegać", "Opis coś o bieganiu i jeszcze coś innego 123", 1, 0, 0, 30, 9, 4, 0],
+    ["Napisać 2 aplikacje", "Opis o aplikacjach które chcę zrobić", 3, 2, 0, 0, 0, 0, 0],
+    ["Wyślij pracę", "Wysłać projekt pracy", 3, 0, 0, 0, 0, 0, 1]
 ];
 
 export const sampleRecordsDates = [

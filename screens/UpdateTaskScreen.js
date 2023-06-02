@@ -2,38 +2,17 @@ import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-
 import { StatusBar } from 'expo-status-bar';
 import { useContext, useEffect, useState} from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
-
-LocaleConfig.locales['pl'] = {
-  monthNames: [
-    'Styczeń',
-    'Luty',
-    'Marzec',
-    'Kwiecień',
-    'Maj',
-    'Czerwiec',
-    'Lipiec',
-    'Sierpień',
-    'Wrzesień',
-    'Październik',
-    'Listopad',
-    'Grudzień'
-  ],
-  monthNamesShort: ['St.', 'Lt.', 'Mrc', 'Kw.', 'Mj', 'Cz.', 'Lpc.', 'Srp.', 'Wrz.', 'Pźd.', 'Lis.', 'Grd.'],
-  dayNames: ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'],
-  dayNamesShort: ['Pn.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sb.', 'Ndz.'],
-  today: "Dzisiaj"
-};
-
-LocaleConfig.defaultLocale = 'pl';
 
 const UpdateTaskScreen = ({route, navigation}) => {
     const {isThemeLight,setIsThemeLight} = useContext(ThemeContext);
     const styles = isThemeLight ? stylesLight : stylesDark;
 
     const [hours, setHours] = useState(0.0);
-    const [date, setDate] = useState((temp = new Date()) => {return temp.toISOString().split('T')[0]});
+    //const [date, setDate] = useState((temp = new Date()) => {return temp.toISOString().split('T')[0]});
+    const [date, setDate] = useState(new Date());
     const [calendarShown, setCalendarShown] = useState(false);
 
     useEffect(() => {
@@ -49,9 +28,9 @@ const UpdateTaskScreen = ({route, navigation}) => {
 
     const handleSubmit = () => {
         const updateTask = async () => {
-          await database.updateHabitById(route.params.id, hours, date)
+          //console.log("godziny: ", hours, "data: ", date.toISOString().split('T')[0]);
+          await database.updateHabitById(route.params.id, hours, date.toISOString().split('T')[0])
           .then(() => console.log("godziny: ", hours, "data: ", date))
-          //.then(navigation.navigate("Home", {refresh: true}));
           .then(navigation.navigate("Home", {screen: 'TasksList', params: {refresh: 'true'}}));
         }
 
@@ -69,51 +48,83 @@ const UpdateTaskScreen = ({route, navigation}) => {
         }
     }
 
+    const handleCompletion = () => {
+        const updateTask = async () => {
+          await database.completeTask(route.params.id)
+          .then(navigation.navigate("Home", {screen: 'TasksList', params: {refresh: 'true'}}));
+        }
+
+        updateTask();
+    }
+
+    const handleTimeChange = (date) => {
+      console.log(date.nativeEvent.timestamp);
+      // var tempDate = new Date(date.nativeEvent.timestamp);
+      setCalendarShown(false);
+      setDate(new Date(date.nativeEvent.timestamp))
+      //setDate(tempDate.toISOString().split('T')[0]);
+    }
+
     return(
         <View style={styles.outerContainer}>
             <Text style={styles.title}>{route.params.name}</Text>
-            <View style={styles.container}>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Godziny:</Text>
-                    <TextInput
-                      style={styles.inputField}
-                      placeholder="0"
-                      onChangeText={text => setHours(text)}
-                      keyboardType="numeric"
-                      inputMode='numeric'
-                      textAlign={'right'}
-                    />
-                </View>
-                <View style={styles.section}>
-                    <Text style={styles.label}>Data:</Text>
-                    <View style={styles.inputField}>
-                        <Text style={{textAlign: 'right'}}>{date}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity style={{alignSelf: 'flex-end', marginRight: 10}} onPress={() => setCalendarShown(!calendarShown)}>
-                    <Text style={calendarShown ? styles.textInactive : styles.textActive}>Zmień datę</Text>
-                </TouchableOpacity>
-                {calendarShown ?
-                    <View>
-                      <Calendar
-                        onDayPress={day => {
-                          setDate(day.dateString);
-                          setCalendarShown(false);
-                          //console.log(day.dateString);
-                        }}
-                        key={343331}
-                        style={styles.calendarStyle}
-                        theme={styles.calendarTheme}
+            {route.params.type ?
+              <TouchableOpacity style={styles.submitButton} onPress={() => handleCompletion()}>
+                  <Text style={styles.submitText}>Wykonane</Text>
+              </TouchableOpacity>
+            :
+              <View style={styles.container}>
+                  <View style={styles.section}>
+                      <Text style={styles.label}>Godziny:</Text>
+                      <TextInput
+                        style={styles.inputField}
+                        placeholder="0"
+                        onChangeText={text => setHours(text)}
+                        keyboardType="numeric"
+                        inputMode='numeric'
+                        textAlign={'right'}
                       />
-                    </View>
-                :
-                    <></>
-                }
-                <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
-                    <Text style={styles.submitText}>Dodaj</Text>
-                </TouchableOpacity>
-            </View>
-            
+                  </View>
+                  <View style={styles.section}>
+                      <Text style={styles.label}>Data:</Text>
+                      <View style={styles.inputField}>
+                          <Text style={{textAlign: 'right'}}>{date.toISOString().split('T')[0]}</Text>
+                      </View>
+                  </View>
+                  <TouchableOpacity style={{alignSelf: 'flex-end', marginRight: 10}} onPress={() => setCalendarShown(!calendarShown)}>
+                      <Text style={calendarShown ? styles.textInactive : styles.textActive}>Zmień datę</Text>
+                  </TouchableOpacity>
+                  {/* {calendarShown ?
+                      <View>
+                        <Calendar
+                          onDayPress={day => {
+                            setDate(day.dateString);
+                            setCalendarShown(false);
+                            //console.log(day.dateString);
+                          }}
+                          key={343331}
+                          style={styles.calendarStyle}
+                          theme={styles.calendarTheme}
+                        />
+                      </View>
+                  :
+                      <></>
+                  } */}
+                  {calendarShown ?
+                      <DateTimePicker 
+                          value={date}
+                          mode="date"
+                          onChange={(date) => handleTimeChange(date)}
+                          maximumDate={new Date()}
+                      />
+                  :
+                      <></>
+                  }
+                  <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
+                      <Text style={styles.submitText}>Dodaj</Text>
+                  </TouchableOpacity>
+              </View>
+            }
         </View>
     );
 }

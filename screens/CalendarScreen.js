@@ -24,8 +24,8 @@ LocaleConfig.locales['pl'] = {
     'Grudzień'
   ],
   monthNamesShort: ['St.', 'Lt.', 'Mrc', 'Kw.', 'Mj', 'Cz.', 'Lpc.', 'Srp.', 'Wrz.', 'Pźd.', 'Lis.', 'Grd.'],
-  dayNames: ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'],
-  dayNamesShort: ['Pn.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sb.', 'Ndz.'],
+  dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+  dayNamesShort: ['Nd.', 'Pn.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sb.'],
   today: "Dzisiaj"
 };
 
@@ -52,7 +52,7 @@ const CalendarScreen = ({navigation}) => {
         const setTemp = (temp) => {
           var tempDates = {};
           temp.forEach(element => {
-            tempDates[element.date] = { marked: true }
+            tempDates[element.date] = { marked: true }  //ewentualnie .split('T')[0]
           });
           setMarkedDays(tempDates);
         }
@@ -66,6 +66,7 @@ const CalendarScreen = ({navigation}) => {
       const focusHandler = navigation.addListener('focus', () => {
           loadMarkedDates();
           console.log("markeddyas: ", markedDays);
+          //database.getAllDates((result) => console.log(result))
         });
         return focusHandler;
     }, [navigation]);
@@ -78,8 +79,8 @@ const CalendarScreen = ({navigation}) => {
         navigation.navigate('Details', {id: id});
     }
 
-    const goToUpdate = (id, name) => {
-        navigation.navigate('Update', {id: id, name: name});
+    const goToUpdate = (id, name, type) => {
+        navigation.navigate('Update', {id: id, name: name, type: type});
     }
 
     const goToAddTask = () => {
@@ -98,6 +99,7 @@ const CalendarScreen = ({navigation}) => {
             theme={styles.calendarTheme}
             key={isThemeLight}
             enableSwipeMonths={true}
+            firstDay={1}
             markedDates={{
               ...markedDays,
               [selectedDay]: {selected: true, disableTouchEvent: true},

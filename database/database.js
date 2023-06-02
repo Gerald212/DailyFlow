@@ -11,14 +11,15 @@ const setupDatabaseAsync = async () => {
                             ");";
     var createHabits = "CREATE TABLE IF NOT EXISTS habits (" +
                         "habit_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," + 
+                        "type INTEGER NOT NULL DEFAULT 0," +
                         "name TEXT NOT NULL," + 
                         "description TEXT," +
                         "category_id INTEGER NOT NULL," +
                         "hours REAL DEFAULT 0.0," +
                         "times INTEGER DEFAULT 0," +
-                        "times_goal INTEGER," +
-                        "hours_goal INTEGER," +
-                        "days_goal INTEGER," +
+                        "times_goal INTEGER DEFAULT 0," +
+                        "hours_goal INTEGER DEFAULT 0," +
+                        "days_goal INTEGER DEFAULT 0," +
                         "completed INTEGER DEFAULT 0," +
                         "FOREIGN KEY (category_id) REFERENCES categories (category_id)" +
                         ");";
@@ -109,7 +110,7 @@ const checkDatabase = async () => {
 
 const initializeDatabaseAsync = async () => {
     var insertSampleCategory = "INSERT INTO categories (name) values (?)";
-    var insertSampleHabit = "INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal, hours, times) values (?, ?, ?, ?, ?, ?, ?, ?)";
+    var insertSampleHabit = "INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal, hours, times, type) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     var insertSampleDate = "INSERT INTO dates (habit_id, date) values (?, ?)"
 
     db.transaction(tx => {
@@ -236,7 +237,7 @@ const getHabitsByCategory = async (category, callbackFunction) => {
 const getHabitsByDay = async (day, callbackFunction) => {
     //var selectHabits = "SELECT * FROM dates INNER JOIN habits USING(habit_id) WHERE date = ?";
     //var selectHabits = "SELECT * FROM dates INNER JOIN (SELECT *, (SELECT COUNT(*) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM habits h GROUP BY habit_id) USING(habit_id) WHERE date = ?";
-    var selectHabits = "SELECT *, (SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM dates INNER JOIN habits h USING(habit_id) WHERE date = ? GROUP BY habit_id";
+    var selectHabits = "SELECT *, (SELECT COUNT(DISTINCT date) FROM dates d WHERE h.habit_id = d.habit_id) AS 'days' FROM dates INNER JOIN habits h USING(habit_id) WHERE date(date) = ? GROUP BY habit_id";
     db.transaction(tx => {
         tx.executeSql(
             selectHabits,
@@ -249,7 +250,7 @@ const getHabitsByDay = async (day, callbackFunction) => {
 }
 
 const getDates = async (callbackFunction) => {
-    var selectDates = "SELECT DISTINCT date FROM dates";
+    var selectDates = "SELECT DISTINCT date(date) AS 'date' FROM dates";
     db.transaction(tx => {
         tx.executeSql(
             selectDates,
@@ -320,15 +321,49 @@ const deleteHabitById = async (id) => {
     )
 }
 
-const addHabit = async (name, description, category, days_goal, times_goal, hours_goal) => {
-    var insert =   'INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal) values (?, ?, ?, ?, ?, ?)';
+const addHabit = async (name, description, category, days_goal, times_goal, hours_goal, type) => {
+    var insert =   'INSERT INTO habits (name, description, category_id, times_goal, hours_goal, days_goal, type) values (?, ?, ?, ?, ?, ?, ?)';
 
     db.transaction(tx => {
         tx.executeSql(
             insert,
-            [name, description, category, times_goal, hours_goal, days_goal],
+            [name, description, category, times_goal, hours_goal, days_goal, type],
             (txObj, result) => {() => console.log(result)},          //success callback
             (txObj, error) => {console.log("Błąd - dodawanie nawyku o nazwie: " + name, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const addTask = async (name, description, category, type, time) => {
+    var insertTask =   'INSERT INTO habits (name, description, category_id, type) values (?, ?, ?, ?)';
+    var insertDate = "INSERT INTO dates (habit_id, date) values (?, ?)";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            insertTask,
+            [name, description, category, type],
+            (txObj, result) => {
+                console.log(result);
+                let id = result.insertId;
+                console.log("HABIT_ID: ", id, " CZAS: ", time);
+                addDate(id, time);
+            },          //success callback
+            (txObj, error) => {console.log("Błąd - dodawanie zadania o nazwie: " + name, error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const addDate = async (id, time) => {
+    var insert =   "INSERT INTO dates (habit_id, date) values (?, ?)";
+
+    db.transaction(tx => {
+        tx.executeSql(
+            insert,
+            [id, time],
+            (txObj, result) => {() => console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - dodawanie daty : " + time, error)}  //errorr callback
         )
     },
     )
@@ -369,11 +404,24 @@ const updateHabitById = async (id, hours, date) => {
     )
 }
 
-const getHabitsCount = async (callbackFunction) => {
+const completeTask = async (id) => {
+    var updateTask = "UPDATE habits SET completed = 1 WHERE habit_id = ?";
     db.transaction(tx => {
         tx.executeSql(
-            "SELECT COUNT(habit_id) AS 'count' FROM habits WHERE completed = 0",
-            [],
+            updateTask,
+            [id],
+            (txObj, result) => {console.log(result)},          //success callback
+            (txObj, error) => {console.log("Błąd - pobieranie liczby habitow", error)}  //errorr callback
+        )
+    },
+    )
+}
+
+const getItemsCount = async (callbackFunction, completion, type) => {
+    db.transaction(tx => {
+        tx.executeSql(
+            "SELECT COUNT(habit_id) AS 'count' FROM habits WHERE completed = ? AND type = ?",
+            [completion, type],
             //(txObj, result) => {selectResult = result.rows._array},
             //(txObj, result) => console.log(result.rows._array),
             (txObj, result) => {callbackFunction(result.rows._array[0].count)},          //success callback
@@ -434,11 +482,13 @@ export const database = {
     deleteCategoryById,
     deleteHabitById,
     addHabit,
+    addTask,
     addCategory,
     updateHabitById,
     getDates,
     checkDatabase,
-    getHabitsCount,
+    getItemsCount,
     getCompletedCount,
-    getAverageCompletion
+    getAverageCompletion,
+    completeTask
 }

@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import PanelStatItem from '../components/PanelStatItem';
 import * as Progress from 'react-native-progress';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { database } from '../database/database';
 
@@ -11,15 +12,23 @@ const Panel = () => {
   const styles = isThemeLight ? stylesLight : stylesDark;
   const [showStats, setShowStats] = useState(true);
   const [habitsCount, setHabitsCount] = useState(0);
-  const [completedCount, setCompletedCount] = useState(0);
+  const [tasksCount, setTasksCount] = useState(0);
+  const [completedHabitsCount, setCompletedHabitsCount] = useState(0);
+  const [completedTasksCount, setCompletedTasksCount] = useState(0);
   const [averageCompletion, setAverageCompletion] = useState(0);
 
     useEffect(() => {
         const getHabitsCount = async () => {
-            await database.getHabitsCount(setHabitsCount);
+            await database.getItemsCount(setHabitsCount, 0, 0);
         }
-        const getCompletedCount = async () => {
-            await database.getCompletedCount(setCompletedCount);
+        const getTasksCount = async () => {
+            await database.getItemsCount(setTasksCount, 0, 1);
+        } 
+        const getCompletedHabitsCount = async () => {
+            await database.getItemsCount(setCompletedHabitsCount, 1, 0);
+        }
+        const getCompletedTasksCount = async () => {
+            await database.getItemsCount(setCompletedTasksCount, 1, 1);
         }
         const getAverage = async () => {
             await database.getAverageCompletion((result) => {
@@ -31,10 +40,12 @@ const Panel = () => {
         }
 
         getHabitsCount();
-        getCompletedCount();
+        getTasksCount();
+        getCompletedHabitsCount();
+        getCompletedTasksCount();
         getAverage();
     }, []);
-
+//
     return(
       <>
         <View style={styles.panelsBar}>
@@ -68,17 +79,17 @@ const Panel = () => {
                 size={36}
             />
           </TouchableOpacity>
-
         </View>
         {showStats ?
           <View style={styles.container}>
               {/* <Text style={isThemeLight ? styles.text : styles.textDark}>Pozostałe</Text> */}
               <View style={{flex:1}}>          
                 <PanelStatItem value={1} content={habitsCount} title={"Liczba aktywnych nawyków"} leftSide={false}/>
-                <PanelStatItem value={1} content={completedCount} title={"Liczba zakończonych\nnawyków"} leftSide={true}/>
+                <PanelStatItem value={1} content={completedHabitsCount} title={"Liczba zakończonych\nnawyków"} leftSide={true}/>
                 <PanelStatItem value={averageCompletion} content={Math.round(averageCompletion * 100)+'%'} title={"Średnie ukończenie zadań"} leftSide={false}/>
-                <PanelStatItem value={1} content={0} title={"liczba tasków?"} leftSide={true}/>
-                <PanelStatItem value={0.54} content={"54%"} title={"jescze coś innego"} leftSide={false}/>
+                <PanelStatItem value={1} content={tasksCount} title={"Liczba aktywnych zadań"} leftSide={true}/>
+                <PanelStatItem value={1} content={completedTasksCount} title={"Liczba zakończonych\nzadań"} leftSide={false}/>
+                {/* <PanelStatItem value={0.54} content={"54%"} title={"jescze coś innego"} leftSide={false}/> */}
               </View>
           </View>
           :
@@ -86,9 +97,12 @@ const Panel = () => {
               <Image source={require('../assets/dailyflowiconPNG.png')} style={styles.icon}/>
               <Text style={styles.title}>DailyFlow</Text>
               <View style={styles.infoTextContainer}>
-                  <Text>Informacje o aplikacji</Text>
+                  <Text style={styles.infoText}>Kliknij <Ionicons name="add-circle-outline" color={isThemeLight ? '#4aabff' : '#2f7d74'} size={32}/> aby dodać zadanie/nawyk lub kategorię.{'\n'}</Text>
+                  <Text>Kliknij <MaterialCommunityIcons name={"update"} color={isThemeLight ? '#4aabff' : '#2f7d74'} size={32}/> aby zaktualizować zadanie/nawyk.{'\n'}</Text>
+                  <Text>Kliknij <Ionicons name="trash-outline" color='darkred' size={30}/> aby usunąć zadanie, nawyk lub kategorię.{'\n'}</Text>
+                  <Text>Kliknij na zadanie/nawyk na liśćie aby wyświetlić szczegóły.{'\n'}</Text>
+                  <Text>Wybierz datę w kalendarzu aby zobaczyć zadania zaplanowane na ten dzień i nawyki, które w tym dniu zostały wykonane.{'\n'}</Text>
               </View>
-              
           </View>
         }
       </>
@@ -111,8 +125,8 @@ const stylesLight = StyleSheet.create({
     },
     infoTextContainer: {
       flex: 1,
+      paddingHorizontal: '5%',
       justifyContent: 'center',
-      alignItems: 'center',
     },
     panelsBar: {
       flexDirection: 'row',
@@ -123,9 +137,6 @@ const stylesLight = StyleSheet.create({
     panelsBarButton: {
       justifyContent: 'center',
       alignItems:'center',
-      //borderBottomWidth: 1,
-      // borderRightWidth: 1,
-      // borderColor: 'lightgray',
       paddingVertical: 5,
       paddingHorizontal: '20%',
     },
@@ -159,8 +170,8 @@ const stylesDark = StyleSheet.create({
     },
     infoTextContainer: {
       flex: 1,
+      paddingHorizontal: '5%',
       justifyContent: 'center',
-      alignItems: 'center',
     },
     panelsBar: {
       flexDirection: 'row',

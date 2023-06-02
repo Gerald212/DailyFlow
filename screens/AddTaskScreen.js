@@ -1,6 +1,8 @@
 import {StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, Alert} from 'react-native';
 import { Fragment, useContext, useEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
@@ -15,6 +17,12 @@ const AddTaskScreen = ({route, navigation}) => {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState(0);
     const [goalValue, setGoalValue] = useState(0);
+    const [type, setType] = useState(0);
+    // const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
+
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
 
     useEffect(() => {
       navigation.setOptions({
@@ -76,14 +84,83 @@ const AddTaskScreen = ({route, navigation}) => {
         }
 
         console.log("name: ", name, "desc: ", description, "cat: ", category, "daysgoal: ", days_goal, "timesgoal: ", times_goal, "hoursgoal: ", hours_goal);
-        await database.addHabit(name, description, category, days_goal, times_goal, hours_goal)
-        .then(Alert.alert("", "Dodano zadanie " + '"'+ name + '"'))
-        .then(navigation.navigate("Home"));
+
+        if(type == 1){
+          var tempDate = time.toISOString().split('T')[0] + ' ' + time.toISOString().split('T')[1];
+          tempDate = tempDate.slice(0,-1);
+          console.log("HABIT: ", name, description, category, days_goal, times_goal, hours_goal, type);
+          console.log("DATE: ", tempDate);
+          database.addTask(name, description, category, type, tempDate)
+          .then(Alert.alert("", "Dodano zadanie " + '"'+ name + '"'))
+          .then(navigation.navigate("Home"));
+
+        }else{
+          await database.addHabit(name, description, category, days_goal, times_goal, hours_goal, type)
+          .then(Alert.alert("", "Dodano nawyk " + '"'+ name + '"'))
+          .then(navigation.navigate("Home"));
+        }
+    }
+
+    const handleTimeChange = (date) => {
+      console.log(date.nativeEvent.timestamp);
+      //var day = new Date(date.nativeEvent.timestamp);
+      //console.log(day.toLocaleString());
+      setShowTimePicker(false);
+      setShowDatePicker(false);
+      setTime(new Date(date.nativeEvent.timestamp));
     }
 
     return(
         <View style={styles.container}>
             <View style={styles.section}>
+                <View style={styles.bar}>
+                    <TouchableOpacity 
+                        style={styles.barButton}
+                        onPress={()=>setType(0)}
+                    >
+                        <MaterialCommunityIcons
+                            name="calendar-refresh-outline"
+                            color={
+                              isThemeLight ? 
+                                type ? 'lightgrey' : 'black'
+                              : 
+                                type ? '#ccc' : 'white'
+                            }
+                            size={42}
+                        />
+                        <Text style={{color: 
+                              isThemeLight ? 
+                                type ? 'lightgrey' : 'black'
+                              : 
+                                type ? '#ccc' : 'white'
+                        }}>
+                            Nawyk
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.barButton}
+                      onPress={()=>setType(1)}
+                    >
+                        <MaterialCommunityIcons
+                            name="calendar-check-outline"
+                            color={
+                              isThemeLight ? 
+                                type ? 'black' : 'lightgrey'
+                              : 
+                                type ? 'white' : '#ccc'
+                            }
+                            size={42}
+                        />
+                        <Text style={{color:
+                          isThemeLight ? 
+                            type ? 'black' : 'lightgrey'
+                          : 
+                            type ? 'white' : '#ccc'
+                        }}>
+                            Zadanie
+                        </Text>
+                     </TouchableOpacity>
+                </View>
                 <Text style={styles.label}>Nazwa</Text>
                 <TextInput
                     style={styles.inputField}
@@ -116,32 +193,67 @@ const AddTaskScreen = ({route, navigation}) => {
                         arrowicon={<Ionicons name="chevron-down-circle-outline" size={18} color={'black'} />} 
                     />
                 </View>
-                <Text style={styles.label}>Cel</Text>
-                <View style={styles.goalsContainer}>
-                    <TouchableOpacity style={!goalId ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(0)}>
-                        <Text style={styles.text}>Brak celu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={goalId == 1 ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(1)}>
-                        <Text style={styles.text}>Dni</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={goalId == 2 ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(2)}>
-                        <Text style={styles.text}>Jednostki</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={goalId == 3 ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(3)}>
-                        <Text style={styles.text}>Godziny</Text>
-                    </TouchableOpacity>
-                </View>
-                  <TextInput
-                      style={[styles.inputField, {opacity: goalId ? 1 : 0.5}]}
-                      placeholder="Cel"
-                      onChangeText={text => setGoalValue(text)}
-                      keyboardType="numeric"
-                      inputMode='numeric'
-                      editable={goalId != 0}
-                  />
-                <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
-                    <Text style={styles.submitText}>Dodaj</Text>
-                </TouchableOpacity>
+                    {type == 0 
+                    ?
+                        <>
+                        <Text style={styles.label}>Cel</Text>
+                        <View style={styles.goalsContainer}>
+                            <TouchableOpacity style={!goalId ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(0)}>
+                                <Text style={styles.text}>Brak celu</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={goalId == 1 ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(1)}>
+                                <Text style={styles.text}>Dni</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={goalId == 2 ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(2)}>
+                                <Text style={styles.text}>Jednostki</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={goalId == 3 ? styles.goalButtonActive : styles.goalButtonInactive} onPress={() => setGoalId(3)}>
+                                <Text style={styles.text}>Godziny</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <TextInput
+                            style={[styles.inputField, {opacity: goalId ? 1 : 0.5}]}
+                            placeholder="Cel"
+                            onChangeText={text => setGoalValue(text)}
+                            keyboardType="numeric"
+                            inputMode='numeric'
+                            editable={goalId != 0}
+                        />
+                        </>
+                    :
+                        <View>
+                            <Text style={styles.label}>Termin</Text>
+                            <View style={styles.bar}>
+                                <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.timeText}>
+                                    <MaterialCommunityIcons name="calendar-month-outline" size={24} color={isThemeLight ? "black" : "#ccc"}/>
+                                    <Text style={styles.text}> {time.toISOString().split('T')[0]}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => setShowTimePicker(true)} style={styles.timeText}>
+                                    <MaterialCommunityIcons name="clock-outline" size={24} color={isThemeLight ? "black" : "#ccc"}/>
+                                    <Text style={styles.text}> {time.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"})}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            {showDatePicker &&
+                                <DateTimePicker 
+                                  value={time}
+                                  mode="date"
+                                  minimumDate={new Date()}
+                                  onChange={(date) => handleTimeChange(date)}
+                                />
+                            }
+                            {showTimePicker &&
+                                <DateTimePicker 
+                                  value={time}
+                                  mode="time"  
+                                  minuteInterval={5}
+                                  onChange={(date) => handleTimeChange(date)}
+                                />
+                            }
+                        </View>
+                    }
+                        <TouchableOpacity style={styles.submitButton} onPress={() => handleSubmit()}>
+                            <Text style={styles.submitText}>Dodaj</Text>
+                        </TouchableOpacity>
             </View>
         </View>
     );
@@ -221,6 +333,26 @@ const stylesLight = StyleSheet.create({
     submitText: {
       fontSize: 20,
       color: 'black'
+    },
+    barButton : {
+      justifyContent: 'center',
+      alignItems:'center',
+    },
+    bar: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      alignItems: 'center'
+    },
+    timeText: {
+      fontSize: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+      color: 'black',
+      borderWidth: 1,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      borderRadius: 20,
+      borderColor: 'skyblue'
     }
 });
 
@@ -300,6 +432,26 @@ const stylesDark = StyleSheet.create({
   submitText: {
     fontSize: 20,
     color: 'white'
+  },
+  barButton : {
+    justifyContent: 'center',
+    alignItems:'center',
+  },
+  bar: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
+  },
+  timeText: {
+    fontSize: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    color: '#ccc',
+    borderWidth: 1,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    borderColor: '#2f7d74'
   }
 });
 

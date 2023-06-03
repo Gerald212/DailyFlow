@@ -1,4 +1,4 @@
-import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity, Image} from 'react-native';
+import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity, Image, Platform} from 'react-native';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import PanelStatItem from '../components/PanelStatItem';
@@ -6,6 +6,7 @@ import * as Progress from 'react-native-progress';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { database } from '../database/database';
+import * as Notifications from 'expo-notifications';
 
 const Panel = () => {
   const {isThemeLight,setIsThemeLight,changeTheme} = useContext(ThemeContext);
@@ -46,6 +47,22 @@ const Panel = () => {
         getAverage();
     }, []);
 //
+    // const triggerNotifications = async () => {
+    //     await Notifications.scheduleNotificationAsync({
+    //         content: {
+    //             title: "Tytuł powiadomienia",
+    //             body: 'Treść powiadomienia',
+    //             data: { data: 'data' },
+    //             //sound: 'default',
+                
+    //         },
+    //         // trigger: new Date(Date.now() + 10000),
+    //         // trigger: { channelId: 'DailyFlowTasksID', date: new Date(Date.now() + 10000) }
+    //         trigger: { seconds: 3, channelId: 'DailyFlowTasksId' }
+    //     });
+    //     console.log(await Notifications.getAllScheduledNotificationsAsync());
+    // }
+
     return(
       <>
         <View style={styles.panelsBar}>
@@ -102,6 +119,9 @@ const Panel = () => {
                   <Text>Kliknij <Ionicons name="trash-outline" color='darkred' size={30}/> aby usunąć zadanie, nawyk lub kategorię.{'\n'}</Text>
                   <Text>Kliknij na zadanie/nawyk na liśćie aby wyświetlić szczegóły.{'\n'}</Text>
                   <Text>Wybierz datę w kalendarzu aby zobaczyć zadania zaplanowane na ten dzień i nawyki, które w tym dniu zostały wykonane.{'\n'}</Text>
+                  {/* <TouchableOpacity onPress={() => triggerNotifications()}>
+                    <Text style={{color: 'red', fontSize: 40}}>POWIADOMIENIE</Text>
+                  </TouchableOpacity> */}
               </View>
           </View>
         }

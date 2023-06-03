@@ -16,6 +16,15 @@ import AddTaskScreen from './screens/AddTaskScreen';
 import { database } from './database/database';
 import DeletionConfirmModal from './screens/DeletionConfirmModal';
 import AddCategoryModal from './screens/AddCategoryModal';
+import * as Notifications from 'expo-notifications';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true
+    }}
+})
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +51,24 @@ export default function App() {
       //return await database.closeDatabase();
   }, []);
 
+  useEffect(() => {
+    const registerNotifications = async () => {
+        // await Notifications.deleteNotificationChannelAsync('DailyFlowTasksID');
+        await Notifications.setNotificationChannelAsync('DailyFlowTasksId', {
+          name: 'DailyFlow Zadania',
+          importance: Notifications.AndroidImportance.MAX,
+          //vibrationPattern: [0, 250, 250, 250],
+          // lightColor: '#FF231F7C',
+          lightColor: '#2f7d74',
+          enableVibrate: true,
+          //sound: 'default'
+        });
+        console.log(await Notifications.getNotificationChannelsAsync())
+    }
+    registerNotifications();
+
+  }, []);
+    
   return (
     <ThemeContextProvider>
         <NavigationContainer>

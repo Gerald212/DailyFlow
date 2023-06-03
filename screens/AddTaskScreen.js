@@ -1,5 +1,6 @@
-import {StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, Text, View, StatusBar, TextInput, TouchableOpacity, Alert, ToastAndroid} from 'react-native';
 import { Fragment, useContext, useEffect, useState } from 'react';
+import * as Notifications from 'expo-notifications';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -91,14 +92,32 @@ const AddTaskScreen = ({route, navigation}) => {
           console.log("HABIT: ", name, description, category, days_goal, times_goal, hours_goal, type);
           console.log("DATE: ", tempDate);
           database.addTask(name, description, category, type, tempDate)
-          .then(Alert.alert("", "Dodano zadanie " + '"'+ name + '"'))
+          //.then(Alert.alert("", "Dodano zadanie " + '"'+ name + '"'))
+          .then(() => ToastAndroid.show('Dodano zadanie ' + name, ToastAndroid.SHORT))
+          .then(addNotification())
           .then(navigation.navigate("Home"));
 
         }else{
           await database.addHabit(name, description, category, days_goal, times_goal, hours_goal, type)
-          .then(Alert.alert("", "Dodano nawyk " + '"'+ name + '"'))
+          //.then(Alert.alert("", "Dodano nawyk " + '"'+ name + '"'))
+          .then(() => ToastAndroid.show('Dodano nawyk ' + name, ToastAndroid.SHORT))
           .then(navigation.navigate("Home"));
         }
+    }
+
+    const addNotification = async () => {
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: name,
+                body: description,
+                data: { data: 'data' },
+                //sound: 'default',
+            },
+            // trigger: new Date(Date.now() + 10000),
+            // trigger: { channelId: 'DailyFlowTasksID', date: new Date(time) }
+            trigger: { channelId: 'DailyFlowTasksId', date: new Date(time) }
+        });
+        console.log(await Notifications.getAllScheduledNotificationsAsync());
     }
 
     const handleTimeChange = (date) => {

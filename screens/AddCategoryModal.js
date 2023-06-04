@@ -1,5 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from "react-native"
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from "react-native";
 import { ThemeContext } from "../ThemeContext";
 import { database } from "../database/database";
 import { useContext, useState } from "react";

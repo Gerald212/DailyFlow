@@ -1,13 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import sampleData from './database/sampleData';
-import TasksList from './screens/TasksList';
 import { ThemeContextProvider } from './ThemeContext';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import CalendarScreen from './screens/CalendarScreen';
-import Panel from './screens/Panel';
 import MainTabsNavigator from './components/MainTabsNavigator';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TaskDetails from './screens/TaskDetailsScreen';
@@ -63,7 +56,7 @@ export default function App() {
           enableVibrate: true,
           //sound: 'default'
         });
-        console.log(await Notifications.getNotificationChannelsAsync())
+        // console.log(await Notifications.getNotificationChannelsAsync())
     }
     registerNotifications();
 

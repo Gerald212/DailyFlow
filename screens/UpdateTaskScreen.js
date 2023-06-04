@@ -1,7 +1,5 @@
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { useContext, useEffect, useState} from 'react';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';

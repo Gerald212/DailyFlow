@@ -1,8 +1,8 @@
-import {Text, View, StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import { useContext } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import ProgressBar from 'react-native-progress/Bar';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 //Wykorzystana biblioteka react-native-progress: https://github.com/oblador/react-native-progress

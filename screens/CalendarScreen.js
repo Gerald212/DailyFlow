@@ -1,7 +1,6 @@
 import {StyleSheet, Text, View, StatusBar, SafeAreaView, FlatList} from 'react-native';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
-import { sampleData3 } from '../database/sampleData';
 import TaskItem from '../components/TaskItem';
 import { database } from '../database/database';
 import LoadingScreen from './LoadingScreen';

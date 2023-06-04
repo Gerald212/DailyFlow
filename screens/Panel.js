@@ -47,21 +47,21 @@ const Panel = () => {
         getAverage();
     }, []);
 //
-    // const triggerNotifications = async () => {
-    //     await Notifications.scheduleNotificationAsync({
-    //         content: {
-    //             title: "Tytuł powiadomienia",
-    //             body: 'Treść powiadomienia',
-    //             data: { data: 'data' },
-    //             //sound: 'default',
+    const triggerNotifications = async () => {
+        await Notifications.scheduleNotificationAsync({
+            content: {
+                title: "Tytuł powiadomienia",
+                body: 'Treść powiadomienia',
+                data: { data: 'data' },
+                //sound: 'default',
                 
-    //         },
-    //         // trigger: new Date(Date.now() + 10000),
-    //         // trigger: { channelId: 'DailyFlowTasksID', date: new Date(Date.now() + 10000) }
-    //         trigger: { seconds: 3, channelId: 'DailyFlowTasksId' }
-    //     });
-    //     console.log(await Notifications.getAllScheduledNotificationsAsync());
-    // }
+            },
+            // trigger: new Date(Date.now() + 10000),
+            // trigger: { channelId: 'DailyFlowTasksID', date: new Date(Date.now() + 10000) }
+            trigger: { seconds: 3, channelId: 'DailyFlowTasksId' }
+        });
+        console.log(await Notifications.getAllScheduledNotificationsAsync());
+    }
 
     return(
       <>
@@ -119,9 +119,9 @@ const Panel = () => {
                   <Text>Kliknij <Ionicons name="trash-outline" color='darkred' size={30}/> aby usunąć zadanie, nawyk lub kategorię.{'\n'}</Text>
                   <Text>Kliknij na zadanie/nawyk na liśćie aby wyświetlić szczegóły.{'\n'}</Text>
                   <Text>Wybierz datę w kalendarzu aby zobaczyć zadania zaplanowane na ten dzień i nawyki, które w tym dniu zostały wykonane.{'\n'}</Text>
-                  {/* <TouchableOpacity onPress={() => triggerNotifications()}>
+                  <TouchableOpacity onPress={() => triggerNotifications()}>
                     <Text style={{color: 'red', fontSize: 40}}>POWIADOMIENIE</Text>
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
               </View>
           </View>
         }

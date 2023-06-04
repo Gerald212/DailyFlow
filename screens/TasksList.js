@@ -1,11 +1,9 @@
-import {Text, View, StyleSheet, SafeAreaView, SectionList, StatusBar, FlatList, TouchableOpacity} from 'react-native';
-import {sampleData, sampleData2, sampleData3, sampleData4} from '../database/sampleData';
+import {Text, View, StyleSheet, SafeAreaView, StatusBar, FlatList, TouchableOpacity} from 'react-native';
 import TaskItem from '../components/TaskItem';
 import CategoryItem from '../components/CategoryItem';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
-import EmptyTasksListComponent from '../components/EmptyTasksListComponent';
 import LoadingScreen from './LoadingScreen';
 import TasksListFooter from '../components/TasksListFooter';
 import CategoriesListFooter from '../components/CategoriesListFooter';

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, StatusBar, ActivityIndicator, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import { database } from '../database/database';
@@ -7,7 +7,7 @@ import * as Progress from 'react-native-progress';
 import PanelStatItem from '../components/PanelStatItem';
 import TaskDetailsHeader from '../components/TaskDetailsHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const TaskDetails = ({route, navigation}) => {

@@ -31,7 +31,7 @@ export default function App() {
         // await database.dropTableAsync("dates");
 
         await database.setupDatabaseAsync();              //stworzenie tabel (jesli ich nie ma)
-        //await database.checkDatabase();                   //inserty przyklaowdych danych jesli potzrebne     
+        await database.checkDatabase();                   //inserty przyklaowdych danych jesli potzrebne     
         console.log("Zakończono tworzenie bazy danych");
 
         //await database.getAllCategories((result)=>{console.log("kategorie: ", result)}) //wypisanie wszytkich kategorii

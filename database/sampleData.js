@@ -1,4 +1,4 @@
-//https://formik.org/docs/examples/dependent-fields
+// przykladowe dane używane do testowania
 
 const sampleData = [
     {

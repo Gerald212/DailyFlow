@@ -26,14 +26,14 @@ const TasksList = ({navigation, route}) => {
   //stan kontrolujący czy dane są wczytywane
   const [isLoading, setIsLoading] = useState(true);
 
-  //to raczej tak byc nie moze i tzreba bedzie zmienic
+  //wczytywanie zadań gdy jest to konieczne
   useEffect(() => {
     const focusHandler = navigation.addListener('focus', () => {
           //alert('Refreshed');
           //console.log("params: ", route.params);
           // console.log("route: ", route);
           // if(route.params?.refresh){
-          //   console.log("LOLOLOLOLO");
+          //   console.log("test");
           //   navigation.setParams({refresh: false})
           // }
           loadHabits();
@@ -60,6 +60,7 @@ const TasksList = ({navigation, route}) => {
       loadHabits();
   }, [selectedCategory]);
 
+  //funkcja pobierająca dane z bazy
   const loadHabits = async () => {  
     const setTemp = (temp) => {
       const tempHabits = temp;
@@ -69,9 +70,11 @@ const TasksList = ({navigation, route}) => {
     //await database.getHabitsByCategory(selectedCategory, (result) => console.log("pobrane: ",result))
     await database.getHabitsByCategory(selectedCategory, setTemp)
     .then(setIsLoading(false))
-    .finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
+    //.finally(() => console.log("Wyswietlona kategoria o id: " + selectedCategory))
   }
 
+
+  //funkcje przenoszące użytkownika do innych ekranów
   const goToDetails = (id) => {
       //console.log(id);
       navigation.navigate('Details', {id: id});

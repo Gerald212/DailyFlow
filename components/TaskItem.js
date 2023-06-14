@@ -5,19 +5,6 @@ import ProgressBar from 'react-native-progress/Bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-//Wykorzystana biblioteka react-native-progress: https://github.com/oblador/react-native-progress
-
-//item:
-// {
-//   name: 'Rysowac cos',
-//   type: 0,        //0 - habit, 1 - task
-//   id: 1,          //id
-//   hours: 1,       
-//   hours_goal: 0,
-//   days_goal: 0,
-//   completed: false,
-// }
-
 const TaskItem = ({item, showDetails, updateTask}) => {
     const {isThemeLight, setIsThemeLight} = useContext(ThemeContext);
 

@@ -28,7 +28,7 @@ const UpdateTaskScreen = ({route, navigation}) => {
         const updateTask = async () => {
           //console.log("godziny: ", hours, "data: ", date.toISOString().split('T')[0]);
           await database.updateHabitById(route.params.id, hours, date.toISOString().split('T')[0])
-          .then(() => console.log("godziny: ", hours, "data: ", date))
+          //.then(() => console.log("godziny: ", hours, "data: ", date))
           .then(navigation.navigate("Home", {screen: 'TasksList', params: {refresh: 'true'}}));
         }
 
@@ -236,6 +236,7 @@ const stylesDark = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2f7d74',
     borderRadius: 20,
+    color: '#ccc'
   },
   label: {
     flex: 2,

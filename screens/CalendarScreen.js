@@ -39,13 +39,15 @@ const CalendarScreen = ({navigation}) => {
 
     const styles = isThemeLight ? stylesLight : stylesDark;
 
+    //funkcja wczytyująca dane z abzy
     const loadHabits = async () => {  
         setIsLoading(true);
-        await database.getHabitsByDay(selectedDay, (result) => console.log(result))
+        //await database.getHabitsByDay(selectedDay, (result) => console.log(result))
         await database.getHabitsByDay(selectedDay, setListDataDay)
         .then(setIsLoading(false))
     }
 
+    //pobieranie oznaczonych dni
     const loadMarkedDates = async () => {
 
         const setTemp = (temp) => {
@@ -64,16 +66,19 @@ const CalendarScreen = ({navigation}) => {
     useEffect(() => {
       const focusHandler = navigation.addListener('focus', () => {
           loadMarkedDates();
-          console.log("markeddyas: ", markedDays);
+          //console.log("markeddyas: ", markedDays);
           //database.getAllDates((result) => console.log(result))
         });
         return focusHandler;
     }, [navigation]);
 
+    //odświeżanie danych po wybraniu dnia
     useEffect(() => {
         loadHabits();
     }, [selectedDay]);
 
+
+    //funkcje przenoszące użytkownika do innych ekranów
     const goToDetails = (id) => {
         navigation.navigate('Details', {id: id});
     }

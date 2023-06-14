@@ -1,9 +1,8 @@
-import {Text, View, StatusBar, StyleSheet, Button, TouchableOpacity, Image, Platform} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../ThemeContext';
 import PanelStatItem from '../components/PanelStatItem';
-import * as Progress from 'react-native-progress';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { database } from '../database/database';
 import * as Notifications from 'expo-notifications';
@@ -33,9 +32,9 @@ const Panel = () => {
         }
         const getAverage = async () => {
             await database.getAverageCompletion((result) => {
-              console.log("srednia", result);
+              //console.log("srednia", result);
               //let average = Math.round(result * 100);
-              console.log(result);
+              //console.log(result);
               setAverageCompletion(result);
             });
         }
@@ -46,7 +45,8 @@ const Panel = () => {
         getCompletedTasksCount();
         getAverage();
     }, []);
-//
+
+    //do testów powiadomień v
     // const triggerNotifications = async () => {
     //     await Notifications.scheduleNotificationAsync({
     //         content: {
@@ -99,7 +99,6 @@ const Panel = () => {
         </View>
         {showStats ?
           <View style={styles.container}>
-              {/* <Text style={isThemeLight ? styles.text : styles.textDark}>Pozostałe</Text> */}
               <View style={{flex:1}}>          
                 <PanelStatItem value={1} content={habitsCount} title={"Liczba aktywnych nawyków"} leftSide={false}/>
                 <PanelStatItem value={1} content={completedHabitsCount} title={"Liczba zakończonych\nnawyków"} leftSide={true}/>
@@ -115,10 +114,11 @@ const Panel = () => {
               <Text style={styles.title}>DailyFlow</Text>
               <View style={styles.infoTextContainer}>
                   <Text style={styles.infoText}>Kliknij <Ionicons name="add-circle-outline" color={isThemeLight ? '#4aabff' : '#2f7d74'} size={32}/> aby dodać zadanie/nawyk lub kategorię.{'\n'}</Text>
-                  <Text>Kliknij <MaterialCommunityIcons name={"update"} color={isThemeLight ? '#4aabff' : '#2f7d74'} size={32}/> aby zaktualizować zadanie/nawyk.{'\n'}</Text>
-                  <Text>Kliknij <Ionicons name="trash-outline" color='darkred' size={30}/> aby usunąć zadanie, nawyk lub kategorię.{'\n'}</Text>
-                  <Text>Kliknij na zadanie/nawyk na liśćie aby wyświetlić szczegóły.{'\n'}</Text>
-                  <Text>Wybierz datę w kalendarzu aby zobaczyć zadania zaplanowane na ten dzień i nawyki, które w tym dniu zostały wykonane.{'\n'}</Text>
+                  <Text style={styles.infoText}>Kliknij <MaterialCommunityIcons name={"update"} color={isThemeLight ? '#4aabff' : '#2f7d74'} size={32}/> aby zaktualizować zadanie/nawyk.{'\n'}</Text>
+                  <Text style={styles.infoText}>Kliknij <Ionicons name="trash-outline" color='darkred' size={30}/> aby usunąć zadanie, nawyk lub kategorię.{'\n'}</Text>
+                  <Text style={styles.infoText}>Kliknij na zadanie/nawyk na liśćie aby wyświetlić szczegóły.{'\n'}</Text>
+                  <Text style={styles.infoText}>Wybierz datę w kalendarzu aby zobaczyć zadania zaplanowane na ten dzień i nawyki, które w tym dniu zostały wykonane.{'\n'}</Text>
+                  {/* do testów powiadomień v */}
                   {/* <TouchableOpacity onPress={() => triggerNotifications()}>
                     <Text style={{color: 'red', fontSize: 40}}>POWIADOMIENIE</Text>
                   </TouchableOpacity> */}
@@ -173,6 +173,9 @@ const stylesLight = StyleSheet.create({
       width: '50%', 
       marginTop: -20,
       tintColor: 'black'
+    },
+    infoText: {
+      color: 'black'
     }
 });
 
@@ -223,6 +226,9 @@ const stylesDark = StyleSheet.create({
       width: '50%', 
       marginTop: -20,
       tintColor: '#3b9c92'
+    },
+    infoText: {
+      color: '#ccc'
     }
 });
 

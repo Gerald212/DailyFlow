@@ -84,13 +84,15 @@ const AddTaskScreen = ({route, navigation}) => {
             return;
         }
 
-        console.log("name: ", name, "desc: ", description, "cat: ", category, "daysgoal: ", days_goal, "timesgoal: ", times_goal, "hoursgoal: ", hours_goal);
+        //console.log("name: ", name, "desc: ", description, "cat: ", category, "daysgoal: ", days_goal, "timesgoal: ", times_goal, "hoursgoal: ", hours_goal);
 
         if(type == 1){
-          var tempDate = time.toISOString().split('T')[0] + ' ' + time.toISOString().split('T')[1];
-          tempDate = tempDate.slice(0,-1);
-          console.log("HABIT: ", name, description, category, days_goal, times_goal, hours_goal, type);
-          console.log("DATE: ", tempDate);
+          //var tempDate = time.toISOString().split('T')[0] + ' ' + time.toISOString().split('T')[1];
+          var tempDate = time.toISOString().split('T')[0] + time.toLocaleString().split(',')[1];
+          //console.log("DATA:    " + tempDate);
+          //tempDate = tempDate.slice(0,-1);
+          console.log("TASK: ", name, description, category, days_goal, times_goal, hours_goal, type);
+          //console.log("DATE: ", tempDate);
           database.addTask(name, description, category, type, tempDate)
           //.then(Alert.alert("", "Dodano zadanie " + '"'+ name + '"'))
           .then(() => ToastAndroid.show('Dodano zadanie ' + name, ToastAndroid.SHORT))
@@ -117,7 +119,8 @@ const AddTaskScreen = ({route, navigation}) => {
             // trigger: { channelId: 'DailyFlowTasksID', date: new Date(time) }
             trigger: { channelId: 'DailyFlowTasksId', date: new Date(time) }
         });
-        console.log(await Notifications.getAllScheduledNotificationsAsync());
+        //wypisanie wszystkich aktualnych powiadomien
+        //console.log(await Notifications.getAllScheduledNotificationsAsync());
     }
 
     const handleTimeChange = (date) => {
@@ -431,7 +434,7 @@ const stylesDark = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2f7d74',
     borderRadius: 20,
-    //marginBottom: 20
+    color: '#ccc'
   },
   label: {
     marginLeft: 10,

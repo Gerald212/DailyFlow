@@ -17,35 +17,42 @@ Alternatively, you can use the ready-made .apk file found in root.
 ## Screenshots & Description
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/dff53579-e9bd-4dd9-af43-9364b3e9b4f3" width="300"/>
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/03b3a448-7be1-456b-9a5e-be75e84fb323" width="300"/>
+
 The main screen of the app, visible when you turn it on, is the List. It contains all tasks and habits grouped into categories, which can be selected from a horizontal list at the top of the screen. Each item in the list includes the type (task/habit), title and progress. Clicking on the items takes the user to a screen containing the details. To update the progress of a habit, click on the update icon on the right.
 
 
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/b2fa00f5-b314-4c18-abe9-d17e79f509de" width="300"/>
+
 The second screen, accessible by selecting the appropriate tab from the menu at the bottom of the application, is the Calendar. It consists of two elements: a calendar and a list containing tasks and habits. 
 
 On the calendar, coloured dots mark the days for which tasks are scheduled and the days on which habits were performed. When a day is selected, the tasks and habits associated with that day appear in the list below the calendar. From this list, just like the main list, it is possible to update tasks and check their details.
 
 
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/535da80f-f6a4-4f1a-bbd4-8fefde4508a6" width="300"/>
+
 The third screen accessible from the tab menu is the Panel, and contains general statistics on tasks and habits, as well as a shortcut to the application's most important functions. The Panel header also contains a button to change the current theme of the application.
 
 
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/2e0386f7-1bb9-438e-993e-14ec09ca3980" width="300"/>
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/39fbd469-bcd1-4f91-a658-e482c194ecaf" width="300"/>
+
 After pressing the relevant button the user is taken to the adding screen. The form allows the user to provide a name, an optional description, assign a category and (in the case of a habit) set a goal or (in the case of a task) select a completion date.
 
 
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/7f0dec94-3ade-42c5-af24-0007157ee276" width="300"/>
+
 At the specified time, the user will receive a push notification reminding them to complete the task.
 
 
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/6e576740-2c3c-4e5c-b7ec-62ad8ea13890" width="300"/>
+
 By clicking on an item in the list, the user can check the details of the task/habit in question, its full description, status, progress, the category it belongs to and statistics on how many times, days and hours the habit has been performed.
 Two buttons are present in the header of this screen, allowing the user to update and delete the task in question.
 
 
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/7bf3cdb0-ddf4-408e-bca2-1e69f2375767" width="300"/>
 <img src="https://github.com/Gerald212/DailyFlow/assets/98669020/cfe9dac5-e5c3-4543-9bd6-2ac55a09bbe7" width="300"/>
+
 Comparison of the light and dark theme of the application.
 
 ## Application Structure

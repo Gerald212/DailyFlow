@@ -26,17 +26,9 @@ export default function App() {
   //operacje na bazie danych wykonywane po włączeniu aplikacji
   useEffect(() => {
       const createDatabase = async () => {
-        // await database.dropTableAsync("habits");       //drop table habits
-        // await database.dropTableAsync("categories");   //drop table categories
-        // await database.dropTableAsync("dates");
-
         await database.setupDatabaseAsync();              //stworzenie tabel (jesli ich nie ma)
         await database.checkDatabase();                   //inserty przyklaowdych danych jesli potzrebne     
         console.log("Zakończono tworzenie bazy danych");
-
-        //await database.getAllCategories((result)=>{console.log("kategorie: ", result)}) //wypisanie wszytkich kategorii
-        //await database.getAllHabits((result)=>{console.log("zwyczaje: ", result)})      //wypisanie wszytkich habitsow
-        //await database.getAllDates((result)=>{console.log("daty: ", result)})             //wypisanie wszytkich dat
       }
     
       createDatabase();
@@ -47,17 +39,12 @@ export default function App() {
   //zarejestrowanie kanału powiadomień
   useEffect(() => {
     const registerNotifications = async () => {
-        // await Notifications.deleteNotificationChannelAsync('DailyFlowTasksID');
         await Notifications.setNotificationChannelAsync('DailyFlowTasksId', {
           name: 'DailyFlow Zadania',
           importance: Notifications.AndroidImportance.MAX,
-          //vibrationPattern: [0, 250, 250, 250],
-          // lightColor: '#FF231F7C',
           lightColor: '#2f7d74',
           enableVibrate: true,
-          //sound: 'default'
         });
-        // console.log(await Notifications.getNotificationChannelsAsync())
     }
     registerNotifications();
 
